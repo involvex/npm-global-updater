@@ -2284,7 +2284,7 @@ var package_default;
 var init_package = __esm(() => {
   package_default = {
     name: "@involvex/npm-global-updater",
-    version: "0.1.38",
+    version: "0.1.40",
     description: "global npm package updater",
     license: "MIT",
     author: "involvex",
@@ -2431,11 +2431,10 @@ var init_about = __esm(() => {
 init_packageManager();
 
 // src/utils/self-updater.ts
+import { exec, execSync } from "child_process";
 import { readFileSync } from "fs";
-import { fileURLToPath } from "url";
 import { dirname, join } from "path";
-import { exec } from "child_process";
-import { execSync } from "child_process";
+import { fileURLToPath } from "url";
 var packagejson;
 try {
   const globalpath = execSync('cmd /c "where npm-updater.cmd"').toString().trim();
@@ -2451,70 +2450,103 @@ try {
 }
 var npmpackage = "https://registry.npmjs.org/@involvex/npm-global-updater/latest";
 async function getLatestVersion() {
-  const response = await fetch(npmpackage);
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+  try {
+    const response = await fetch(npmpackage);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const version = await response.json();
+    return version?.version;
+  } catch (error) {
+    console.error("Failed to fetch latest version:", error);
+    throw error;
   }
-  const version = await response.json();
-  const latestVersion = version;
-  return latestVersion?.version;
+}
+async function performUpdate(latestVersion, currentVersion) {
+  console.log("Current version:", currentVersion);
+  console.log("Latest version:", latestVersion);
+  console.log("Do you want to update? (y/n)");
+  if (process.stdin.isTTY) {
+    process.stdin.setEncoding("utf8");
+    const handleInput = (data) => {
+      const answer = data.toString().trim().toLowerCase();
+      if (answer === "y" || answer === "yes") {
+        executeUpdate();
+      } else if (answer === "n" || answer === "no" || answer === "cancel") {
+        console.log("Update cancelled.");
+        process.exit(0);
+      } else {
+        console.log("Please enter 'y' or 'n'. Do you want to update? (y/n)");
+        return;
+      }
+      process.stdin.off("data", handleInput);
+      process.stdin.pause();
+    };
+    process.stdin.on("data", handleInput);
+  } else {
+    console.log("Non-interactive mode detected. Auto-updating...");
+    executeUpdate();
+  }
+}
+function executeUpdate() {
+  exec("npm install -g @involvex/npm-global-updater@latest", (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error updating npm-global-updater: ${error}`);
+      process.exit(1);
+    }
+    if (stdout) {
+      console.log(stdout);
+    }
+    if (stderr) {
+      console.error(stderr);
+    }
+    console.log("npm-global-updater updated successfully. Please restart the application.");
+    process.exit(0);
+  });
 }
 async function triggerupdate() {
-  if (process.argv.includes("self-update")) {
+  try {
     const latestVersion = await getLatestVersion();
     const currentVersion = packagejson.version;
+    if (!latestVersion) {
+      console.error("Failed to fetch latest version information.");
+      process.exit(1);
+    }
     if (currentVersion < latestVersion) {
-      console.log("Current version:", currentVersion);
-      console.log("Latest version:", latestVersion);
-      console.log("Do you want to update? (y/n)");
-      process.stdin.setEncoding("utf8");
-      process.stdin.on("data", (data) => {
-        const answer = data.toString().trim().toLowerCase();
-        if (answer === "y") {
-          exec("npm install -g @involvex/npm-global-updater@latest", (error, stdout, stderr) => {
-            if (error) {
-              console.error(`Error updating npm-global-updater: ${error}`);
-              return;
-            }
-            console.log(stdout);
-            console.error(stderr);
-            console.log("npm-global-updater updated successfully. Please restart the application.");
-            process.exit(0);
-          });
-        } else {
-          console.log("Update cancelled.");
-          process.exit(0);
-        }
-        process.stdin.pause();
-        return true;
-      });
+      await performUpdate(latestVersion, currentVersion);
     } else {
       console.log("Current version:", currentVersion);
       console.log("No update available.");
       console.log("Find out more at: " + "https://www.npmjs.com/package/@involvex/npm-global-updater?activeTab=versions");
     }
+  } catch (error) {
+    console.error("Update check failed:", error);
+    process.exit(1);
   }
 }
 async function notifyupdate() {
-  const latestVersion = await getLatestVersion();
-  const currentVersion = packagejson.version;
-  if (currentVersion < latestVersion) {
-    console.log("=".repeat(60));
-    console.log(`	A new version of npm-global-updater is available.
-`, `	Please update by running:
-`, `	npm install -g @involvex/npm-global-updater@latest
-`, `	or run:
-`, `	npm-updater self-update
-`);
-    console.log("=".repeat(60));
-    if (process.argv.includes("self-update")) {
-      triggerupdate();
+  try {
+    const latestVersion = await getLatestVersion();
+    const currentVersion = packagejson.version;
+    if (currentVersion < latestVersion) {
+      console.log("=".repeat(60));
+      console.log("\tA new version of npm-global-updater is available.");
+      console.log("\tPlease update by running:");
+      console.log("\tnpm install -g @involvex/npm-global-updater@latest");
+      console.log("\tor run:");
+      console.log("\tnpm-updater self-update");
+      console.log("=".repeat(60));
+      if (process.argv.includes("self-update")) {
+        console.log("Triggering self-update...");
+        await triggerupdate();
+      }
     }
-    console.log("Triggered update");
+  } catch (error) {
+    console.error("Update notification failed:", error);
   }
 }
 var self_updater_default = notifyupdate;
-if (process.argv.includes("self-update") && !process.argv.includes("y")) {
+if (process.argv.includes("self-update")) {
   triggerupdate();
 }
 
