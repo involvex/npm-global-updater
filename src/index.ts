@@ -54,29 +54,31 @@ export async function run() {
         showversion();
       }
       break;
-    case "about":
-      {
-        const { showabout } = await import("./commands/about");
-        showabout();
-      }  
+    case "about": {
+      const { showabout } = await import("./commands/about");
+      showabout();
+    }
   }
   function showHelp() {
     console.log(`
 Usage: npm-updater <command>
 
 Commands:
-  version       Show npm-updater version
-  ls            List all global packages
-  updateall     Update all global packages
-  update        Update single global package
-  help          Show this help message
-  latestversion Show latest version of a npm package
+  version(-v, --version)        Show npm-updater version
+  ls                            List all global packages
+  updateall                     Update all global packages
+  update                        Update single global package
+  help                          Show this help message
+  latestversion                 Show latest version of a npm package
+  about                         Show information about npm-updater
 
 Options:
-  --help, -h    Show this help message
+  --help, -h                    Show this help message
+  --update, -u                  Update a package
+  --version, -v                 Show npm-updater version
 
 
-For more information, visit: https://github.com/involvex/npm-updater
+For more information, visit: https://github.com/involvex/npm-global-updater
       `);
   }
 }

@@ -230,6 +230,10 @@ var init_package = __esm(() => {
     license: "MIT",
     author: "involvex",
     main: "src/index.js",
+    repository: {
+      type: "git",
+      url: "https://github.com/involvex/npm-global-updater"
+    },
     bin: {
       "npm-updater": "bin/npm-updater.js"
     },
@@ -271,6 +275,29 @@ function showversion() {
   console.log(`Version: ` + package_default.version);
 }
 var init_version = __esm(() => {
+  init_package();
+});
+
+// src/commands/about.ts
+var exports_about = {};
+__export(exports_about, {
+  showabout: () => showabout
+});
+async function showabout() {
+  console.log("==================================================");
+  console.log("=== About this app ===");
+  console.log("Name: " + package_default.name);
+  console.log("==================================================");
+  console.log("Repository: " + package_default.repository.url);
+  console.log("==================================================");
+  console.log("Description: " + package_default.description);
+  console.log("==================================================");
+  console.log("Version: " + package_default.version);
+  console.log("==================================================");
+  console.log("Author: " + package_default.author);
+  console.log("==================================================");
+}
+var init_about = __esm(() => {
   init_package();
 });
 
@@ -326,24 +353,31 @@ async function run() {
         showversion2();
       }
       break;
+    case "about": {
+      const { showabout: showabout2 } = await Promise.resolve().then(() => (init_about(), exports_about));
+      showabout2();
+    }
   }
   function showHelp() {
     console.log(`
 Usage: npm-updater <command>
 
 Commands:
-  version       Show npm-updater version
-  ls            List all global packages
-  updateall     Update all global packages
-  update        Update single global package
-  help          Show this help message
-  latestversion Show latest version of a npm package
+  version(-v, --version)        Show npm-updater version
+  ls                            List all global packages
+  updateall                     Update all global packages
+  update                        Update single global package
+  help                          Show this help message
+  latestversion                 Show latest version of a npm package
+  about                         Show information about npm-updater
 
 Options:
-  --help, -h    Show this help message
+  --help, -h                    Show this help message
+  --update, -u                  Update a package
+  --version, -v                 Show npm-updater version
 
 
-For more information, visit: https://github.com/involvex/npm-updater
+For more information, visit: https://github.com/involvex/npm-global-updater
       `);
   }
 }
