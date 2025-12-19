@@ -1,6 +1,6 @@
 {
   "name": "@involvex/npm-global-updater",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "global npm package updater",
   "license": "MIT",
   "author": "involvex",
