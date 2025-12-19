@@ -162,8 +162,6 @@ jobs:
       - name: 📋 Install dependencies
         run: bun install --frozen-lockfile
 
-      
-
       - name: 🔍 Lint code
         run: bun run lint
 
@@ -232,8 +230,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
       - name: Increase Version
-        run: bun pm version patch
-        
+        run: npm version patch
+
       - name: 🏷️ Create and push tag
         run: |
           VERSION="${{ needs.validate.outputs.version }}"
