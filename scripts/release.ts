@@ -432,11 +432,7 @@ class ReleaseManager {
 
     // For now, return common version-affected files
     // In a full implementation, we would analyze actual file changes
-    const commonFiles = [
-      "package.json",
-      "CHANGELOG.md",
-      "README.md"
-    ];
+    const commonFiles = ["package.json", "CHANGELOG.md", "README.md"];
 
     for (const file of commonFiles) {
       if (existsSync(file)) {

@@ -28,7 +28,6 @@
     "prepublish": "bun run build",
     "prepack": "bun run build",
     "changelog": "changelogen --output CHANGELOG.md ",
-    "version": "git add . && bun run changelog && git add CHANGELOG.md && git commit -m \"chore(release): {version}\" && npm version patch && bun run build",
     "postversion": "bun run build",
     "release": "bun run scripts/release.ts",
     "docs:dev": "bun --watch run docs/index.html",
