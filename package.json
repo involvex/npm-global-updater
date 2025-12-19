@@ -27,7 +27,6 @@
     "build:porteable": "bun build --compile src/index.ts --outfile bin/npm-updater.exe --compile-autoload-package-json --compile-autoload-tsconfig",
     "prepublish": "bun run build",
     "changelog": "changelogen --output CHANGELOG.md ",
-    "postversion": "bun run build",
     "release": "bun run scripts/release.ts",
     "docs:dev": "bun --watch run docs/index.html",
     "docs": "bun run docs/index.html",
