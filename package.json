@@ -26,7 +26,6 @@
     "typecheck": "tsc --noEmit",
     "build:portable": "bun build --compile src/index.ts --outfile bin/npm-updater.exe --compile-autoload-package-json --compile-autoload-tsconfig",
     "prepublish": "bun run build",
-    "prepack": "bun run build",
     "changelog": "changelogen --output CHANGELOG.md ",
     "postversion": "bun run build",
     "release": "bun run scripts/release.ts",
