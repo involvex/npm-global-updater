@@ -2263,7 +2263,7 @@ var package_default;
 var init_package = __esm(() => {
   package_default = {
     name: "@involvex/npm-global-updater",
-    version: "0.1.11",
+    version: "0.1.12",
     description: "global npm package updater",
     license: "MIT",
     author: "involvex",
@@ -2289,6 +2289,7 @@ var init_package = __esm(() => {
       typecheck: "tsc --noEmit",
       "build:portable": "bun build --compile src/index.ts --outfile bin/npm-updater.exe --compile-autoload-package-json --compile-autoload-tsconfig",
       prepublish: "bun run build",
+      prepack: "bun run build",
       changelog: "changelogen --output CHANGELOG.md ",
       postversion: "bun run build",
       release: "bun run scripts/release.ts",
