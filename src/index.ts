@@ -8,8 +8,9 @@ import { showlogo } from "./utils/logo";
 import notifyupdate from "./utils/self-updater";
 
 export async function run() {
-  notifyupdate();
-
+  if (!process.argv.includes("self-update")) {
+    notifyupdate();
+  }
   const args = process.argv.slice(2);
 
   // Parse --pm flag
@@ -200,10 +201,19 @@ export async function run() {
         showversion();
       }
       break;
-    case "about": {
-      const { showabout } = await import("./commands/about");
-      showabout();
-    }
+    case "about":
+      {
+        const { showabout } = await import("./commands/about");
+        showabout();
+      }
+      break;
+    case "self-update":
+      {
+        await notifyupdate();
+      }
+      break;
+    default:
+      showHelp();
   }
 
   function showHelp() {
@@ -226,6 +236,8 @@ Core Commands:
   help                          Show this help message
   latestversion                 Show latest version of a npm package
   about                         Show information about npm-updater
+  self-update                   Self-update npm-updater
+
 
 Export Commands:
   export-packages               Export packages to file

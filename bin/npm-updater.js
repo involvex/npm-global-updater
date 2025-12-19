@@ -84,7 +84,7 @@ var package_default;
 var init_package = __esm(() => {
   package_default = {
     name: "@involvex/npm-global-updater",
-    version: "0.1.6",
+    version: "0.1.7",
     description: "global npm package updater",
     license: "MIT",
     author: "involvex",
@@ -110,6 +110,7 @@ var init_package = __esm(() => {
       "build:portable": "bun build --compile src/index.ts --outfile bin/npm-updater.exe --compile-autoload-package-json --compile-autoload-tsconfig",
       prepublish: "bun run build",
       changelog: "changelogen --output CHANGELOG.md ",
+      postversion: "bun run build",
       release: "bun run scripts/release.ts"
     },
     devDependencies: {
@@ -1955,6 +1956,9 @@ async function notifyupdate() {
       return true;
     });
   } else if (latestVersion <= currentVersion) {
+    if (process.argv.includes("self-update")) {
+      console.log("You are using the latest version of npm-global-updater.");
+    }
     process.stdin.pause();
     return false;
   }
@@ -1963,7 +1967,9 @@ var self_updater_default = notifyupdate;
 
 // src/index.ts
 async function run() {
-  self_updater_default();
+  if (!process.argv.includes("self-update")) {
+    self_updater_default();
+  }
   const args = process.argv.slice(2);
   let packageManager;
   let commandIndex = 0;
@@ -2110,10 +2116,19 @@ async function run() {
         showversion2();
       }
       break;
-    case "about": {
-      const { showabout: showabout2 } = await Promise.resolve().then(() => (init_about(), exports_about));
-      showabout2();
-    }
+    case "about":
+      {
+        const { showabout: showabout2 } = await Promise.resolve().then(() => (init_about(), exports_about));
+        showabout2();
+      }
+      break;
+    case "self-update":
+      {
+        await self_updater_default();
+      }
+      break;
+    default:
+      showHelp();
   }
   function showHelp() {
     showlogo();
@@ -2135,6 +2150,8 @@ Core Commands:
   help                          Show this help message
   latestversion                 Show latest version of a npm package
   about                         Show information about npm-updater
+  self-update                   Self-update npm-updater
+
 
 Export Commands:
   export-packages               Export packages to file

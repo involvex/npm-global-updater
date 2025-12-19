@@ -56,6 +56,9 @@ async function notifyupdate() {
       return true;
     });
   } else if (latestVersion <= currentVersion) {
+    if (process.argv.includes("self-update")) {
+      console.log("You are using the latest version of npm-global-updater.");
+    }
     process.stdin.pause(); // Pause stdin if no update is needed
     return false;
   }
