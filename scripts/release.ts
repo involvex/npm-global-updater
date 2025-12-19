@@ -72,8 +72,7 @@ export async function runRelease(): Promise<void> {
     await executeCommand("npm version patch", "Increasing version number");
 
     // Step 6: Push all changes
-    await executeCommand("git push --all", "Pushing changes to remote");
-    await executeCommand("git push --tags", "Pushing tags to remote");
+    await executeCommand("git push --follow-tags", "Pushing changes to remote");
 
     console.log("\n🎉 Release completed successfully!");
     console.log("=".repeat(60));
