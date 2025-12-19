@@ -14,13 +14,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
       - run: bun i
       - run: bun run build
+      - run: bun run build:porteable
       - run: bun run changelog
-      - run: git tag v$(jq -r .version package.json)
-      - run: bun run build
-      - run: git add .
-      - run: git commit -F Changelog.md
-      - run: git push origin v$(jq -r .version package.json)
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+          body_path: ${{ github.workspace }}-CHANGELOG.md
+          repository: involvex/npm-global-updater
+          # note you'll typically need to create a personal access token
+          # with permissions to create releases in the other repo
+          token: ${{ secrets.GH_TOKEN }}
+          files: |
+            CHANGELOG.md
+            bin/npm-updater.js
+            bin/npm-updater.exe
+          draft: true
+          make_latest: true
+          body: ${{github.CHANGELOG}}

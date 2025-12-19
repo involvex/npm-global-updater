@@ -2287,7 +2287,7 @@ var init_package = __esm(() => {
       build: "bun build src/index.ts  --target node --outfile bin/npm-updater.js",
       prebuild: "bun run format && bun run lint:fix && bun run typecheck",
       typecheck: "tsc --noEmit",
-      "build:portable": "bun build --compile src/index.ts --outfile bin/npm-updater.exe --compile-autoload-package-json --compile-autoload-tsconfig",
+      "build:porteable": "bun build --compile src/index.ts --outfile bin/npm-updater.exe --compile-autoload-package-json --compile-autoload-tsconfig",
       prepublish: "bun run build",
       changelog: "changelogen --output CHANGELOG.md ",
       postversion: "bun run build",
