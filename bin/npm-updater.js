@@ -1967,6 +1967,36 @@ async function getLatestVersion() {
   const latestVersion = version;
   return latestVersion?.version;
 }
+async function triggerupdate() {
+  if (process.argv.includes("self-update")) {
+    const latestVersion = await getLatestVersion();
+    const currentVersion = packagejson.version;
+    console.log("Current version:", currentVersion);
+    console.log("Latest version:", latestVersion);
+    console.log("Do you want to update? (y/n)");
+    process.stdin.setEncoding("utf8");
+    process.stdin.on("data", (data) => {
+      const answer = data.toString().trim().toLowerCase();
+      if (answer === "y") {
+        exec("npm install -g @involvex/npm-global-updater@latest", (error, stdout, stderr) => {
+          if (error) {
+            console.error(`Error updating npm-global-updater: ${error}`);
+            return;
+          }
+          console.log(stdout);
+          console.error(stderr);
+          console.log("npm-global-updater updated successfully. Please restart the application.");
+          process.exit(0);
+        });
+      } else {
+        console.log("Update cancelled.");
+        process.exit(0);
+      }
+      process.stdin.pause();
+      return true;
+    });
+  }
+}
 async function notifyupdate() {
   const latestVersion = await getLatestVersion();
   const currentVersion = packagejson.version;
@@ -1980,38 +2010,15 @@ async function notifyupdate() {
 `);
     console.log("=".repeat(60));
     if (process.argv.includes("self-update")) {
-      console.log("Do you want to update? (y/n)");
-      process.stdin.setEncoding("utf8");
-      process.stdin.on("data", (data) => {
-        const answer = data.toString().trim().toLowerCase();
-        if (answer === "y") {
-          exec("npm install -g @involvex/npm-global-updater@latest", (error, stdout, stderr) => {
-            if (error) {
-              console.error(`Error updating npm-global-updater: ${error}`);
-              return;
-            }
-            console.log(stdout);
-            console.error(stderr);
-            console.log("npm-global-updater updated successfully. Please restart the application.");
-            process.exit(0);
-          });
-        } else {
-          console.log("Update cancelled.");
-          process.exit(0);
-        }
-        process.stdin.pause();
-        return true;
-      });
+      triggerupdate();
     }
-  } else if (latestVersion <= currentVersion) {
-    if (process.argv.includes("self-update")) {
-      console.log("You are using the latest version of npm-global-updater.");
-    }
-    process.stdin.pause();
-    return false;
+    console.log("Triggered update");
   }
 }
 var self_updater_default = notifyupdate;
+if (process.argv.includes("self-update") && !process.argv.includes("y")) {
+  triggerupdate();
+}
 
 // src/index.ts
 async function run() {
