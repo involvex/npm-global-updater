@@ -11,7 +11,7 @@
     "url": "https://github.com/involvex/npm-global-updater"
   },
   "bin": {
-    "npm-updater": "bin/npm-updater.js"
+    "npm-updater": "src/index.ts"
   },
   "scripts": {
     "lint": "eslint src ",
