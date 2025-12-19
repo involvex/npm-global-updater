@@ -5,13 +5,13 @@ export async function showabout() {
   showlogo();
   console.log("=== About this app ===");
   console.log("Name: " + packageinfo.name);
-  console.log("==================================================");
+  console.log("=".repeat(60));
   console.log("Repository: " + packageinfo.repository.url);
-  console.log("==================================================");
+  console.log("=".repeat(60));
   console.log("Description: " + packageinfo.description);
-  console.log("==================================================");
+  console.log("=".repeat(60));
   console.log("Version: " + packageinfo.version);
-  console.log("==================================================");
+  console.log("=".repeat(60));
   console.log("Author: " + packageinfo.author);
-  console.log("==================================================");
+  console.log("=".repeat(60));
 }

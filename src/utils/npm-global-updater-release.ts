@@ -20,10 +20,14 @@ async function notifyupdate() {
   const currentVersion = packagejson.version;
   // console.log("Current version:", currentVersion);
   // console.log("Latest version:", latestVersion);
-  if (latestVersion > currentVersion) {
+  if (currentVersion < latestVersion) {
+    console.log("=".repeat(60));
     console.log(
-      "A new version of npm-global-updater is available. Please update by running: npm install -g @involvex/npm-global-updater@latest",
+      "\tA new version of npm-global-updater is available.\n",
+      "\tPlease update by running:\n",
+      "\tnpm install -g @involvex/npm-global-updater@latest",
     );
+    console.log("=".repeat(60));
     console.log("Do you want to update? (y/n)");
     process.stdin.setEncoding("utf8");
     process.stdin.on("data", data => {

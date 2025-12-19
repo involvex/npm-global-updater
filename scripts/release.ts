@@ -53,7 +53,7 @@ async function executeCommand(
 
 export async function runRelease(): Promise<void> {
   console.log("🚀 Starting Release Script...");
-  console.log("=".repeat(50));
+  console.log("=".repeat(60));
 
   try {
     // Step 1: Build the project
@@ -73,9 +73,10 @@ export async function runRelease(): Promise<void> {
 
     // Step 6: Push all changes
     await executeCommand("git push --all", "Pushing changes to remote");
+    await executeCommand("git push --tags", "Pushing tags to remote");
 
     console.log("\n🎉 Release completed successfully!");
-    console.log("=".repeat(50));
+    console.log("=".repeat(60));
   } catch (error: unknown) {
     const errorMessage =
       error instanceof Error ? error.message : "Unknown error";

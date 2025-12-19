@@ -59,12 +59,12 @@ export async function showExportTemplates(): Promise<void> {
   console.log("📋 Export Templates:\n");
 
   console.log("JSON Format Template:");
-  console.log("=".repeat(50));
+  console.log("=".repeat(60));
   console.log(templates.json);
   console.log("");
 
   console.log("TXT Format Template:");
-  console.log("=".repeat(50));
+  console.log("=".repeat(60));
   console.log(templates.txt);
 }
 

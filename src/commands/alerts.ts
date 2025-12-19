@@ -133,7 +133,7 @@ export async function showAlertHistory(limit = 10): Promise<void> {
     const alerts = await alertSystem.getRecentAlerts(limit);
 
     console.log("📜 Recent Alert History:");
-    console.log("=".repeat(50));
+    console.log("=".repeat(60));
 
     if (alerts.length === 0) {
       console.log("No alerts found.");

@@ -44,7 +44,7 @@ export async function run() {
 
   const command = args[commandIndex];
 
-  console.log("=".repeat(50));
+  console.log("=".repeat(60));
 
   // Show help if no command provided or if help explicitly requested
   if (!command || command === "--help" || command === "-h") {
@@ -208,7 +208,7 @@ export async function run() {
 
   function showHelp() {
     showlogo();
-    console.log("=".repeat(50));
+    console.log("=".repeat(60));
     console.log(`
 Usage: npm-updater [--pm <package-manager>] <command>
 

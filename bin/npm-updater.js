@@ -84,7 +84,7 @@ var package_default;
 var init_package = __esm(() => {
   package_default = {
     name: "@involvex/npm-global-updater",
-    version: "0.1.1",
+    version: "0.1.2",
     description: "global npm package updater",
     license: "MIT",
     author: "involvex",
@@ -1079,11 +1079,11 @@ async function showExportTemplates() {
   console.log(`\uD83D\uDCCB Export Templates:
 `);
   console.log("JSON Format Template:");
-  console.log("=".repeat(50));
+  console.log("=".repeat(60));
   console.log(templates.json);
   console.log("");
   console.log("TXT Format Template:");
-  console.log("=".repeat(50));
+  console.log("=".repeat(60));
   console.log(templates.txt);
 }
 var export_default;
@@ -1767,7 +1767,7 @@ async function showAlertHistory(limit = 10) {
     await alertSystem.initialize();
     const alerts = await alertSystem.getRecentAlerts(limit);
     console.log("\uD83D\uDCDC Recent Alert History:");
-    console.log("=".repeat(50));
+    console.log("=".repeat(60));
     if (alerts.length === 0) {
       console.log("No alerts found.");
       return;
@@ -1893,15 +1893,15 @@ async function showabout() {
   showlogo();
   console.log("=== About this app ===");
   console.log("Name: " + package_default.name);
-  console.log("==================================================");
+  console.log("=".repeat(60));
   console.log("Repository: " + package_default.repository.url);
-  console.log("==================================================");
+  console.log("=".repeat(60));
   console.log("Description: " + package_default.description);
-  console.log("==================================================");
+  console.log("=".repeat(60));
   console.log("Version: " + package_default.version);
-  console.log("==================================================");
+  console.log("=".repeat(60));
   console.log("Author: " + package_default.author);
-  console.log("==================================================");
+  console.log("=".repeat(60));
 }
 var init_about = __esm(() => {
   init_package();
@@ -1926,8 +1926,12 @@ async function getLatestVersion() {
 async function notifyupdate() {
   const latestVersion = await getLatestVersion();
   const currentVersion = package_default.version;
-  if (latestVersion > currentVersion) {
-    console.log("A new version of npm-global-updater is available. Please update by running: npm install -g @involvex/npm-global-updater@latest");
+  if (currentVersion < latestVersion) {
+    console.log("=".repeat(60));
+    console.log(`	A new version of npm-global-updater is available.
+`, `	Please update by running:
+`, "\tnpm install -g @involvex/npm-global-updater@latest");
+    console.log("=".repeat(60));
     console.log("Do you want to update? (y/n)");
     process.stdin.setEncoding("utf8");
     process.stdin.on("data", (data) => {
@@ -1982,7 +1986,7 @@ async function run() {
     commandIndex = 0;
   }
   const command = args[commandIndex];
-  console.log("=".repeat(50));
+  console.log("=".repeat(60));
   if (!command || command === "--help" || command === "-h") {
     showHelp();
     return;
@@ -2113,7 +2117,7 @@ async function run() {
   }
   function showHelp() {
     showlogo();
-    console.log("=".repeat(50));
+    console.log("=".repeat(60));
     console.log(`
 Usage: npm-updater [--pm <package-manager>] <command>
 
