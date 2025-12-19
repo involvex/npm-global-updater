@@ -169,12 +169,7 @@ jobs:
         run: bun run typecheck
 
       - name: 🧪 Run tests (if available)
-        run: |
-          if [ -f "bun.test.ts" ] || [ -f "vitest.config.ts" ]; then
-            bun run test
-          else
-            echo "ℹ️  No tests found, skipping test execution"
-          fi
+        run: bun test
 
       - name: 🏗️ Build JavaScript bundle
         run: bun run build
@@ -217,6 +212,8 @@ jobs:
     if: needs.validate.outputs.should_release == 'true'
     timeout-minutes: 10
     environment: release
+    outputs:
+      new_version: ${{ steps.version_bump.outputs.new_version }}
     steps:
       - name: 📥 Download artifacts
         uses: actions/download-artifact@v4
@@ -229,12 +226,41 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
-      - name: Increase Version
-        run: npm version patch
+
+      - name: ⚙️ Configure Git identity
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          echo "✅ Git user configured for automated commits"
+
+      - name: 📈 Increase Version
+        run: |
+          echo "🔄 Determining version bump type..."
+
+          RELEASE_TYPE="${{ github.event.inputs.release_type }}"
+          if [ -z "$RELEASE_TYPE" ] || [ "$RELEASE_TYPE" = "auto" ]; then
+            RELEASE_TYPE="patch"
+            echo "ℹ️  Using default patch release"
+          fi
+
+          echo "📦 Running: npm version $RELEASE_TYPE"
+
+          # Run npm version with proper error handling
+          if npm version "$RELEASE_TYPE"; then
+            echo "✅ Version bumped successfully"
+            # Get the new version
+            NEW_VERSION=$(node -p "require('./package.json').version")
+            echo "📋 New version: $NEW_VERSION"
+            echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Failed to bump version"
+            exit 1
+          fi
+        id: version_bump
 
       - name: 🏷️ Create and push tag
         run: |
-          VERSION="${{ needs.validate.outputs.version }}"
+          VERSION="${{ steps.version_bump.outputs.new_version }}"
           TAG_NAME="v$VERSION"
 
           echo "🏷️  Creating tag: $TAG_NAME"
@@ -254,12 +280,12 @@ jobs:
       - name: 🚀 Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ needs.validate.outputs.version }}
-          name: Release v${{ needs.validate.outputs.version }}
+          tag_name: v${{ steps.version_bump.outputs.new_version }}
+          name: Release v${{ steps.version_bump.outputs.new_version }}
           body: ${{ needs.validate.outputs.release_notes }}
           body_path: release_notes.txt
           draft: ${{ github.event.inputs.create_draft }}
-          prerelease: ${{ contains(needs.validate.outputs.version, '-') }}
+          prerelease: ${{ contains(steps.version_bump.outputs.new_version, '-') }}
           make_latest: true
           generate_release_notes: true
           files: |
@@ -271,15 +297,15 @@ jobs:
 
       - name: 📊 Update release statistics
         run: |
-          VERSION="${{ needs.validate.outputs.version }}"
+          VERSION="${{ steps.version_bump.outputs.new_version }}"
           echo "📈 Release v$VERSION completed successfully"
           echo "🎯 Release URL: https://github.com/${{ github.repository }}/releases/tag/v$VERSION"
 
       - name: 🔔 Notify success (optional)
         if: success() && github.event.inputs.dry_run != 'true'
         run: |
-          echo "🎉 Release v${{ needs.validate.outputs.version }} completed successfully!"
-          echo "📦 Release URL: https://github.com/${{ github.repository }}/releases/tag/v${{ needs.validate.outputs.version }}"
+          echo "🎉 Release v${{ steps.version_bump.outputs.new_version }} completed successfully!"
+          echo "📦 Release URL: https://github.com/${{ github.repository }}/releases/tag/v${{ steps.version_bump.outputs.new_version }}"
 
   # Cleanup job for failed releases
   cleanup:
@@ -303,6 +329,6 @@ jobs:
 
       - name: 🔔 Notify failure
         run: |
-          echo "❌ Release v${{ needs.validate.outputs.version }} failed"
+          echo "❌ Release failed"
           echo "🚨 Please check the workflow logs for troubleshooting"
           echo "🔗 Workflow URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
