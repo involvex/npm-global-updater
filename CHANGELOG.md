@@ -2,6 +2,23 @@
 
 [compare changes](https://github.com/involvex/npm-global-updater/compare/v0.1.14...main)
 
+### 💅 Refactors
+
+- **release:** Simplify commit analysis logic in release script ([745fcf2](https://github.com/involvex/npm-global-updater/commit/745fcf2))
+
+### 🏡 Chore
+
+- **release:** {version} ([436c89c](https://github.com/involvex/npm-global-updater/commit/436c89c))
+- Update .gitignore with EXAMPLES.md and RELEASE_MANAGER.md ([201880a](https://github.com/involvex/npm-global-updater/commit/201880a))
+
+### ❤️ Contributors
+
+- InvolveX <lukaswill97@gmail.com>
+
+## v0.1.14...main
+
+[compare changes](https://github.com/involvex/npm-global-updater/compare/v0.1.14...main)
+
 ### 🏡 Chore
 
 - **release:** {version} ([3731135](https://github.com/involvex/npm-global-updater/commit/3731135))
