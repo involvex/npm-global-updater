@@ -9,8 +9,9 @@
     "allowJs": true,
     "rootDir": "./",
     "outDir": "bin/",
-    "rootDirs": ["./"],
-
+    "rootDirs": ["./", "src/"],
+    "baseUrl": ".",
+    "esModuleInterop": true,
     // Bundler mode
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
