@@ -8,12 +8,14 @@ A powerful command-line tool for managing and updating globally installed npm pa
 
 ## ✨ Features
 
-- **📦 List Global Packages**: View all globally installed npm packages
+- **📦 List Global Packages**: View all globally installed packages from any package manager
 - **🔄 Update Individual Packages**: Update specific packages to their latest versions
 - **🚀 Bulk Update All**: Update all global packages at once
-- **🔍 Check Latest Version**: View the latest version of any npm package
+- **🔍 Check Latest Version**: View the latest version of any package
 - **🌙 Special Version Support**: Automatically detects and updates nightly, dev, and preview versions
 - **📊 Version Comparison**: Compares current versions with latest available versions
+- **⚡ Multi-Package Manager Support**: Works with npm, pnpm, Yarn, and Bun
+- **🎯 Package Manager Selection**: Use `--pm` flag to specify your preferred package manager
 - **⚡ Fast & Efficient**: Built with Bun for optimal performance
 - **🛡️ Type Safe**: Full TypeScript support with strict type checking
 - **🎯 Error Handling**: Robust error handling with clear feedback
@@ -83,16 +85,52 @@ npm-updater version
 npm-updater help
 ```
 
-## 📖 Command Reference
-
-### `npm-updater ls` - List Global Packages
-
-Lists all globally installed npm packages with their current versions.
+#### Multi-Package Manager Support
 
 ```bash
+# Using npm (default)
 npm-updater ls
+npm-updater update prettier
+npm-updater updateall
+
+# Using pnpm
+npm-updater --pm pnpm ls
+npm-updater --pm pnpm update prettier
+npm-updater --pm pnpm updateall
+
+# Using Yarn
+npm-updater --pm yarn ls
+npm-updater --pm yarn update prettier
+npm-updater --pm yarn updateall
+
+# Using Bun
+npm-updater --pm bun ls
+npm-updater --pm bun update prettier
+npm-updater --pm bun updateall
+```
+
+#### NPX Usage
+
+```bash
+# Install and run via npx
+npx @involvex/npm-global-updater@latest ls
+npx @involvex/npm-global-updater@latest --pm pnpm update prettier
+npx @involvex/npm-global-updater@latest --pm yarn updateall
+```
+
+## 📖 Command Reference
+
+### `npm-updater [--pm <package-manager>] ls` - List Global Packages
+
+Lists all globally installed packages with their current versions using the specified package manager.
+
+```bash
+npm-updater ls                    # Use npm (default)
+npm-updater --pm pnpm ls          # Use pnpm
+npm-updater --pm yarn ls          # Use Yarn
+npm-updater --pm bun ls           # Use Bun
 # or
-npm-updater list
+npm-updater list                  # Use npm (default)
 ```
 
 **Output:**
@@ -105,12 +143,15 @@ npm-updater list
 └── ...
 ```
 
-### `npm-updater update <package-name>` - Update Individual Package
+### `npm-updater [--pm <package-manager>] update <package-name>` - Update Individual Package
 
-Updates a specific package to its latest version.
+Updates a specific package to its latest version using the specified package manager.
 
 ```bash
-npm-updater update prettier
+npm-updater update prettier                    # Use npm (default)
+npm-updater --pm pnpm update prettier          # Use pnpm
+npm-updater --pm yarn update prettier          # Use Yarn
+npm-updater --pm bun update prettier           # Use Bun
 ```
 
 **Features:**
@@ -127,12 +168,15 @@ changed 1 package in 1s
 prettier has been updated successfully!
 ```
 
-### `npm-updater latestversion <package-name>` - Check Latest Version
+### `npm-updater [--pm <package-manager>] latestversion <package-name>` - Check Latest Version
 
-Displays the latest available version of any npm package.
+Displays the latest available version of any package using the specified package manager.
 
 ```bash
-npm-updater latestversion prettier
+npm-updater latestversion prettier                 # Use npm (default)
+npm-updater --pm pnpm latestversion prettier       # Use pnpm
+npm-updater --pm yarn latestversion prettier       # Use Yarn
+npm-updater --pm bun latestversion prettier        # Use Bun
 ```
 
 **Features:**
@@ -148,12 +192,15 @@ Fetching latest version of prettier...
 Latest version of prettier: 3.1.1
 ```
 
-### `npm-updater updateall` - Update All Packages
+### `npm-updater [--pm <package-manager>] updateall` - Update All Packages
 
-Scans all global packages and updates them to their latest versions.
+Scans all global packages and updates them to their latest versions using the specified package manager.
 
 ```bash
-npm-updater updateall
+npm-updater updateall                          # Use npm (default)
+npm-updater --pm pnpm updateall                # Use pnpm
+npm-updater --pm yarn updateall                # Use Yarn
+npm-updater --pm bun updateall                 # Use Bun
 ```
 
 **Features:**

@@ -1,18 +1,29 @@
 import { exec } from "child_process";
+import {
+  getPackageManager,
+  getPackageManagerConfig,
+} from "../utils/packageManager";
 
-export async function runupdate(packageName?: string) {
+export async function runupdate(packageName?: string, packageManager?: string) {
   // Get package name from command line argument or prompt user
   const name = packageName || process.argv[3]; // args[0] = command, args[1] = "update", args[2] = packageName
 
   if (!name) {
     console.log("Error: Please provide a package name.");
-    console.log("Usage: npm-updater update <package-name>");
+    console.log(
+      "Usage: npm-updater [--pm <package-manager>] update <package-name>",
+    );
     return;
   }
 
-  console.log(`Updating ${name}...`);
+  const pm = getPackageManager(packageManager);
+  const config = getPackageManagerConfig(pm);
 
-  exec(`npm install -g ${name}@latest`, (error, stdout, stderr) => {
+  console.log(`Updating ${name} using ${config.displayName}...`);
+
+  const installCommand = config.installCommand(name);
+
+  exec(installCommand, (error, stdout, stderr) => {
     if (error) {
       console.log(`error: ${error.message}`);
       return;
@@ -22,7 +33,9 @@ export async function runupdate(packageName?: string) {
       return;
     }
     console.log(stdout);
-    console.log(`${name} has been updated successfully!`);
+    console.log(
+      `${name} has been updated successfully using ${config.displayName}!`,
+    );
   });
 }
 

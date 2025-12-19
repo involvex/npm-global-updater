@@ -1,11 +1,20 @@
 import { exec } from "child_process";
+import {
+  getPackageManager,
+  getPackageManagerConfig,
+} from "../utils/packageManager";
 
-export async function runupdateall() {
-  console.log("Checking for globally installed npm packages...");
+export async function runupdateall(packageManager?: string) {
+  const pm = getPackageManager(packageManager);
+  const config = getPackageManagerConfig(pm);
+
+  console.log(
+    `Checking for globally installed packages using ${config.displayName}...`,
+  );
   console.log("This may take a moment...\n");
 
   // First, get the list of global packages
-  exec("npm ls -g --json", (error, stdout) => {
+  exec(config.listJsonCommand, (error, stdout) => {
     if (error) {
       console.log(`Error getting package list: ${error.message}`);
       return;
@@ -45,7 +54,7 @@ export async function runupdateall() {
 
       // Check each package for updates
       packages.forEach(pkg => {
-        const command = `npm view ${pkg.name} version --json`;
+        const command = config.viewCommand(pkg.name);
 
         exec(command, (viewError, viewStdout) => {
           checkCount++;
@@ -67,7 +76,7 @@ export async function runupdateall() {
                 // Check for special versions (nightly, dev, preview) if current version matches latest
                 const specialVersions = ["nightly", "dev", "preview"];
                 specialVersions.forEach(specType => {
-                  const specCommand = `npm view ${pkg.name}@${specType} version --json`;
+                  const specCommand = config.viewCommand(pkg.name, specType);
                   exec(specCommand, (specError, specStdout) => {
                     if (!specError && specStdout.trim()) {
                       try {
@@ -118,10 +127,13 @@ export async function runupdateall() {
               const pkgToUpdate = packagesToUpdate[updateIndex];
               if (pkgToUpdate) {
                 console.log(
-                  `Updating ${pkgToUpdate.name} to ${pkgToUpdate.latest}...`,
+                  `Updating ${pkgToUpdate.name} to ${pkgToUpdate.latest} using ${config.displayName}...`,
                 );
 
-                const updateCommand = `npm install -g ${pkgToUpdate.name}@${pkgToUpdate.latest}`;
+                const updateCommand = config.installCommand(
+                  pkgToUpdate.name,
+                  pkgToUpdate.latest,
+                );
 
                 exec(updateCommand, updateError => {
                   if (updateError) {
@@ -129,7 +141,9 @@ export async function runupdateall() {
                       `❌ Failed to update ${pkgToUpdate.name}: ${updateError.message}`,
                     );
                   } else {
-                    console.log(`✅ ${pkgToUpdate.name} updated successfully!`);
+                    console.log(
+                      `✅ ${pkgToUpdate.name} updated successfully using ${config.displayName}!`,
+                    );
                   }
 
                   updateIndex++;
@@ -146,7 +160,7 @@ export async function runupdateall() {
         });
       });
     } catch (parseError) {
-      console.log(`Error parsing npm output: ${parseError}`);
+      console.log(`Error parsing ${config.displayName} output: ${parseError}`);
     }
   });
 }

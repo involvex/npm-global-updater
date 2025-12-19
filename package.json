@@ -5,6 +5,7 @@
   "license": "MIT",
   "author": "involvex",
   "main": "src/index.js",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/involvex/npm-global-updater"

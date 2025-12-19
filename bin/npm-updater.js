@@ -10,14 +10,77 @@ var __export = (target, all) => {
 };
 var __esm = (fn, res) => () => (fn && (res = fn(fn = 0)), res);
 
+// src/utils/packageManager.ts
+function validatePackageManager(pm) {
+  if (!SUPPORTED_PACKAGE_MANAGERS.includes(pm)) {
+    throw new Error(`Unsupported package manager: ${pm}. Supported managers: ${SUPPORTED_PACKAGE_MANAGERS.join(", ")}`);
+  }
+  return pm;
+}
+function getPackageManager(pm) {
+  return validatePackageManager(pm || "npm");
+}
+function getPackageManagerConfig(pm) {
+  return PACKAGE_MANAGERS[pm];
+}
+function formatPackageManagerList() {
+  return SUPPORTED_PACKAGE_MANAGERS.join(", ");
+}
+var PACKAGE_MANAGERS, SUPPORTED_PACKAGE_MANAGERS;
+var init_packageManager = __esm(() => {
+  PACKAGE_MANAGERS = {
+    npm: {
+      name: "npm",
+      displayName: "npm",
+      listCommand: "npm list -g",
+      listJsonCommand: "npm ls -g --json",
+      installCommand: (packageName, version) => `npm install -g ${version ? `${packageName}@${version}` : `${packageName}@latest`}`,
+      viewCommand: (packageName, version) => `npm view ${packageName}${version ? `@${version}` : ""} version`
+    },
+    pnpm: {
+      name: "pnpm",
+      displayName: "pnpm",
+      listCommand: "pnpm list -g",
+      listJsonCommand: "pnpm list -g --json",
+      installCommand: (packageName, version) => `pnpm add -g ${version ? `${packageName}@${version}` : `${packageName}@latest`}`,
+      viewCommand: (packageName, version) => `pnpm view ${packageName}${version ? `@${version}` : ""} version`
+    },
+    yarn: {
+      name: "yarn",
+      displayName: "Yarn",
+      listCommand: "yarn global list",
+      listJsonCommand: "yarn global list --json",
+      installCommand: (packageName, version) => `yarn global add ${version ? `${packageName}@${version}` : `${packageName}@latest`}`,
+      viewCommand: (packageName, version) => `yarn info ${packageName}${version ? `@${version}` : ""} version`
+    },
+    bun: {
+      name: "bun",
+      displayName: "Bun",
+      listCommand: "bun list -g",
+      listJsonCommand: "bun list -g --json",
+      installCommand: (packageName, version) => `bun add -g ${version ? `${packageName}@${version}` : `${packageName}@latest`}`,
+      viewCommand: (packageName, version) => `bun info ${packageName}${version ? `@${version}` : ""} version`
+    }
+  };
+  SUPPORTED_PACKAGE_MANAGERS = [
+    "npm",
+    "pnpm",
+    "yarn",
+    "bun"
+  ];
+});
+
 // src/commands/ls.ts
 var exports_ls = {};
 __export(exports_ls, {
   runls: () => runls
 });
 import { exec } from "child_process";
-async function runls() {
-  exec("npm list -g", (error, stdout, stderr) => {
+async function runls(packageManager) {
+  const pm = getPackageManager(packageManager);
+  const config = getPackageManagerConfig(pm);
+  console.log(`Listing global packages using ${config.displayName}...`);
+  exec(config.listCommand, (error, stdout, stderr) => {
     if (error) {
       console.log(`error: ${error.message}`);
       return;
@@ -29,7 +92,9 @@ async function runls() {
     console.log(stdout);
   });
 }
-var init_ls = () => {};
+var init_ls = __esm(() => {
+  init_packageManager();
+});
 
 // src/commands/updateall.ts
 var exports_updateall = {};
@@ -38,11 +103,13 @@ __export(exports_updateall, {
   default: () => updateall_default
 });
 import { exec as exec2 } from "child_process";
-async function runupdateall() {
-  console.log("Checking for globally installed npm packages...");
+async function runupdateall(packageManager) {
+  const pm = getPackageManager(packageManager);
+  const config = getPackageManagerConfig(pm);
+  console.log(`Checking for globally installed packages using ${config.displayName}...`);
   console.log(`This may take a moment...
 `);
-  exec2("npm ls -g --json", (error, stdout) => {
+  exec2(config.listJsonCommand, (error, stdout) => {
     if (error) {
       console.log(`Error getting package list: ${error.message}`);
       return;
@@ -70,7 +137,7 @@ async function runupdateall() {
       let checkCount = 0;
       const packagesToUpdate = [];
       packages.forEach((pkg) => {
-        const command = `npm view ${pkg.name} version --json`;
+        const command = config.viewCommand(pkg.name);
         exec2(command, (viewError, viewStdout) => {
           checkCount++;
           if (viewError) {
@@ -88,7 +155,7 @@ async function runupdateall() {
               } else {
                 const specialVersions = ["nightly", "dev", "preview"];
                 specialVersions.forEach((specType) => {
-                  const specCommand = `npm view ${pkg.name}@${specType} version --json`;
+                  const specCommand = config.viewCommand(pkg.name, specType);
                   exec2(specCommand, (specError, specStdout) => {
                     if (!specError && specStdout.trim()) {
                       try {
@@ -119,13 +186,13 @@ async function runupdateall() {
               }
               const pkgToUpdate = packagesToUpdate[updateIndex];
               if (pkgToUpdate) {
-                console.log(`Updating ${pkgToUpdate.name} to ${pkgToUpdate.latest}...`);
-                const updateCommand = `npm install -g ${pkgToUpdate.name}@${pkgToUpdate.latest}`;
+                console.log(`Updating ${pkgToUpdate.name} to ${pkgToUpdate.latest} using ${config.displayName}...`);
+                const updateCommand = config.installCommand(pkgToUpdate.name, pkgToUpdate.latest);
                 exec2(updateCommand, (updateError) => {
                   if (updateError) {
                     console.log(`❌ Failed to update ${pkgToUpdate.name}: ${updateError.message}`);
                   } else {
-                    console.log(`✅ ${pkgToUpdate.name} updated successfully!`);
+                    console.log(`✅ ${pkgToUpdate.name} updated successfully using ${config.displayName}!`);
                   }
                   updateIndex++;
                   updateNext();
@@ -150,12 +217,13 @@ Found ${packagesToUpdate.length} packages with updates available.`);
         });
       });
     } catch (parseError) {
-      console.log(`Error parsing npm output: ${parseError}`);
+      console.log(`Error parsing ${config.displayName} output: ${parseError}`);
     }
   });
 }
 var updateall_default;
 var init_updateall = __esm(() => {
+  init_packageManager();
   updateall_default = runupdateall;
 });
 
@@ -166,15 +234,18 @@ __export(exports_update, {
   default: () => update_default
 });
 import { exec as exec3 } from "child_process";
-async function runupdate(packageName) {
+async function runupdate(packageName, packageManager) {
   const name = packageName || process.argv[3];
   if (!name) {
     console.log("Error: Please provide a package name.");
-    console.log("Usage: npm-updater update <package-name>");
+    console.log("Usage: npm-updater [--pm <package-manager>] update <package-name>");
     return;
   }
-  console.log(`Updating ${name}...`);
-  exec3(`npm install -g ${name}@latest`, (error, stdout, stderr) => {
+  const pm = getPackageManager(packageManager);
+  const config = getPackageManagerConfig(pm);
+  console.log(`Updating ${name} using ${config.displayName}...`);
+  const installCommand = config.installCommand(name);
+  exec3(installCommand, (error, stdout, stderr) => {
     if (error) {
       console.log(`error: ${error.message}`);
       return;
@@ -184,11 +255,12 @@ async function runupdate(packageName) {
       return;
     }
     console.log(stdout);
-    console.log(`${name} has been updated successfully!`);
+    console.log(`${name} has been updated successfully using ${config.displayName}!`);
   });
 }
 var update_default;
 var init_update = __esm(() => {
+  init_packageManager();
   update_default = runupdate;
 });
 
@@ -198,15 +270,18 @@ __export(exports_latestversion, {
   showlatestversion: () => showlatestversion
 });
 import { exec as exec4 } from "child_process";
-async function showlatestversion(packageName) {
+async function showlatestversion(packageName, packageManager) {
   const name = packageName || process.argv[3];
   if (!name) {
     console.log("Error: Please provide a package name.");
-    console.log("Usage: npm-updater latestversion <package-name>");
+    console.log("Usage: npm-updater [--pm <package-manager>] latestversion <package-name>");
     return;
   }
-  console.log(`Fetching latest version of ${name}...`);
-  exec4(`npm view ${name} version`, (error, stdout, stderr) => {
+  const pm = getPackageManager(packageManager);
+  const config = getPackageManagerConfig(pm);
+  console.log(`Fetching latest version of ${name} using ${config.displayName}...`);
+  const viewCommand = config.viewCommand(name);
+  exec4(viewCommand, (error, stdout, stderr) => {
     if (error) {
       console.log(`error: ${error.message}`);
       return;
@@ -215,10 +290,12 @@ async function showlatestversion(packageName) {
       console.log(`stderr: ${stderr}`);
       return;
     }
-    console.log(`Latest version of ${name}: ${stdout}`);
+    console.log(`Latest version of ${name}: ${stdout.trim()}`);
   });
 }
-var init_latestversion = () => {};
+var init_latestversion = __esm(() => {
+  init_packageManager();
+});
 
 // package.json
 var package_default;
@@ -230,6 +307,7 @@ var init_package = __esm(() => {
     license: "MIT",
     author: "involvex",
     main: "src/index.js",
+    type: "module",
     repository: {
       type: "git",
       url: "https://github.com/involvex/npm-global-updater"
@@ -302,9 +380,30 @@ var init_about = __esm(() => {
 });
 
 // src/index.ts
+init_packageManager();
 async function run() {
   const args = process.argv.slice(2);
-  const command = args[0];
+  let packageManager;
+  let commandIndex = 0;
+  const pmIndex = args.indexOf("--pm");
+  if (pmIndex !== -1) {
+    packageManager = args[pmIndex + 1];
+    if (!packageManager) {
+      console.log("Error: --pm flag requires a value");
+      console.log(`Supported package managers: ${formatPackageManagerList()}`);
+      return;
+    }
+    try {
+      validatePackageManager(packageManager);
+    } catch (error) {
+      console.log(`Error: ${error instanceof Error ? error.message : "Invalid package manager"}`);
+      console.log(`Supported package managers: ${formatPackageManagerList()}`);
+      return;
+    }
+    args.splice(pmIndex, 2);
+    commandIndex = 0;
+  }
+  const command = args[commandIndex];
   console.log("=".repeat(50));
   if (!command || command === "--help" || command === "-h") {
     showHelp();
@@ -315,13 +414,13 @@ async function run() {
     case "list":
       {
         const { runls: runls2 } = await Promise.resolve().then(() => (init_ls(), exports_ls));
-        await runls2();
+        await runls2(packageManager);
       }
       break;
     case "updateall":
       {
         const { runupdateall: runupdateall2 } = await Promise.resolve().then(() => (init_updateall(), exports_updateall));
-        await runupdateall2();
+        await runupdateall2(packageManager);
       }
       break;
     case "update":
@@ -330,8 +429,8 @@ async function run() {
     case "--update":
       {
         const { runupdate: runupdate2 } = await Promise.resolve().then(() => (init_update(), exports_update));
-        const packageName = args[1];
-        await runupdate2(packageName);
+        const packageName = args[commandIndex + 1];
+        await runupdate2(packageName, packageManager);
       }
       break;
     case "help": {
@@ -341,8 +440,8 @@ async function run() {
     case "latestversion":
       {
         const { showlatestversion: showlatestversion2 } = await Promise.resolve().then(() => (init_latestversion(), exports_latestversion));
-        const packageName = args[1];
-        await showlatestversion2(packageName);
+        const packageName = args[commandIndex + 1];
+        await showlatestversion2(packageName, packageManager);
       }
       break;
     case "version":
@@ -360,7 +459,13 @@ async function run() {
   }
   function showHelp() {
     console.log(`
-Usage: npm-updater <command>
+Usage: npm-updater [--pm <package-manager>] <command>
+
+Package Managers:
+  --pm npm                Use npm (default)
+  --pm pnpm               Use pnpm
+  --pm yarn               Use Yarn
+  --pm bun                Use Bun
 
 Commands:
   version(-v, --version)        Show npm-updater version
@@ -373,12 +478,18 @@ Commands:
 
 Options:
   --help, -h                    Show this help message
+  --pm <package-manager>        Specify package manager (npm, pnpm, yarn, bun)
   --update, -u                  Update a package
   --version, -v                 Show npm-updater version
 
+Examples:
+  npm-updater ls                    # List packages using npm
+  npm-updater --pm pnpm ls          # List packages using pnpm
+  npm-updater --pm yarn updateall   # Update all packages using Yarn
+  npm-updater update prettier       # Update prettier using npm (default)
 
 For more information, visit: https://github.com/involvex/npm-global-updater
-      `);
+    `);
   }
 }
 run();

@@ -9,7 +9,10 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "cSpell.words": [
     "bunfig",
+    "dotenv",
+    "eslintcache",
     "latestversion",
+    "prebuild",
     "runls",
     "runupdate",
     "runupdateall",
