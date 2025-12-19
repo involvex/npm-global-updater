@@ -233,7 +233,13 @@ jobs:
           git config --global user.name "github-actions[bot]"
           echo "✅ Git user configured for automated commits"
       - name: install bun global
-        run: npm i -g bun    
+        run: |
+            npm i -g bun
+            bun i
+            bun add -g -g prettier eslint tsc
+            npm i
+            npm i -g prettier eslint tsc
+
 
       - name: 📈 Increase Version
         run: |
