@@ -4,14 +4,14 @@
   "description": "global npm package updater",
   "license": "MIT",
   "author": "involvex",
-  "main": "src/index.ts",
+  "main": "bin/npm-updater.js",
   "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/involvex/npm-global-updater"
   },
   "bin": {
-    "npm-updater": "src/index.ts"
+    "npm-updater": "bin/npm-updater.js"
   },
   "scripts": {
     "lint": "eslint src ",

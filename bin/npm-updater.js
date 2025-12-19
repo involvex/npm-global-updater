@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 var __defProp = Object.defineProperty;
 var __export = (target, all) => {
   for (var name in all)
@@ -302,18 +303,18 @@ var package_default;
 var init_package = __esm(() => {
   package_default = {
     name: "@involvex/npm-global-updater",
-    version: "0.0.9",
+    version: "0.0.10",
     description: "global npm package updater",
     license: "MIT",
     author: "involvex",
-    main: "src/index.js",
+    main: "bin/npm-updater.js",
     type: "module",
     repository: {
       type: "git",
       url: "https://github.com/involvex/npm-global-updater"
     },
     bin: {
-      "npm-updater": "src/index.ts"
+      "npm-updater": "bin/npm-updater.js"
     },
     scripts: {
       lint: "eslint src ",
