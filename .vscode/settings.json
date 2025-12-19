@@ -20,6 +20,7 @@
     "runupdate",
     "runupdateall",
     "showabout",
+    "showconfiguration",
     "showlatestversion",
     "showversion",
     "updateall"

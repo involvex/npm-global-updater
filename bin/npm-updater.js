@@ -1,5 +1,21 @@
 #!/usr/bin/env node
+var __create = Object.create;
+var __getProtoOf = Object.getPrototypeOf;
 var __defProp = Object.defineProperty;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __toESM = (mod, isNodeMode, target) => {
+  target = mod != null ? __create(__getProtoOf(mod)) : {};
+  const to = isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target;
+  for (let key of __getOwnPropNames(mod))
+    if (!__hasOwnProp.call(to, key))
+      __defProp(to, key, {
+        get: () => mod[key],
+        enumerable: true
+      });
+  return to;
+};
+var __commonJS = (cb, mod) => () => (mod || cb((mod = { exports: {} }).exports, mod), mod.exports);
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, {
@@ -78,6 +94,13 @@ function showlogo() {
         ░░█░░█░█░▀▄▀░█░█░█░░░▀▄▀░█▀▀░▄▀▄
         ░▀▀▀░▀░▀░░▀░░▀▀▀░▀▀▀░░▀░░▀▀▀░▀░▀`);
 }
+
+// node_modules/console-clear/index.js
+var require_console_clear = __commonJS((exports, module) => {
+  module.exports = function(isSoft) {
+    process.stdout.write(isSoft ? "\x1B[H\x1B[2J" : "\x1B[2J\x1B[3J\x1B[H\x1Bc");
+  };
+});
 
 // src/commands/ls.ts
 var exports_ls = {};
@@ -337,6 +360,12 @@ class ConfigManager {
         methods: ["desktop"],
         silentMode: false
       },
+      backups: {
+        enabled: false,
+        interval: { value: 24, unit: "hours" },
+        retentionDays: 7,
+        location: join2(homedir(), ".npm-updater", "Backups")
+      },
       export: {
         defaultFormat: "txt",
         defaultDirectory: join2(homedir(), "Downloads"),
@@ -460,7 +489,10 @@ class ConfigManager {
     await fs.writeFile(alertsFile, JSON.stringify(filteredAlerts, null, 2));
   }
 }
-var init_configManager = () => {};
+var configManager_default;
+var init_configManager = __esm(() => {
+  configManager_default = ConfigManager;
+});
 
 // src/database/packageTracker.ts
 import { exec as exec5 } from "child_process";
@@ -1771,6 +1803,420 @@ var init_latestversion = __esm(() => {
   init_packageManager();
 });
 
+// src/commands/config.ts
+var exports_config = {};
+__export(exports_config, {
+  updatepackagemanagerconfig: () => updatepackagemanagerconfig,
+  updategeneralconfig: () => updategeneralconfig,
+  updatebackupconfig: () => updatebackupconfig,
+  updatealertconfig: () => updatealertconfig,
+  showpackagemanagerconfig: () => showpackagemanagerconfig,
+  showmenu: () => showmenu,
+  showhelp: () => showhelp,
+  showgeneralconfig: () => showgeneralconfig,
+  showconfiguration: () => showconfiguration,
+  showbackupconfig: () => showbackupconfig,
+  showalertconfig: () => showalertconfig
+});
+import { exec as exec8 } from "child_process";
+async function showconfiguration() {
+  import_console_clear.default();
+  console.log("Showing configuration...");
+  console.log("Type 'generalconfig' (1) to show general config.");
+  console.log("Type 'packagemanagerconfig' (2) to show package manager config.");
+  console.log("Type 'alertconfig' (3) to show alert config.");
+  console.log("Type 'backupconfig' (4) to show backup config.");
+  console.log("Type 'back' (9) to go back to the main menu.");
+  console.log("Type 'help' (?) to show the available commands.");
+  console.log("Type 'exit' (0) or press ctrl+c to quit.");
+  await process.stdin.on("data", (chunk) => {
+    switch (chunk.toString().trim()) {
+      case "generalconfig":
+      case "1":
+        showgeneralconfig();
+        break;
+      case "packagemanagerconfig":
+      case "2":
+        showpackagemanagerconfig();
+        break;
+      case "alertconfig":
+      case "3":
+        showalertconfig();
+        break;
+      case "backupconfig":
+      case "4":
+        showbackupconfig();
+        break;
+      case "help":
+      case "?":
+        showconfigurationhelp();
+        break;
+      case "back":
+      case "9":
+        showmenu();
+        break;
+      case "exit":
+        process.exit(0);
+        break;
+      default:
+        console.log("Type 'exit' or press ctrl+c to quit.");
+    }
+    function showconfigurationhelp() {
+      import_console_clear.default();
+      console.log("Showing configuration...");
+      console.log("Type 'generalconfig' (1) to show general config.");
+      console.log("Type 'packagemanagerconfig' (2) to show package manager config.");
+      console.log("Type 'alertconfig' (3) to show alert config.");
+      console.log("Type 'backupconfig' (4) to show backup config.");
+      console.log("Type 'help' (?) to show the available commands.");
+      console.log("Type 'exit' (0) or press ctrl+c to quit.");
+      console.log("Type 'back' (9) to go back to the main menu.");
+    }
+  });
+}
+async function showgeneralconfig() {
+  console.log("Showing general config...");
+  console.log(`  Log Level: ${config.general.logLevel}`);
+  console.log(`  Auto Backup: ${config.general.autoBackup}`);
+  console.log(`  Max Concurrent Updates: ${config.general.maxConcurrentUpdates}`);
+}
+async function showpackagemanagerconfig() {
+  console.log("Showing package manager config...");
+  console.log(`  Default Package Manager: ${config.packageManagers.default}`);
+  console.log(`  Enabled Package Managers: ${config.packageManagers.enabled.join(", ")}`);
+}
+async function showalertconfig() {
+  console.log("Showing alert config...");
+  console.log(`  Enabled: ${config.alerts.enabled}`);
+  console.log(`  Interval: ${config.alerts.interval.value} ${config.alerts.interval.unit}`);
+  console.log(`  Methods: ${config.alerts.methods.join(", ")}`);
+  console.log(`  Email: ${config.alerts.email ? "Configured" : "Not Configured"}`);
+  console.log(`  Quiet Hours: ${config.alerts.quietHours ? "Configured" : "Not Configured"}`);
+  console.log(`  Silent Mode: ${config.alerts.silentMode}`);
+}
+async function showbackupconfig() {
+  console.log("Showing backup config...");
+  console.log(`  Enabled: ${config.backups.enabled}`);
+  console.log(`  Interval: ${config.backups.interval.value} ${config.backups.interval.unit}`);
+  console.log(`  Retention: ${config.backups.retentionDays} days`);
+  console.log(`  Location: ${config.backups.location}`);
+}
+async function updategeneralconfig() {
+  console.log("Updating general config...");
+  console.log("Type 'exit' or press ctrl+c to quit.");
+  await process.stdin.on("data", async (chunk) => {
+    switch (chunk.toString().trim()) {
+      case "loglevel":
+        console.log("Type the new log level (debug, info, warn, error, fatal):");
+        await process.stdin.on("data", (chunk2) => {
+          switch (chunk2.toString().trim()) {
+            case "debug":
+              config.general.logLevel = "debug";
+              break;
+            case "info":
+              config.general.logLevel = "info";
+              break;
+            case "warn":
+              config.general.logLevel = "warn";
+              break;
+            case "error":
+              config.general.logLevel = "error";
+              console.log(`Log level updated to ${config.general.logLevel}`);
+              break;
+            default:
+              console.log("Invalid log level.");
+              break;
+          }
+        });
+        break;
+      case "autobackup":
+        console.log("Type 'true' or 'false' to enable or disable auto backup:");
+        await process.stdin.on("data", (chunk2) => {
+          switch (chunk2.toString().trim()) {
+            case "true":
+            case "false":
+              config.general.autoBackup = chunk2.toString().trim() === "true";
+              console.log(`Auto backup updated to ${config.general.autoBackup}`);
+              break;
+            default:
+              console.log("Invalid input. Type 'true' or 'false'.");
+              break;
+          }
+        });
+        break;
+      case "maxconcurrentupdates":
+        console.log("Type the new max concurrent updates:");
+        await process.stdin.on("data", (chunk2) => {
+          const maxConcurrentUpdates = parseInt(chunk2.toString().trim());
+          if (isNaN(maxConcurrentUpdates)) {
+            console.log("Invalid input. Type a number.");
+          } else {
+            config.general.maxConcurrentUpdates = maxConcurrentUpdates;
+            console.log(`Max concurrent updates updated to ${config.general.maxConcurrentUpdates}`);
+          }
+        });
+        break;
+      case "exit":
+        process.exit(0);
+        break;
+      default:
+        console.log("Type 'exit' or press ctrl+c to quit.");
+        console.log("Type 'loglevel' to update the log level.");
+        console.log("Type 'autobackup' to update the auto backup setting.");
+        console.log("Type 'maxconcurrentupdates' to update the max concurrent updates.");
+        break;
+    }
+  });
+}
+async function updatepackagemanagerconfig() {
+  console.log("Updating package manager config...");
+  console.log("Type 'exit' or press ctrl+c to quit.");
+  await process.stdin.on("data", async (chunk) => {
+    switch (chunk.toString().trim()) {
+      case "default":
+        console.log("Type the new default package manager:");
+        await process.stdin.on("data", (chunk2) => {
+          const defaultPackageManager = chunk2.toString().trim();
+          if (config.packageManagers.enabled.includes(defaultPackageManager) || defaultPackageManager === "" || defaultPackageManager === "npm" || defaultPackageManager === "pnpm" || defaultPackageManager === "yarn" || defaultPackageManager === "bun") {
+            if (defaultPackageManager === "") {
+              defaultPackageManager.trim();
+            } else if (defaultPackageManager === "npm") {
+              config.packageManagers.default = "npm";
+            } else if (defaultPackageManager === "pnpm") {
+              config.packageManagers.default = "pnpm";
+            } else if (defaultPackageManager === "yarn") {
+              config.packageManagers.default = "yarn";
+            } else if (defaultPackageManager === "bun") {
+              config.packageManagers.default = "bun";
+            } else {
+              console.error("Invalid package manager.");
+            }
+            console.log(`Default package manager updated to ${config.packageManagers.default}`);
+          } else {
+            console.log("Invalid package manager.");
+          }
+        });
+        break;
+      case "enabled":
+        console.log("Type the new enabled package managers (comma separated):");
+        await process.stdin.on("data", (chunk2) => {
+          const enabledPackageManagers = chunk2.toString().trim().split(",");
+          if (enabledPackageManagers.every((pm) => config.packageManagers.enabled.includes(pm.trim()))) {
+            config.packageManagers.enabled = enabledPackageManagers.map((pm) => pm.trim());
+            console.log(`Enabled package managers updated to ${config.packageManagers.enabled.join(", ")}`);
+          } else {
+            console.log("Invalid package managers.");
+          }
+        });
+        break;
+      case "exit":
+        process.exit(0);
+        break;
+      default:
+        console.log("Type 'exit' or press ctrl+c to quit.");
+        console.log("Type 'default' to update the default package manager.");
+        console.log("Type 'enabled' to update the enabled package managers.");
+        break;
+    }
+  });
+}
+async function updatealertconfig() {
+  console.log("Updating alert config...");
+  console.log("Type 'exit' or press ctrl+c to quit.");
+  await process.stdin.on("data", async (chunk) => {
+    switch (chunk.toString().trim()) {
+      case "exit":
+        process.exit(0);
+        break;
+      case "enabled":
+        console.log("Type 'true' or 'false' to enable or disable alerts:");
+        await process.stdin.on("data", (chunk2) => {
+          switch (chunk2.toString().trim()) {
+            case "true":
+            case "false":
+              config.alerts.enabled = chunk2.toString().trim() === "true";
+              console.log(`Alerts enabled updated to ${config.alerts.enabled}`);
+              break;
+            default:
+              console.log("Invalid input. Type 'true' or 'false'.");
+              break;
+          }
+        });
+        break;
+      case "interval":
+        console.log("Type the new alert interval value (e.g., '5'):");
+        await process.stdin.on("data", async (chunk2) => {
+          const value = parseInt(chunk2.toString().trim());
+          if (isNaN(value) || value <= 0) {
+            console.log("Invalid input. Type a positive number.");
+            return;
+          }
+          console.log("Type the new alert interval unit (minutes, hours, days):");
+          await process.stdin.on("data", (chunk3) => {
+            const unit = chunk3.toString().trim();
+            if (["minutes", "hours", "days"].includes(unit)) {
+              config.alerts.interval.value = value;
+              config.alerts.interval.unit = unit;
+              console.log(`Alert interval updated to ${config.alerts.interval.value} ${config.alerts.interval.unit}`);
+            } else {
+              console.log("Invalid unit. Type 'minutes', 'hours', or 'days'.");
+            }
+          });
+        });
+        break;
+      case "methods":
+        console.log("Type the new alert methods (comma separated: email, console):");
+        await process.stdin.on("data", (chunk2) => {
+          const methods = chunk2.toString().trim().split(",").map((m) => m.trim());
+          if (methods.every((m) => ["email", "console"].includes(m)) && methods.length > 0 && methods.length <= 2 && new Set(methods).size === methods.length && methods.every((m) => m.length > 0)) {
+            config.alerts.methods = methods;
+            console.log(`Alert methods updated to ${config.alerts.methods.join(", ")}`);
+          } else {
+            console.log("Invalid methods. Type 'email', 'console', or both separated by a comma.");
+          }
+        });
+        break;
+      default:
+        console.log("Type 'exit' or press ctrl+c to quit.");
+        console.log("Type 'enabled' to update the alerts enabled setting.");
+        console.log("Type 'interval' to update the alerts interval setting.");
+        console.log("Type 'methods' to update the alerts methods setting.");
+        break;
+    }
+  });
+}
+async function updatebackupconfig() {
+  console.log("Updating backup config...");
+  console.log("Type 'exit' or press ctrl+c to quit.");
+  await process.stdin.on("data", async (chunk) => {
+    switch (chunk.toString().trim()) {
+      case "exit":
+        process.exit(0);
+        break;
+      case "enabled":
+        console.log("Type 'true' or 'false' to enable or disable backups:");
+        await process.stdin.on("data", (chunk2) => {
+          switch (chunk2.toString().trim()) {
+            case "true":
+            case "false":
+              config.backups.enabled = chunk2.toString().trim() === "true";
+              console.log(`Backups enabled updated to ${config.backups.enabled}`);
+              break;
+            default:
+              console.log("Invalid input. Type 'true' or 'false'.");
+              break;
+          }
+        });
+        break;
+      case "interval":
+        console.log("Type the new backup interval value (e.g., '5'):");
+        await process.stdin.on("data", async (chunk2) => {
+          const value = parseInt(chunk2.toString().trim());
+          if (isNaN(value) || value <= 0) {
+            console.log("Invalid input. Type a positive number.");
+            return;
+          }
+          console.log("Type the new backup interval unit (minutes, hours, days):");
+          await process.stdin.on("data", (chunk3) => {
+            const unit = chunk3.toString().trim();
+            if (["minutes", "hours", "days"].includes(unit)) {
+              config.backups.interval.value = value;
+              config.backups.interval.unit = unit;
+              console.log(`Backup interval updated to ${config.backups.interval.value} ${config.backups.interval.unit}`);
+            } else {
+              console.log("Invalid unit. Type 'minutes', 'hours', or 'days'.");
+            }
+          });
+        });
+        break;
+      case "retention":
+        console.log("Type the new backup retention in days (e.g., '30'):");
+        await process.stdin.on("data", (chunk2) => {
+          const retentionDays = parseInt(chunk2.toString().trim());
+          if (isNaN(retentionDays) || retentionDays <= 0) {
+            console.log("Invalid input. Type a positive number.");
+          } else {
+            config.backups.retentionDays = retentionDays;
+            console.log(`Backup retention updated to ${config.backups.retentionDays} days`);
+          }
+        });
+        break;
+      case "location":
+        console.log("Type the new backup location:");
+        await process.stdin.on("data", (chunk2) => {
+          const location = chunk2.toString().trim();
+          config.backups.location = location;
+          console.log(`Backup location updated to ${config.backups.location}`);
+        });
+        break;
+      default:
+        exec8("clear");
+        showhelp();
+        break;
+    }
+  });
+}
+async function showmenu() {
+  import_console_clear.default();
+  showlogo();
+  showhelp();
+  await process.stdin.on("data", (chunk) => {
+    switch (chunk.toString().trim()) {
+      case "showconfig":
+      case "1":
+        showconfiguration();
+        break;
+      case "update generalconfig":
+      case "2":
+        updategeneralconfig();
+        break;
+      case "update packagemanagerconfig":
+      case "3":
+        updatepackagemanagerconfig();
+        break;
+      case "update alertconfig":
+      case "4":
+        updatealertconfig();
+        break;
+      case "update backupconfig":
+      case "5":
+        updatebackupconfig();
+        break;
+      case "exit":
+      case "0":
+        console.log("Exiting...");
+        process.exit(0);
+        break;
+      case "help":
+      case "?":
+        showhelp();
+        break;
+      default:
+        import_console_clear.default();
+        showhelp();
+        break;
+    }
+  });
+}
+async function showhelp() {
+  console.log("Type 'showconfig' (1) to show the current configuration.");
+  console.log("Type 'update generalconfig' (2) to update the general configuration.");
+  console.log("Type 'update packagemanagerconfig' (3) to update the package manager configuration.");
+  console.log("Type 'update alertconfig' (4) to update the alert configuration.");
+  console.log("Type 'update backupconfig' (5) to update the backup configuration.");
+  console.log("Type 'exit' (0) or press ctrl+c to quit.");
+  console.log("Type 'help' (?) to show the available commands.");
+}
+var import_console_clear, configManager, config;
+var init_config = __esm(async () => {
+  init_configManager();
+  init_configManager();
+  import_console_clear = __toESM(require_console_clear(), 1);
+  configManager = configManager_default.getInstance();
+  await configManager.initialize();
+  config = configManager.getConfig();
+});
+
 // src/commands/version.ts
 var exports_version = {};
 __export(exports_version, {
@@ -1784,13 +2230,19 @@ import { execSync as execSync3 } from "child_process";
 import { fileURLToPath as fileURLToPath2 } from "url";
 import { dirname as dirname3 } from "path";
 function showversion() {
-  console.log(`Version: ` + packageJson.version);
+  import_console_clear2.default();
+  showlogo();
+  console.log("=".repeat(60));
+  console.log("========= Version ============");
+  console.log("==========" + packageJson.version + " =============");
+  console.log("=".repeat(60));
 }
 function returnversion() {
   return packageJson.version;
 }
-var packageJson, version_default;
+var import_console_clear2, packageJson, version_default;
 var init_version = __esm(() => {
+  import_console_clear2 = __toESM(require_console_clear(), 1);
   try {
     const globalpath = execSync3('cmd /c "where npm-updater.cmd"').toString().trim();
     const packageJsonPath = join5(globalpath, "../node_modules", "@involvex/npm-global-updater", "package.json");
@@ -1811,7 +2263,7 @@ var package_default;
 var init_package = __esm(() => {
   package_default = {
     name: "@involvex/npm-global-updater",
-    version: "0.1.10",
+    version: "0.1.11",
     description: "global npm package updater",
     license: "MIT",
     author: "involvex",
@@ -1857,6 +2309,8 @@ var init_package = __esm(() => {
       typescript: "^5.9.3"
     },
     dependencies: {
+      "@types/console-clear": "^1.1.4",
+      "console-clear": "^1.1.1",
       jiti: "^2.6.1"
     },
     files: [
@@ -1917,6 +2371,7 @@ __export(exports_about, {
   showabout: () => showabout
 });
 async function showabout() {
+  import_console_clear3.default();
   showlogo();
   console.log("=== About this app ===");
   console.log("Name: " + package_default.name);
@@ -1929,10 +2384,14 @@ async function showabout() {
   console.log("=".repeat(60));
   console.log("Author: " + package_default.author);
   console.log("=".repeat(60));
+  console.log("NPMjs: " + "https://www.npmjs.com/package/@involvex/npm-global-updater");
+  console.log("=".repeat(60));
 }
+var import_console_clear3;
 var init_about = __esm(() => {
   init_package();
   init_version();
+  import_console_clear3 = __toESM(require_console_clear(), 1);
 });
 
 // src/index.ts
@@ -1971,30 +2430,36 @@ async function triggerupdate() {
   if (process.argv.includes("self-update")) {
     const latestVersion = await getLatestVersion();
     const currentVersion = packagejson.version;
-    console.log("Current version:", currentVersion);
-    console.log("Latest version:", latestVersion);
-    console.log("Do you want to update? (y/n)");
-    process.stdin.setEncoding("utf8");
-    process.stdin.on("data", (data) => {
-      const answer = data.toString().trim().toLowerCase();
-      if (answer === "y") {
-        exec("npm install -g @involvex/npm-global-updater@latest", (error, stdout, stderr) => {
-          if (error) {
-            console.error(`Error updating npm-global-updater: ${error}`);
-            return;
-          }
-          console.log(stdout);
-          console.error(stderr);
-          console.log("npm-global-updater updated successfully. Please restart the application.");
+    if (currentVersion < latestVersion) {
+      console.log("Current version:", currentVersion);
+      console.log("Latest version:", latestVersion);
+      console.log("Do you want to update? (y/n)");
+      process.stdin.setEncoding("utf8");
+      process.stdin.on("data", (data) => {
+        const answer = data.toString().trim().toLowerCase();
+        if (answer === "y") {
+          exec("npm install -g @involvex/npm-global-updater@latest", (error, stdout, stderr) => {
+            if (error) {
+              console.error(`Error updating npm-global-updater: ${error}`);
+              return;
+            }
+            console.log(stdout);
+            console.error(stderr);
+            console.log("npm-global-updater updated successfully. Please restart the application.");
+            process.exit(0);
+          });
+        } else {
+          console.log("Update cancelled.");
           process.exit(0);
-        });
-      } else {
-        console.log("Update cancelled.");
-        process.exit(0);
-      }
-      process.stdin.pause();
-      return true;
-    });
+        }
+        process.stdin.pause();
+        return true;
+      });
+    } else {
+      console.log("Current version:", currentVersion);
+      console.log("No update available.");
+      console.log("Find out more at: " + "https://www.npmjs.com/package/@involvex/npm-global-updater?activeTab=versions");
+    }
   }
 }
 async function notifyupdate() {
@@ -2021,6 +2486,7 @@ if (process.argv.includes("self-update") && !process.argv.includes("y")) {
 }
 
 // src/index.ts
+var import_console_clear4 = __toESM(require_console_clear(), 1);
 async function run() {
   if (!process.argv.includes("self-update")) {
     self_updater_default();
@@ -2163,6 +2629,13 @@ async function run() {
         await showlatestversion2(packageName, packageManager);
       }
       break;
+    case "config":
+    case "configure":
+      {
+        const { showmenu: showmenu2 } = await init_config().then(() => exports_config);
+        await showmenu2();
+      }
+      break;
     case "version":
     case "--version":
     case "-v":
@@ -2186,6 +2659,7 @@ async function run() {
       showHelp();
   }
   function showHelp() {
+    import_console_clear4.default();
     showlogo();
     console.log("=".repeat(60));
     console.log(`
@@ -2206,6 +2680,7 @@ Core Commands:
   latestversion                 Show latest version of a npm package
   about                         Show information about npm-updater
   self-update                   Self-update npm-updater
+  config                        Show configuration menu
 
 
 Export Commands:
@@ -2259,6 +2734,7 @@ For more information, visit: https://github.com/involvex/npm-global-updater
     `);
   }
 }
+import_console_clear4.default();
 run();
 export {
   run

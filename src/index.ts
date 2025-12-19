@@ -6,6 +6,9 @@ import {
 
 import { showlogo } from "./utils/logo";
 import notifyupdate from "./utils/self-updater";
+// import { exec } from "child_process";
+// import "clear";
+import consoleclear from "console-clear";
 
 export async function run() {
   if (!process.argv.includes("self-update")) {
@@ -192,6 +195,13 @@ export async function run() {
         await showlatestversion(packageName, packageManager);
       }
       break;
+    case "config":
+    case "configure":
+      {
+        const { showmenu } = await import("./commands/config");
+        await showmenu();
+      }
+      break;
 
     case "version":
     case "--version":
@@ -217,6 +227,7 @@ export async function run() {
   }
 
   function showHelp() {
+    consoleclear();
     showlogo();
     console.log("=".repeat(60));
     console.log(`
@@ -237,6 +248,7 @@ Core Commands:
   latestversion                 Show latest version of a npm package
   about                         Show information about npm-updater
   self-update                   Self-update npm-updater
+  config                        Show configuration menu
 
 
 Export Commands:
@@ -290,5 +302,7 @@ For more information, visit: https://github.com/involvex/npm-global-updater
     `);
   }
 }
-
+// await clearScreen();
+consoleclear();
+// setInterval(() => clear({ fullClear: true }), 1000);
 run();

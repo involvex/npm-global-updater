@@ -25,6 +25,15 @@ export interface ConfigSettings {
     };
     silentMode: boolean;
   };
+  backups: {
+    enabled: boolean;
+    interval: {
+      value: number;
+      unit: "minutes" | "hours" | "days";
+    };
+    retentionDays: number;
+    location: string;
+  };
 
   // Export configuration
   export: {
@@ -152,6 +161,12 @@ export class ConfigManager {
         interval: { value: 24, unit: "hours" },
         methods: ["desktop"],
         silentMode: false,
+      },
+      backups: {
+        enabled: false,
+        interval: { value: 24, unit: "hours" },
+        retentionDays: 7,
+        location: join(homedir(), ".npm-updater", "Backups"),
       },
       export: {
         defaultFormat: "txt",

@@ -3,6 +3,8 @@ import { readFileSync } from "node:fs";
 import { execSync } from "child_process";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import consoleClear from "console-clear";
+import { showlogo } from "src/utils/logo";
 
 let packageJson: { version: string };
 
@@ -27,7 +29,12 @@ try {
 }
 
 export function showversion() {
-  console.log(`Version: ` + packageJson.version);
+  consoleClear();
+  showlogo();
+  console.log("=".repeat(60));
+  console.log("========= Version ============");
+  console.log("==========" + packageJson.version + " =============");
+  console.log("=".repeat(60));
 }
 
 export function returnversion() {
