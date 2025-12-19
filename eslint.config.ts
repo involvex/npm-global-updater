@@ -1,5 +1,5 @@
 import js from "@eslint/js";
-import globals from "globals";
+// import globals from "globals";
 import tseslint from "typescript-eslint";
 import json from "@eslint/json";
 import { defineConfig, globalIgnores } from "eslint/config";
