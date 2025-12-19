@@ -79,17 +79,118 @@ function showlogo() {
         ░▀▀▀░▀░▀░░▀░░▀▀▀░▀▀▀░░▀░░▀▀▀░▀░▀`);
 }
 
+// package.json
+var package_default;
+var init_package = __esm(() => {
+  package_default = {
+    name: "@involvex/npm-global-updater",
+    version: "0.1.1",
+    description: "global npm package updater",
+    license: "MIT",
+    author: "involvex",
+    main: "bin/npm-updater.js",
+    type: "module",
+    repository: {
+      type: "git",
+      url: "https://github.com/involvex/npm-global-updater"
+    },
+    bin: {
+      "npm-updater": "bin/npm-updater.js"
+    },
+    scripts: {
+      lint: "eslint src ",
+      "lint:fix": "eslint src --fix",
+      format: "prettier --write .",
+      "format:check": "prettier --check .",
+      dev: "bun run src/index.ts",
+      start: "bun bin/npm-updater.js",
+      build: "bun build src/index.ts  --target node --outfile bin/npm-updater.js",
+      prebuild: "bun run format && bun run lint:fix && bun run typecheck",
+      typecheck: "tsc --noEmit",
+      "build:portable": "bun build --compile src/index.ts --outfile bin/npm-updater.exe --compile-autoload-package-json --compile-autoload-tsconfig",
+      prepublish: "bun run build",
+      changelog: "changelogen --output CHANGELOG.md ",
+      release: "bun run scripts/release.ts"
+    },
+    devDependencies: {
+      "@eslint/js": "^9.39.2",
+      "@eslint/json": "^0.14.0",
+      "@types/bun": "^1.3.5",
+      changelogen: "^0.6.2",
+      eslint: "^9.39.2",
+      globals: "^16.5.0",
+      prettier: "^3.7.4",
+      "typescript-eslint": "^8.50.0"
+    },
+    peerDependencies: {
+      typescript: "^5.9.3"
+    },
+    dependencies: {
+      jiti: "^2.6.1"
+    },
+    files: [
+      "src/**",
+      "bin/**",
+      "./",
+      ".",
+      "package.json"
+    ],
+    packageManager: "bun@1.3.5",
+    readme: "README.md",
+    homepage: "https://github.com/involvex/npm-global-updater#readme",
+    bugs: "https://github.com/involvex/npm-global-updater/issues",
+    keywords: [
+      "npm",
+      "global",
+      "updater",
+      "bun",
+      "npm-updater",
+      "npm-global-updater",
+      "updater",
+      "update"
+    ],
+    categories: [
+      "Other"
+    ],
+    sponsor: {
+      url: "https://github.com/sponsors/involvex"
+    },
+    funding: {
+      type: "github",
+      url: "https://github.com/sponsors/involvex"
+    },
+    dist: {
+      bin: [
+        "bin/npm-updater.js",
+        "bin/npm-updater.exe"
+      ]
+    },
+    directories: {
+      bin: "bin",
+      docs: "docs",
+      src: "src",
+      scripts: "scripts"
+    },
+    galleryBanner: {
+      color: "#000000",
+      theme: "dark"
+    },
+    icon: "assets/logo.png",
+    banner: "assets/banner.png"
+  };
+});
+
 // src/commands/ls.ts
 var exports_ls = {};
 __export(exports_ls, {
   runls: () => runls
 });
-import { exec } from "child_process";
+import { exec as exec2 } from "child_process";
 async function runls(packageManager) {
   const pm = getPackageManager(packageManager);
   const config = getPackageManagerConfig(pm);
   console.log(`Listing global packages using ${config.displayName}...`);
-  exec(config.listCommand, (error, stdout, stderr) => {
+  exec2(config.listCommand, (error, stdout, stderr) => {
     if (error) {
       console.log(`error: ${error.message}`);
       return;
@@ -111,14 +212,14 @@ __export(exports_updateall, {
   runupdateall: () => runupdateall,
   default: () => updateall_default
 });
-import { exec as exec2 } from "child_process";
+import { exec as exec3 } from "child_process";
 async function runupdateall(packageManager) {
   const pm = getPackageManager(packageManager);
   const config = getPackageManagerConfig(pm);
   console.log(`Checking for globally installed packages using ${config.displayName}...`);
   console.log(`This may take a moment...
 `);
-  exec2(config.listJsonCommand, (error, stdout) => {
+  exec3(config.listJsonCommand, (error, stdout) => {
     if (error) {
       console.log(`Error getting package list: ${error.message}`);
       return;
@@ -147,7 +248,7 @@ async function runupdateall(packageManager) {
       const packagesToUpdate = [];
       packages.forEach((pkg) => {
         const command = config.viewCommand(pkg.name);
-        exec2(command, (viewError, viewStdout) => {
+        exec3(command, (viewError, viewStdout) => {
           checkCount++;
           if (viewError) {
             console.log(`Could not check ${pkg.name}: ${viewError.message}`);
@@ -165,7 +266,7 @@ async function runupdateall(packageManager) {
                 const specialVersions = ["nightly", "dev", "preview"];
                 specialVersions.forEach((specType) => {
                   const specCommand = config.viewCommand(pkg.name, specType);
-                  exec2(specCommand, (specError, specStdout) => {
+                  exec3(specCommand, (specError, specStdout) => {
                     if (!specError && specStdout.trim()) {
                       try {
                         const specData = JSON.parse(specStdout);
@@ -197,7 +298,7 @@ async function runupdateall(packageManager) {
               if (pkgToUpdate) {
                 console.log(`Updating ${pkgToUpdate.name} to ${pkgToUpdate.latest} using ${config.displayName}...`);
                 const updateCommand = config.installCommand(pkgToUpdate.name, pkgToUpdate.latest);
-                exec2(updateCommand, (updateError) => {
+                exec3(updateCommand, (updateError) => {
                   if (updateError) {
                     console.log(`❌ Failed to update ${pkgToUpdate.name}: ${updateError.message}`);
                   } else {
@@ -242,7 +343,7 @@ __export(exports_update, {
   runupdate: () => runupdate,
   default: () => update_default
 });
-import { exec as exec3 } from "child_process";
+import { exec as exec4 } from "child_process";
 async function runupdate(inputPackageName, packageManager) {
   const name = inputPackageName || process.argv[3];
   if (!name) {
@@ -269,7 +370,7 @@ async function runupdate(inputPackageName, packageManager) {
   const versionInfo = version ? ` to version ${version}` : " to latest version";
   console.log(`Updating ${packageName}${versionInfo} using ${config.displayName}...`);
   const installCommand = config.installCommand(packageName, version);
-  exec3(installCommand, (error, stdout, stderr) => {
+  exec4(installCommand, (error, stdout, stderr) => {
     if (error) {
       console.log(`error: ${error.message}`);
       return;
@@ -463,7 +564,7 @@ class ConfigManager {
 var init_configManager = () => {};
 
 // src/database/packageTracker.ts
-import { exec as exec4 } from "child_process";
+import { exec as exec5 } from "child_process";
 
 class PackageTracker {
   configManager;
@@ -494,7 +595,7 @@ class PackageTracker {
     const config = getPackageManagerConfig(packageManager);
     const packages = [];
     return new Promise((resolve, reject) => {
-      exec4(config.listJsonCommand, async (error, stdout) => {
+      exec5(config.listJsonCommand, async (error, stdout) => {
         if (error) {
           reject(error);
           return;
@@ -538,7 +639,7 @@ class PackageTracker {
     const config = getPackageManagerConfig(packageManager);
     return new Promise((resolve, reject) => {
       const command = config.viewCommand(name);
-      exec4(command, (error, stdout) => {
+      exec5(command, (error, stdout) => {
         if (error) {
           reject(error);
           return;
@@ -626,7 +727,7 @@ class PackageTracker {
     try {
       return new Promise((resolve) => {
         const command = `npm view ${packageName} changelog --json`;
-        exec4(command, (error, stdout) => {
+        exec5(command, (error, stdout) => {
           if (error) {
             resolve(undefined);
             return;
@@ -1251,7 +1352,7 @@ var init_notificationManager = __esm(() => {
 });
 
 // src/monitoring/alertSystem.ts
-import { exec as exec5 } from "child_process";
+import { exec as exec6 } from "child_process";
 
 class AlertSystem {
   configManager;
@@ -1381,7 +1482,7 @@ class AlertSystem {
           resolve({ vulnerabilities: [], needsUpdate: false });
           return;
       }
-      exec5(command, (error, stdout) => {
+      exec6(command, (error, stdout) => {
         if (error) {
           resolve({ vulnerabilities: [], needsUpdate: false });
           return;
@@ -1743,7 +1844,7 @@ var exports_latestversion = {};
 __export(exports_latestversion, {
   showlatestversion: () => showlatestversion
 });
-import { exec as exec6 } from "child_process";
+import { exec as exec7 } from "child_process";
 async function showlatestversion(packageName, packageManager) {
   const name = packageName || process.argv[3];
   if (!name) {
@@ -1755,7 +1856,7 @@ async function showlatestversion(packageName, packageManager) {
   const config = getPackageManagerConfig(pm);
   console.log(`Fetching latest version of ${name} using ${config.displayName}...`);
   const viewCommand = config.viewCommand(name);
-  exec6(viewCommand, (error, stdout, stderr) => {
+  exec7(viewCommand, (error, stdout, stderr) => {
     if (error) {
       console.log(`error: ${error.message}`);
       return;
@@ -1769,107 +1870,6 @@ async function showlatestversion(packageName, packageManager) {
 }
 var init_latestversion = __esm(() => {
   init_packageManager();
-});
-
-// package.json
-var package_default;
-var init_package = __esm(() => {
-  package_default = {
-    name: "@involvex/npm-global-updater",
-    version: "0.1.0",
-    description: "global npm package updater",
-    license: "MIT",
-    author: "involvex",
-    main: "bin/npm-updater.js",
-    type: "module",
-    repository: {
-      type: "git",
-      url: "https://github.com/involvex/npm-global-updater"
-    },
-    bin: {
-      "npm-updater": "bin/npm-updater.js"
-    },
-    scripts: {
-      lint: "eslint src ",
-      "lint:fix": "eslint src --fix",
-      format: "prettier --write .",
-      "format:check": "prettier --check .",
-      dev: "bun run src/index.ts",
-      start: "bun bin/npm-updater.js",
-      build: "bun build src/index.ts  --target node --outfile bin/npm-updater.js",
-      prebuild: "bun run format && bun run lint:fix && bun run typecheck",
-      typecheck: "tsc --noEmit",
-      "build:portable": "bun build --compile src/index.ts --outfile bin/npm-updater.exe --compile-autoload-package-json --compile-autoload-tsconfig",
-      prepublish: "bun run build",
-      changelog: "changelogen --output CHANGELOG.md ",
-      release: "bun run scripts/release.ts"
-    },
-    devDependencies: {
-      "@eslint/js": "^9.39.2",
-      "@eslint/json": "^0.14.0",
-      "@types/bun": "^1.3.5",
-      changelogen: "^0.6.2",
-      eslint: "^9.39.2",
-      globals: "^16.5.0",
-      prettier: "^3.7.4",
-      "typescript-eslint": "^8.50.0"
-    },
-    peerDependencies: {
-      typescript: "^5.9.3"
-    },
-    dependencies: {
-      jiti: "^2.6.1"
-    },
-    files: [
-      "src/**",
-      "bin/**",
-      "./",
-      ".",
-      "package.json"
-    ],
-    packageManager: "bun@1.3.5",
-    readme: "README.md",
-    homepage: "https://github.com/involvex/npm-global-updater#readme",
-    bugs: "https://github.com/involvex/npm-global-updater/issues",
-    keywords: [
-      "npm",
-      "global",
-      "updater",
-      "bun",
-      "npm-updater",
-      "npm-global-updater",
-      "updater",
-      "update"
-    ],
-    categories: [
-      "Other"
-    ],
-    sponsor: {
-      url: "https://github.com/sponsors/involvex"
-    },
-    funding: {
-      type: "github",
-      url: "https://github.com/sponsors/involvex"
-    },
-    dist: {
-      bin: [
-        "bin/npm-updater.js",
-        "bin/npm-updater.exe"
-      ]
-    },
-    directories: {
-      bin: "bin",
-      docs: "docs",
-      src: "src",
-      scripts: "scripts"
-    },
-    galleryBanner: {
-      color: "#000000",
-      theme: "dark"
-    },
-    icon: "assets/logo.png",
-    banner: "assets/banner.png"
-  };
 });
 
 // src/commands/version.ts
@@ -1909,7 +1909,57 @@ var init_about = __esm(() => {
 
 // src/index.ts
 init_packageManager();
+
+// src/utils/npm-global-updater-release.ts
+init_package();
+import { exec } from "child_process";
+var npmpackage = "https://registry.npmjs.org/@involvex/npm-global-updater/latest";
+async function getLatestVersion() {
+  const response = await fetch(npmpackage);
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  const version = await response.json();
+  const latestVersion = version;
+  return latestVersion?.version;
+}
+async function notifyupdate() {
+  const latestVersion = await getLatestVersion();
+  const currentVersion = package_default.version;
+  if (latestVersion > currentVersion) {
+    console.log("A new version of npm-global-updater is available. Please update by running: npm install -g @involvex/npm-global-updater@latest");
+    console.log("Do you want to update? (y/n)");
+    process.stdin.setEncoding("utf8");
+    process.stdin.on("data", (data) => {
+      const answer = data.toString().trim().toLowerCase();
+      if (answer === "y") {
+        exec("npm install -g @involvex/npm-global-updater@latest", (error, stdout, stderr) => {
+          if (error) {
+            console.error(`Error updating npm-global-updater: ${error}`);
+            return;
+          }
+          console.log(stdout);
+          console.error(stderr);
+          console.log("npm-global-updater updated successfully. Please restart the application.");
+          process.exit(0);
+        });
+      } else {
+        console.log("Update cancelled.");
+        process.exit(0);
+      }
+      process.stdin.pause();
+      return true;
+    });
+  } else if (latestVersion <= currentVersion) {
+    process.stdin.pause();
+    return false;
+  }
+}
+var npm_global_updater_release_default = notifyupdate;
+
+// src/index.ts
 async function run() {
+  npm_global_updater_release_default();
   const args = process.argv.slice(2);
   let packageManager;
   let commandIndex = 0;

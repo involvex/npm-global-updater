@@ -5,8 +5,11 @@ import {
 } from "./utils/packageManager";
 
 import { showlogo } from "./utils/logo";
+import notifyupdate from "./utils/npm-global-updater-release";
 
 export async function run() {
+  notifyupdate();
+
   const args = process.argv.slice(2);
 
   // Parse --pm flag
