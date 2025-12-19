@@ -20,7 +20,7 @@
     "format:check": "prettier --check .",
     "dev": "bun run src/index.ts",
     "start": "bun bin/npm-updater.js",
-    "build": "bun build src/index.ts --target node --outfile bin/npm-updater.js && echo '#!/usr/bin/env node' | cat bin/npm-updater.js > temp && mv temp bin/npm-updater.js",
+    "build": "bun build src/index.ts  --target bun --minify --outfile bin/npm-updater.js",
     "prebuild": "bun run format && bun run lint:fix && bun run typecheck",
     "typecheck": "tsc --noEmit",
     "build:portable": "bun build --compile src/index.ts --outfile bin/npm-updater.exe"
