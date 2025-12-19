@@ -12,10 +12,13 @@
     "dotenv",
     "eslintcache",
     "latestversion",
+    "packageinfo",
+    "porteable",
     "prebuild",
     "runls",
     "runupdate",
     "runupdateall",
+    "showabout",
     "showlatestversion",
     "showversion",
     "updateall"
