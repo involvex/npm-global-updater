@@ -1,0 +1,198 @@
+name: Deploy Documentation to GitHub Pages
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "docs/**"
+      - ".github/workflows/deploy-docs.yml"
+  pull_request:
+    branches: [main, master]
+    paths:
+      - "docs/**"
+
+  # Allow manual triggering
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Validate HTML
+        run: |
+          # Basic HTML validation
+          find docs -name "*.html" -exec grep -l "<!DOCTYPE html>" {} \;
+
+      - name: Build documentation
+        run: |
+          # Create .nojekyll file to prevent Jekyll processing
+          touch .nojekyll
+
+          # Ensure proper file structure for GitHub Pages
+          # Copy docs to root for GitHub Pages
+          cp -r docs/* ./
+
+          # Validate all HTML files have required meta tags
+          echo "Validating HTML files..."
+          for file in $(find . -name "*.html"); do
+            if ! grep -q '<meta name="description"' "$file"; then
+              echo "Warning: $file missing description meta tag"
+            fi
+            if ! grep -q '<meta name="viewport"' "$file"; then
+              echo "Warning: $file missing viewport meta tag"
+            fi
+          done
+
+      - name: Setup Pages
+        if: github.event_name != 'pull_request'
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./"
+
+      - name: Upload PR preview
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: github-pages
+          path: "./"
+          retention-days: 1
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  # Security scan
+  security:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: "fs"
+          scan-ref: "."
+          format: "sarif"
+          output: "trivy-results.sarif"
+
+      - name: Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: "trivy-results.sarif"
+
+  # Performance check
+  performance:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.12.x
+
+      - name: Create LHCI config
+        run: |
+          cat > lighthouserc.json << EOF
+          {
+            "ci": {
+              "collect": {
+                "url": ["http://localhost:8080/"],
+                "startServerCommand": "npx serve . -l 8080",
+                "numberOfRuns": 3
+              },
+              "assert": {
+                "assertions": {
+                  "categories:performance": ["error", {"minScore": 0.8}],
+                  "categories:accessibility": ["error", {"minScore": 0.9}],
+                  "categories:best-practices": ["error", {"minScore": 0.9}],
+                  "categories:seo": ["error", {"minScore": 0.8}]
+                }
+              },
+              "upload": {
+                "target": "temporary-public-storage"
+              }
+            }
+          }
+          EOF
+
+      - name: Build and serve site
+        run: |
+          # Start server in background
+          npx serve . -l 8080 &
+          SERVER_PID=$!
+
+          # Wait for server to be ready
+          sleep 10
+
+          # Run Lighthouse CI
+          lhci autorun
+
+          # Cleanup
+          kill $SERVER_PID
+
+  # Update documentation index
+  update-index:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update last modified timestamp
+        run: |
+          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          echo "Last updated: $TIMESTAMP" >> docs/.last-updated
+
+      - name: Commit timestamp update
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "docs: update last modified timestamp"
+          file_pattern: docs/.last-updated
+          commit_user_name: "GitHub Actions"
+          commit_user_email: "actions@github.com"

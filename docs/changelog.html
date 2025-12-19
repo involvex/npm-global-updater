@@ -1,0 +1,970 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Changelog for npm-updater - Version history, release notes, and update information for the global package manager tool."
+    />
+    <meta
+      name="keywords"
+      content="npm-updater changelog, version history, release notes, updates, npm package manager"
+    />
+
+    <title>Changelog - npm-updater</title>
+
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+    <link rel="alternate icon" href="assets/favicon.ico" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Prism.js for syntax highlighting -->
+    <link
+      href="https://unpkg.com/prismjs@1.29.0/themes/prism-tomorrow.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="assets/main.css" />
+  </head>
+  <body>
+    <!-- Skip to content link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Header -->
+    <header class="header" role="banner">
+      <div class="container">
+        <nav class="nav" role="navigation" aria-label="Main navigation">
+          <div class="nav-brand">
+            <a
+              href="index.html"
+              class="brand-link"
+              aria-label="npm-updater home"
+            >
+              <svg
+                class="brand-icon"
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                aria-hidden="true"
+              >
+                <path
+                  d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+                ></path>
+                <polyline points="3.27,6.96 12,12.01 20.73,6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+              </svg>
+              <span class="brand-text">npm-updater</span>
+            </a>
+          </div>
+
+          <div class="nav-menu">
+            <button
+              class="nav-toggle"
+              aria-expanded="false"
+              aria-controls="nav-menu"
+              aria-label="Toggle navigation menu"
+            >
+              <span class="nav-toggle-bar"></span>
+              <span class="nav-toggle-bar"></span>
+              <span class="nav-toggle-bar"></span>
+            </button>
+
+            <div class="nav-links" id="nav-menu">
+              <a href="index.html" class="nav-link">Home</a>
+              <a href="guides/installation.html" class="nav-link"
+                >Installation</a
+              >
+              <a href="guides/usage.html" class="nav-link">Usage</a>
+              <a href="api/index.html" class="nav-link">API</a>
+              <a
+                href="changelog.html"
+                class="nav-link active"
+                aria-current="page"
+                >Changelog</a
+              >
+              <a
+                href="https://github.com/involvex/npm-global-updater"
+                class="nav-link"
+                target="_blank"
+                rel="noopener"
+                >GitHub</a
+              >
+            </div>
+          </div>
+
+          <button
+            class="theme-toggle"
+            aria-label="Toggle dark/light mode"
+            title="Toggle dark/light mode"
+          >
+            <svg
+              class="theme-icon theme-icon-sun"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="5"></circle>
+              <path
+                d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+              ></path>
+            </svg>
+            <svg
+              class="theme-icon theme-icon-moon"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main content -->
+    <main id="main-content" class="main" role="main">
+      <div class="container">
+        <div class="content-layout">
+          <!-- Sidebar navigation -->
+          <aside class="sidebar" role="complementary">
+            <nav class="sidebar-nav" aria-label="Changelog navigation">
+              <h3 class="sidebar-title">Changelog</h3>
+              <ul class="sidebar-links">
+                <li>
+                  <a href="#latest" class="sidebar-link">Latest Version</a>
+                </li>
+                <li>
+                  <a href="#all-releases" class="sidebar-link"
+                    >Release History</a
+                  >
+                </li>
+                <li>
+                  <a href="#archive" class="sidebar-link">Full Archive</a>
+                </li>
+              </ul>
+
+              <div class="sidebar-cta">
+                <a
+                  href="https://github.com/involvex/npm-global-updater/releases"
+                  class="btn btn-primary"
+                  target="_blank"
+                  rel="noopener"
+                  >View on GitHub</a
+                >
+              </div>
+            </nav>
+          </aside>
+
+          <!-- Main content area -->
+          <div class="content">
+            <article class="article">
+              <header class="article-header">
+                <h1 class="article-title">Changelog</h1>
+                <p class="article-description">
+                  Version history and release notes for npm-updater. Track all
+                  changes, improvements, and bug fixes across versions.
+                </p>
+              </header>
+
+              <!-- Version Navigation -->
+              <section class="version-nav">
+                <div class="version-nav-content">
+                  <span class="current-version"
+                    >Current Version: <strong>v0.0.12</strong></span
+                  >
+                  <div class="version-links">
+                    <a
+                      href="https://github.com/involvex/npm-global-updater/releases/latest"
+                      class="version-link"
+                      target="_blank"
+                      rel="noopener"
+                      >Latest Release</a
+                    >
+                    <a
+                      href="https://github.com/involvex/npm-global-updater/compare/v0.0.11...main"
+                      class="version-link"
+                      target="_blank"
+                      rel="noopener"
+                      >Compare Changes</a
+                    >
+                  </div>
+                </div>
+              </section>
+
+              <!-- Latest Version -->
+              <section id="latest" class="section">
+                <div class="loading-state" id="latest-release-loading">
+                  <div class="loading-spinner"></div>
+                  <p>Loading latest release...</p>
+                </div>
+                <div
+                  class="release-header"
+                  id="latest-release"
+                  style="display: none"
+                >
+                  <div class="release-info">
+                    <h2 class="release-title" id="latest-version">v0.0.12</h2>
+                    <span class="release-date" id="latest-date"
+                      >Released: December 19, 2024</span
+                    >
+                    <span class="release-type release-stable" id="latest-type"
+                      >Stable Release</span
+                    >
+                  </div>
+                  <div class="release-actions" id="latest-actions">
+                    <a
+                      href="#"
+                      class="btn btn-secondary"
+                      id="latest-release-link"
+                      target="_blank"
+                      rel="noopener"
+                      >View Release</a
+                    >
+                    <a
+                      href="#"
+                      class="btn btn-secondary"
+                      id="latest-compare-link"
+                      target="_blank"
+                      rel="noopener"
+                      >Compare</a
+                    >
+                  </div>
+                </div>
+                <div
+                  class="release-highlights"
+                  id="latest-highlights"
+                  style="display: none"
+                >
+                  <h3 class="subsection-title">🚀 Release Highlights</h3>
+                  <ul class="feature-list" id="latest-features">
+                    <li>
+                      Enhanced documentation website with responsive design
+                    </li>
+                    <li>Improved TypeScript API documentation</li>
+                    <li>Better error handling and user feedback</li>
+                    <li>Performance optimizations for package listing</li>
+                    <li>Enhanced accessibility compliance (WCAG 2.1)</li>
+                  </ul>
+                </div>
+                <div
+                  class="changes-grid"
+                  id="latest-changes"
+                  style="display: none"
+                >
+                  <!-- Dynamically populated -->
+                </div>
+              </section>
+
+              <!-- All Releases -->
+              <section id="all-releases" class="section">
+                <div class="loading-state" id="releases-loading">
+                  <div class="loading-spinner"></div>
+                  <p>Loading release history...</p>
+                </div>
+                <div id="releases-container" style="display: none">
+                  <!-- Dynamically populated with all releases -->
+                </div>
+              </section>
+
+              <!-- Archive -->
+              <section id="archive" class="section">
+                <h2 class="section-title">📦 Full Release Archive</h2>
+
+                <p class="section-description">
+                  View all releases and detailed changelogs on GitHub. Our
+                  release process follows semantic versioning (SemVer)
+                  principles.
+                </p>
+
+                <div class="archive-grid">
+                  <div class="archive-card">
+                    <h3 class="archive-title">GitHub Releases</h3>
+                    <p class="archive-description">
+                      Browse all releases with detailed notes, download links,
+                      and commit history.
+                    </p>
+                    <a
+                      href="https://github.com/involvex/npm-global-updater/releases"
+                      class="btn btn-primary"
+                      target="_blank"
+                      rel="noopener"
+                      >View All Releases</a
+                    >
+                  </div>
+
+                  <div class="archive-card">
+                    <h3 class="archive-title">Compare Versions</h3>
+                    <p class="archive-description">
+                      See exactly what changed between any two versions with our
+                      diff viewer.
+                    </p>
+                    <a
+                      href="https://github.com/involvex/npm-global-updater/compare"
+                      class="btn btn-secondary"
+                      target="_blank"
+                      rel="noopener"
+                      >Compare Changes</a
+                    >
+                  </div>
+
+                  <div class="archive-card">
+                    <h3 class="archive-title">Release Tags</h3>
+                    <p class="archive-description">
+                      Access specific releases using tags like
+                      <code>v0.0.12</code> or <code>latest</code>.
+                    </p>
+                    <div class="code-block">
+                      <button
+                        class="code-copy-btn"
+                        aria-label="Copy code to clipboard"
+                      >
+                        Copy
+                      </button>
+                      <pre><code class="language-bash">git clone --branch v0.0.12 \
+  https://github.com/involvex/npm-global-updater.git</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Version Information -->
+              <section class="section">
+                <h2 class="section-title">📊 Version Information</h2>
+
+                <div class="version-info-grid">
+                  <div class="version-info-card">
+                    <h3 class="version-info-title">Current Version</h3>
+                    <div class="version-number">v0.0.12</div>
+                    <div class="version-date">Released: December 19, 2024</div>
+                    <div class="version-status status-stable">Stable</div>
+                  </div>
+
+                  <div class="version-info-card">
+                    <h3 class="version-info-title">Release Schedule</h3>
+                    <div class="schedule-item">
+                      <span class="schedule-label">Stable Releases:</span>
+                      <span class="schedule-value">Weekly</span>
+                    </div>
+                    <div class="schedule-item">
+                      <span class="schedule-label">Patch Updates:</span>
+                      <span class="schedule-value">As needed</span>
+                    </div>
+                    <div class="schedule-item">
+                      <span class="schedule-label">Major Updates:</span>
+                      <span class="schedule-value">Monthly</span>
+                    </div>
+                  </div>
+
+                  <div class="version-info-card">
+                    <h3 class="version-info-title">Version History</h3>
+                    <div class="history-timeline">
+                      <div class="timeline-item">
+                        <span class="timeline-version">v0.0.12</span>
+                        <span class="timeline-date">Dec 19</span>
+                      </div>
+                      <div class="timeline-item">
+                        <span class="timeline-version">v0.0.11</span>
+                        <span class="timeline-date">Dec 15</span>
+                      </div>
+                      <div class="timeline-item">
+                        <span class="timeline-version">v0.0.10</span>
+                        <span class="timeline-date">Dec 10</span>
+                      </div>
+                      <div class="timeline-item">
+                        <span class="timeline-version">v0.0.9</span>
+                        <span class="timeline-date">Dec 5</span>
+                      </div>
+                      <div class="timeline-item">
+                        <span class="timeline-version">v0.0.8</span>
+                        <span class="timeline-date">Nov 28</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Next Steps -->
+              <section class="section">
+                <h2 class="section-title">🎯 Stay Updated</h2>
+
+                <div class="next-steps-grid">
+                  <div class="next-step-card">
+                    <h3 class="next-step-title">Installation</h3>
+                    <p class="next-step-description">
+                      Install the latest version of npm-updater and start
+                      managing your global packages.
+                    </p>
+                    <a href="guides/installation.html" class="btn btn-primary"
+                      >Install npm-updater</a
+                    >
+                  </div>
+
+                  <div class="next-step-card">
+                    <h3 class="next-step-title">Usage Guide</h3>
+                    <p class="next-step-description">
+                      Learn how to use all the features introduced in recent
+                      releases.
+                    </p>
+                    <a href="guides/usage.html" class="btn btn-secondary"
+                      >View Usage Guide</a
+                    >
+                  </div>
+
+                  <div class="next-step-card">
+                    <h3 class="next-step-title">Contribute</h3>
+                    <p class="next-step-description">
+                      Help shape the future of npm-updater by contributing code
+                      or reporting issues.
+                    </p>
+                    <a
+                      href="https://github.com/involvex/npm-global-updater/blob/main/CONTRIBUTING.md"
+                      class="btn btn-secondary"
+                      target="_blank"
+                      rel="noopener"
+                      >Contributing Guide</a
+                    >
+                  </div>
+                </div>
+              </section>
+            </article>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3 class="footer-title">npm-updater</h3>
+            <p class="footer-description">
+              A powerful command-line tool for managing and updating globally
+              installed npm packages.
+            </p>
+            <div class="footer-links">
+              <a
+                href="https://github.com/involvex/npm-global-updater"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                  ></path>
+                </svg>
+                GitHub
+              </a>
+              <a
+                href="https://github.com/involvex/npm-global-updater/releases"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path d="M3 3h18v18H3zM9 9h6v6H9z"></path>
+                </svg>
+                Releases
+              </a>
+              <a
+                href="https://github.com/involvex/npm-global-updater/issues"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                Issues
+              </a>
+            </div>
+          </div>
+
+          <div class="footer-section">
+            <h3 class="footer-title">Documentation</h3>
+            <ul class="footer-links">
+              <li>
+                <a href="guides/installation.html" class="footer-link"
+                  >Installation</a
+                >
+              </li>
+              <li><a href="guides/usage.html" class="footer-link">Usage</a></li>
+              <li>
+                <a href="api/index.html" class="footer-link">API Reference</a>
+              </li>
+              <li>
+                <a href="changelog.html" class="footer-link">Changelog</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h3 class="footer-title">Package Managers</h3>
+            <ul class="footer-links">
+              <li>
+                <a href="guides/usage.html#npm" class="footer-link">npm</a>
+              </li>
+              <li>
+                <a href="guides/usage.html#pnpm" class="footer-link">pnpm</a>
+              </li>
+              <li>
+                <a href="guides/usage.html#yarn" class="footer-link">Yarn</a>
+              </li>
+              <li>
+                <a href="guides/usage.html#bun" class="footer-link">Bun</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h3 class="footer-title">Community</h3>
+            <ul class="footer-links">
+              <li>
+                <a
+                  href="https://github.com/involvex/npm-global-updater/blob/main/CONTRIBUTING.md"
+                  class="footer-link"
+                  >Contributing</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://github.com/involvex/npm-global-updater/blob/main/LICENSE"
+                  class="footer-link"
+                  >License</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://github.com/involvex/npm-global-updater/issues/new/choose"
+                  class="footer-link"
+                  >Report Issue</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://github.com/involvex/npm-global-updater/discussions/new/choose"
+                  class="footer-link"
+                  >Request Feature</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p class="footer-copyright">
+            © 2024 npm-updater. Built with
+            <a
+              href="https://bun.sh/"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+              >Bun</a
+            >,
+            <a
+              href="https://www.typescriptlang.org/"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+              >TypeScript</a
+            >,
+            <a
+              href="https://eslint.org/"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+              >ESLint</a
+            >, and
+            <a
+              href="https://prettier.io/"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+              >Prettier</a
+            >.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/prismjs@1.29.0/components/prism-core.min.js"></script>
+    <script src="https://unpkg.com/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="assets/main.js"></script>
+
+    <!-- Changelog JavaScript -->
+    <script>
+      class ChangelogManager {
+        constructor() {
+          this.repoOwner = "involvex";
+          this.repoName = "npm-global-updater";
+          this.init();
+        }
+
+        async init() {
+          try {
+            await this.loadReleases();
+          } catch (error) {
+            console.error("Failed to load releases:", error);
+            this.showError("Failed to load releases. Please try again later.");
+          }
+        }
+
+        async loadReleases() {
+          const url = `https://api.github.com/repos/${this.repoOwner}/${this.repoName}/releases?per_page=10&sort=created`;
+
+          try {
+            const response = await fetch(url);
+            if (!response.ok) {
+              throw new Error(
+                `HTTP ${response.status}: ${response.statusText}`,
+              );
+            }
+
+            const releases = await response.json();
+            this.renderReleases(releases);
+          } catch (error) {
+            console.error("GitHub API error:", error);
+            throw error;
+          }
+        }
+
+        renderReleases(releases) {
+          if (releases.length === 0) {
+            this.showError("No releases found.");
+            return;
+          }
+
+          // Render latest release
+          this.renderLatestRelease(releases[0]);
+
+          // Render all releases (excluding the first one which is already shown)
+          if (releases.length > 1) {
+            this.renderAllReleases(releases.slice(1));
+          }
+
+          // Update version info
+          this.updateVersionInfo(releases);
+        }
+
+        renderLatestRelease(release) {
+          const container = document.getElementById("latest-release");
+          const highlights = document.getElementById("latest-highlights");
+          const changes = document.getElementById("latest-changes");
+          const loading = document.getElementById("latest-release-loading");
+
+          // Update content
+          document.getElementById("latest-version").textContent =
+            release.tag_name;
+          document.getElementById("latest-date").textContent = this.formatDate(
+            release.created_at,
+          );
+          document.getElementById("latest-type").textContent =
+            this.getReleaseType(release);
+          document.getElementById("latest-type").className =
+            `release-type release-${this.getReleaseType(release).toLowerCase()}`;
+
+          const releaseLink = document.getElementById("latest-release-link");
+          releaseLink.href = release.html_url;
+
+          const compareLink = document.getElementById("latest-compare-link");
+          if (release.releases && release.releases.length > 1) {
+            compareLink.href = `${release.html_url}/compare/${release.releases[1].tag_name}...${release.tag_name}`;
+          } else {
+            compareLink.style.display = "none";
+          }
+
+          // Show content and hide loading
+          loading.style.display = "none";
+          container.style.display = "flex";
+
+          if (release.body) {
+            highlights.style.display = "block";
+            const features = this.parseReleaseNotes(release.body);
+            this.renderFeatures(features);
+          }
+
+          changes.style.display = "grid";
+          this.renderChanges(release);
+        }
+
+        renderAllReleases(releases) {
+          const container = document.getElementById("releases-container");
+          const loading = document.getElementById("releases-loading");
+
+          container.innerHTML = releases
+            .map(release => this.createReleaseHTML(release))
+            .join("");
+
+          loading.style.display = "none";
+          container.style.display = "block";
+        }
+
+        createReleaseHTML(release) {
+          const releaseType = this.getReleaseType(release);
+          const prevRelease = this.getPreviousRelease(release);
+          const compareLink = prevRelease
+            ? `${release.html_url}/compare/${prevRelease.tag_name}...${release.tag_name}`
+            : "#";
+
+          return `
+                    <section class="section">
+                        <div class="release-header">
+                            <div class="release-info">
+                                <h2 class="release-title">${release.tag_name}</h2>
+                                <span class="release-date">Released: ${this.formatDate(release.created_at)}</span>
+                                <span class="release-type release-${releaseType.toLowerCase()}">${releaseType}</span>
+                            </div>
+                            <div class="release-actions">
+                                <a href="${release.html_url}" class="btn btn-secondary" target="_blank" rel="noopener">View Release</a>
+                                ${prevRelease ? `<a href="${compareLink}" class="btn btn-secondary" target="_blank" rel="noopener">Compare</a>` : ""}
+                            </div>
+                        </div>
+                        ${release.body ? this.renderChangesHTML(release) : '<p class="release-description">No release notes available.</p>'}
+                    </section>
+                `;
+        }
+
+        renderChanges(release) {
+          const container = document.getElementById("latest-changes");
+          const changes = this.parseReleaseNotes(release.body);
+
+          container.innerHTML = Object.entries(changes)
+            .map(([category, items]) =>
+              this.createChangeCategory(category, items),
+            )
+            .join("");
+        }
+
+        renderChangesHTML(release) {
+          const changes = this.parseReleaseNotes(release.body);
+          const hasChanges = Object.keys(changes).length > 0;
+
+          if (!hasChanges) {
+            return '<p class="release-description">No detailed changelog available.</p>';
+          }
+
+          return `
+                    <div class="changes-grid">
+                        ${Object.entries(changes)
+                          .map(([category, items]) =>
+                            this.createChangeCategory(category, items),
+                          )
+                          .join("")}
+                    </div>
+                `;
+        }
+
+        createChangeCategory(category, items) {
+          const icons = {
+            Features: "✨",
+            Improvements: "🔧",
+            Documentation: "📚",
+            "Bug Fixes": "🐛",
+            Infrastructure: "🏗️",
+          };
+
+          const icon = icons[category] || "📝";
+
+          return `
+                    <div class="change-category">
+                        <h4 class="change-category-title">
+                            <span class="change-icon change-${category.toLowerCase().replace(" ", "")}">${icon}</span>
+                            ${category}
+                        </h4>
+                        <ul class="change-list">
+                            ${items
+                              .map(
+                                item => `
+                                <li class="change-item">
+                                    <span class="change-description">${this.escapeHtml(item.text)}</span>
+                                    ${item.number ? `<span class="change-meta">#${item.number}</span>` : ""}
+                                </li>
+                            `,
+                              )
+                              .join("")}
+                        </ul>
+                    </div>
+                `;
+        }
+
+        parseReleaseNotes(body) {
+          if (!body) return {};
+
+          const changes = {};
+          const lines = body.split("\n");
+          let currentCategory = null;
+
+          for (const line of lines) {
+            const trimmed = line.trim();
+
+            // Detect category headers
+            if (trimmed.startsWith("###")) {
+              currentCategory = trimmed.replace("###", "").trim();
+              if (!changes[currentCategory]) {
+                changes[currentCategory] = [];
+              }
+            } else if (trimmed.startsWith("- ") && currentCategory) {
+              // Parse bullet points
+              const match = trimmed.match(/- (.*?)(?:\s*\(.*?#(\d+).*?\))?/);
+              if (match) {
+                changes[currentCategory].push({
+                  text: match[1].trim(),
+                  number: match[2] ? parseInt(match[2]) : null,
+                });
+              }
+            }
+          }
+
+          return changes;
+        }
+
+        renderFeatures(features) {
+          const container = document.getElementById("latest-features");
+          const featureItems = [];
+
+          Object.entries(features).forEach(([category, items]) => {
+            items.forEach(item => {
+              featureItems.push(`<li>${this.escapeHtml(item.text)}</li>`);
+            });
+          });
+
+          if (featureItems.length > 0) {
+            container.innerHTML = featureItems.join("");
+          }
+        }
+
+        getReleaseType(release) {
+          if (release.prerelease) return "Beta";
+          if (release.draft) return "Draft";
+          return "Stable";
+        }
+
+        getPreviousRelease(currentRelease) {
+          // This would need to be implemented with the full releases list
+          // For now, return null
+          return null;
+        }
+
+        updateVersionInfo(releases) {
+          if (releases.length > 0) {
+            const currentVersion = document.querySelector(
+              ".current-version strong",
+            );
+            if (currentVersion) {
+              currentVersion.textContent = releases[0].tag_name;
+            }
+
+            const versionNumber = document.querySelector(".version-number");
+            if (versionNumber) {
+              versionNumber.textContent = releases[0].tag_name;
+            }
+
+            const versionDate = document.querySelector(".version-date");
+            if (versionDate) {
+              versionDate.textContent = `Released: ${this.formatDate(releases[0].created_at)}`;
+            }
+
+            // Update timeline
+            const timeline = document.querySelector(".history-timeline");
+            if (timeline) {
+              timeline.innerHTML = releases
+                .slice(0, 5)
+                .map(
+                  release => `
+                            <div class="timeline-item">
+                                <span class="timeline-version">${release.tag_name}</span>
+                                <span class="timeline-date">${this.formatDate(release.created_at)}</span>
+                            </div>
+                        `,
+                )
+                .join("");
+            }
+          }
+        }
+
+        formatDate(dateString) {
+          const date = new Date(dateString);
+          return date.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
+        }
+
+        escapeHtml(text) {
+          const div = document.createElement("div");
+          div.textContent = text;
+          return div.innerHTML;
+        }
+
+        showError(message) {
+          const loadingElements = document.querySelectorAll(".loading-state");
+          loadingElements.forEach(element => {
+            element.innerHTML = `
+                        <div class="error-state">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #EF4444; margin-bottom: 1rem;">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="15" y1="9" x2="9" y2="15"></line>
+                                <line x1="9" y1="9" x2="15" y2="15"></line>
+                            </svg>
+                            <p style="color: var(--color-text-secondary);">${message}</p>
+                            <button onclick="location.reload()" class="btn btn-secondary" style="margin-top: 1rem;">Try Again</button>
+                        </div>
+                    `;
+          });
+        }
+      }
+
+      // Initialize changelog manager when page loads
+      document.addEventListener("DOMContentLoaded", () => {
+        new ChangelogManager();
+      });
+    </script>
+  </body>
+</html>

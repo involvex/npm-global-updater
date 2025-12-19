@@ -15,6 +15,7 @@
     "packageinfo",
     "porteable",
     "prebuild",
+    "rgba",
     "runls",
     "runupdate",
     "runupdateall",

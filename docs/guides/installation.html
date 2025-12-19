@@ -1,0 +1,915 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Installation guide for npm-global-updater - Learn how to install and set up the global package manager tool with step-by-step instructions."
+    />
+    <meta
+      name="keywords"
+      content="npm-updater installation, npm package manager installation, global packages, installation guide"
+    />
+
+    <title>Installation Guide - npm-updater</title>
+
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
+    <link rel="alternate icon" href="../assets/favicon.ico" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Prism.js for syntax highlighting -->
+    <link
+      href="https://unpkg.com/prismjs@1.29.0/themes/prism-tomorrow.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../assets/main.css" />
+  </head>
+  <body>
+    <!-- Skip to content link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Header -->
+    <header class="header" role="banner">
+      <div class="container">
+        <nav class="nav" role="navigation" aria-label="Main navigation">
+          <div class="nav-brand">
+            <a
+              href="../index.html"
+              class="brand-link"
+              aria-label="npm-updater home"
+            >
+              <svg
+                class="brand-icon"
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                aria-hidden="true"
+              >
+                <path
+                  d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+                ></path>
+                <polyline points="3.27,6.96 12,12.01 20.73,6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+              </svg>
+              <span class="brand-text">npm-updater</span>
+            </a>
+          </div>
+
+          <div class="nav-menu">
+            <button
+              class="nav-toggle"
+              aria-expanded="false"
+              aria-controls="nav-menu"
+              aria-label="Toggle navigation menu"
+            >
+              <span class="nav-toggle-bar"></span>
+              <span class="nav-toggle-bar"></span>
+              <span class="nav-toggle-bar"></span>
+            </button>
+
+            <div class="nav-links" id="nav-menu">
+              <a href="../index.html" class="nav-link">Home</a>
+              <a
+                href="installation.html"
+                class="nav-link active"
+                aria-current="page"
+                >Installation</a
+              >
+              <a href="usage.html" class="nav-link">Usage</a>
+              <a href="../api/index.html" class="nav-link">API</a>
+              <a href="../changelog.html" class="nav-link">Changelog</a>
+              <a
+                href="https://github.com/involvex/npm-global-updater"
+                class="nav-link"
+                target="_blank"
+                rel="noopener"
+                >GitHub</a
+              >
+            </div>
+          </div>
+
+          <button
+            class="theme-toggle"
+            aria-label="Toggle dark/light mode"
+            title="Toggle dark/light mode"
+          >
+            <svg
+              class="theme-icon theme-icon-sun"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="5"></circle>
+              <path
+                d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+              ></path>
+            </svg>
+            <svg
+              class="theme-icon theme-icon-moon"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main content -->
+    <main id="main-content" class="main" role="main">
+      <div class="container">
+        <div class="content-layout">
+          <!-- Sidebar navigation -->
+          <aside class="sidebar" role="complementary">
+            <nav class="sidebar-nav" aria-label="Installation guide navigation">
+              <h3 class="sidebar-title">Installation</h3>
+              <ul class="sidebar-links">
+                <li>
+                  <a href="#requirements" class="sidebar-link">Requirements</a>
+                </li>
+                <li>
+                  <a href="#method-1-npx" class="sidebar-link"
+                    >Method 1: NPX (Quick)</a
+                  >
+                </li>
+                <li>
+                  <a href="#method-2-clone" class="sidebar-link"
+                    >Method 2: Clone Repository</a
+                  >
+                </li>
+
+                <li>
+                  <a href="#method-3-global" class="sidebar-link"
+                    >Method 3: Global Install</a
+                  >
+                </li>
+                <li>
+                  <a href="#post-installation" class="sidebar-link"
+                    >Post-Installation</a
+                  >
+                </li>
+                <li>
+                  <a href="#troubleshooting" class="sidebar-link"
+                    >Troubleshooting</a
+                  >
+                </li>
+              </ul>
+
+              <div class="sidebar-cta">
+                <a href="../index.html" class="btn btn-primary">Get Started</a>
+              </div>
+            </nav>
+          </aside>
+
+          <!-- Main content area -->
+          <div class="content">
+            <article class="article">
+              <header class="article-header">
+                <h1 class="article-title">Installation Guide</h1>
+                <p class="article-description">
+                  Learn how to install npm-updater and get started with managing
+                  your global npm packages efficiently.
+                </p>
+              </header>
+
+              <!-- Requirements section -->
+              <section id="requirements" class="section">
+                <h2 class="section-title">📋 Requirements</h2>
+
+                <div class="alert alert-info">
+                  <div class="alert-icon">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      aria-hidden="true"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="16" x2="12" y2="12"></line>
+                      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                  </div>
+                  <div class="alert-content">
+                    <strong>Before you begin:</strong> npm-updater requires
+                    Node.js and a package manager (npm, pnpm, Yarn, or Bun) to
+                    be installed on your system.
+                  </div>
+                </div>
+
+                <h3 class="subsection-title">Required Software</h3>
+                <ul class="feature-list">
+                  <li>
+                    <strong>Node.js</strong> (version 14.0.0 or higher)
+                    <div class="code-block">
+                      <button
+                        class="code-copy-btn"
+                        aria-label="Copy code to clipboard"
+                      >
+                        Copy
+                      </button>
+                      <pre><code class="language-bash">node --version</code></pre>
+                    </div>
+                  </li>
+                  <li>
+                    <strong>Package Manager</strong> (choose one):
+                    <ul>
+                      <li><strong>npm</strong> (comes with Node.js)</li>
+                      <li>
+                        <strong>pnpm</strong> (recommended for performance)
+                      </li>
+                      <li><strong>Yarn</strong> (classic or modern)</li>
+                      <li>
+                        <strong>Bun</strong> (recommended for development)
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+
+                <h3 class="subsection-title">Optional but Recommended</h3>
+                <ul class="feature-list">
+                  <li><strong>Git</strong> - for cloning the repository</li>
+                  <li>
+                    <strong>Bun</strong> - for faster development experience
+                  </li>
+                </ul>
+              </section>
+              <!-- Method 1: NPX -->
+              <section id="method-1-npx" class="section">
+                <h2 class="section-title">⚡ Method 1: NPX (Quick Usage)</h2>
+
+                <p class="section-description">
+                  Use npm-updater directly without installation. Perfect for
+                  trying it out or using it occasionally.
+                </p>
+
+                <div class="method-steps">
+                  <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                      <h3 class="step-title">Run with NPX</h3>
+                      <div class="code-block">
+                        <button
+                          class="code-copy-btn"
+                          aria-label="Copy code to clipboard"
+                        >
+                          Copy
+                        </button>
+                        <pre><code class="language-bash"># List global packages
+npx @involvex/npm-global-updater@latest ls
+
+# Update a package
+npx @involvex/npm-global-updater@latest update prettier
+
+# Check latest version
+npx @involvex/npm-global-updater@latest latestversion react</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="method-features">
+                  <h3 class="subsection-title">✨ Benefits of this method:</h3>
+                  <ul class="feature-list">
+                    <li>No installation required</li>
+                    <li>Always uses the latest version</li>
+                    <li>Quick for testing and occasional use</li>
+                  </ul>
+                </div>
+
+                <div class="alert alert-warning">
+                  <div class="alert-icon">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+                      ></path>
+                      <line x1="12" y1="9" x2="12" y2="13"></line>
+                      <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                  </div>
+                  <div class="alert-content">
+                    <strong>Note:</strong> NPX will download and cache the
+                    package on first run, which may take a few seconds.
+                  </div>
+                </div>
+              </section>
+              <!-- Method 2: Clone Repository -->
+              <section id="method-2-clone" class="section">
+                <h2 class="section-title">
+                  🚀 Method 2: Clone Repository (Recommended for Development)
+                </h2>
+
+                <p class="section-description">
+                  This method gives you the most control and allows you to
+                  contribute to the project. Ideal for developers who want to
+                  modify or contribute to npm-updater.
+                </p>
+
+                <div class="method-steps">
+                  <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                      <h3 class="step-title">Clone the repository</h3>
+                      <div class="code-block">
+                        <button
+                          class="code-copy-btn"
+                          aria-label="Copy code to clipboard"
+                        >
+                          Copy
+                        </button>
+                        <pre><code class="language-bash">git clone https://github.com/involvex/npm-global-updater.git
+cd npm-global-updater</code></pre>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                      <h3 class="step-title">Build the project</h3>
+                      <div class="code-block">
+                        <button
+                          class="code-copy-btn"
+                          aria-label="Copy code to clipboard"
+                        >
+                          Copy
+                        </button>
+                        <pre><code class="language-bash">bun run build</code></pre>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                      <h3 class="step-title">Test the installation</h3>
+                      <div class="code-block">
+                        <button
+                          class="code-copy-btn"
+                          aria-label="Copy code to clipboard"
+                        >
+                          Copy
+                        </button>
+                        <pre><code class="language-bash">npm-updater version</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="method-features">
+                  <h3 class="subsection-title">✨ Benefits of this method:</h3>
+                  <ul class="feature-list">
+                    <li>Full access to source code</li>
+                    <li>Ability to modify and contribute</li>
+                    <li>Latest features and updates</li>
+                    <li>Development tools included</li>
+                  </ul>
+                </div>
+              </section>
+
+              <!-- Method 3: Global Install -->
+              <section id="method-3-global" class="section">
+                <h2 class="section-title">📦 Method 3: Global Installation</h2>
+
+                <p class="section-description">
+                  Install npm-updater globally on your system for persistent
+                  access. This method requires the package to be published to
+                  npm registry.
+                </p>
+
+                <div class="method-steps">
+                  <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                      <h3 class="step-title">
+                        Install globally (when published)
+                      </h3>
+                      <div class="code-block">
+                        <button
+                          class="code-copy-btn"
+                          aria-label="Copy code to clipboard"
+                        >
+                          Copy
+                        </button>
+                        <pre><code class="language-bash"># Using npm
+npm install -g @involvex/npm-global-updater
+
+# Using pnpm
+pnpm add -g @involvex/npm-global-updater
+
+# Using yarn
+yarn global add @involvex/npm-global-updater
+
+# Using bun
+bun add -g @involvex/npm-global-updater</code></pre>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                      <h3 class="step-title">Verify installation</h3>
+                      <div class="code-block">
+                        <button
+                          class="code-copy-btn"
+                          aria-label="Copy code to clipboard"
+                        >
+                          Copy
+                        </button>
+                        <pre><code class="language-bash">npm-updater version</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="method-features">
+                  <h3 class="subsection-title">✨ Benefits of this method:</h3>
+                  <ul class="feature-list">
+                    <li>Available system-wide</li>
+                    <li>Faster startup (no download required)</li>
+                    <li>Works offline after installation</li>
+                  </ul>
+                </div>
+
+                <div class="alert alert-info">
+                  <div class="alert-icon">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      aria-hidden="true"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="16" x2="12" y2="12"></line>
+                      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                  </div>
+                  <div class="alert-content">
+                    <strong>Publishing Status:</strong> The package is currently
+                    in development. For now, use Method 1 (Clone Repository) or
+                    Method 2 (NPX) to try it out.
+                  </div>
+                </div>
+              </section>
+
+              <!-- Post Installation -->
+              <section id="post-installation" class="section">
+                <h2 class="section-title">🔧 Post-Installation Setup</h2>
+
+                <h3 class="subsection-title">Add to PATH (Optional)</h3>
+                <p>
+                  If you want to use npm-updater from anywhere after building:
+                </p>
+
+                <div class="code-block">
+                  <button
+                    class="code-copy-btn"
+                    aria-label="Copy code to clipboard"
+                  >
+                    Copy
+                  </button>
+                  <pre><code class="language-bash"># Add the bin directory to your PATH
+export PATH="$PATH:$(pwd)/bin"
+
+# Add to your shell profile for persistence
+echo 'export PATH="$PATH:$(pwd)/bin"' >> ~/.bashrc  # or ~/.zshrc
+source ~/.bashrc  # or source ~/.zshrc</code></pre>
+                </div>
+
+                <h3 class="subsection-title">Create a Symlink (Alternative)</h3>
+                <div class="code-block">
+                  <button
+                    class="code-copy-btn"
+                    aria-label="Copy code to clipboard"
+                  >
+                    Copy
+                  </button>
+                  <pre><code class="language-bash"># Create a global symlink
+bun link</code></pre>
+                </div>
+
+                <h3 class="subsection-title">Test Installation</h3>
+                <p>Verify that npm-updater is working correctly:</p>
+
+                <div class="code-block">
+                  <button
+                    class="code-copy-btn"
+                    aria-label="Copy code to clipboard"
+                  >
+                    Copy
+                  </button>
+                  <pre><code class="language-bash"># Show version
+npm-updater version
+
+# Show help
+npm-updater help
+
+# List global packages
+npm-updater ls</code></pre>
+                </div>
+              </section>
+
+              <!-- Troubleshooting -->
+              <section id="troubleshooting" class="section">
+                <h2 class="section-title">🐛 Troubleshooting</h2>
+
+                <div class="troubleshooting-section">
+                  <h3 class="subsection-title">Command not found</h3>
+                  <div class="code-block">
+                    <button
+                      class="code-copy-btn"
+                      aria-label="Copy code to clipboard"
+                    >
+                      Copy
+                    </button>
+                    <pre><code class="language-bash"># Solution: Add to PATH or use absolute path
+export PATH="$PATH:$(pwd)/bin"
+npm-updater <command>
+
+# Or use bun run for development
+bun run dev </command></code></pre>
+                  </div>
+                </div>
+
+                <div class="troubleshooting-section">
+                  <h3 class="subsection-title">Permission denied errors</h3>
+                  <div class="code-block">
+                    <button
+                      class="code-copy-btn"
+                      aria-label="Copy code to clipboard"
+                    >
+                      Copy
+                    </button>
+                    <pre><code class="language-bash"># Fix npm permissions
+sudo chown -R $(whoami) ~/.npm
+
+# Or use a version manager like nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+nvm install node</code></pre>
+                  </div>
+                </div>
+
+                <div class="troubleshooting-section">
+                  <h3 class="subsection-title">
+                    TypeScript compilation errors
+                  </h3>
+                  <div class="code-block">
+                    <button
+                      class="code-copy-btn"
+                      aria-label="Copy code to clipboard"
+                    >
+                      Copy
+                    </button>
+                    <pre><code class="language-bash"># Run type checking
+bun run typecheck
+
+# Fix formatting and linting
+bun run prebuild</code></pre>
+                  </div>
+                </div>
+
+                <div class="troubleshooting-section">
+                  <h3 class="subsection-title">Build fails</h3>
+                  <div class="code-block">
+                    <button
+                      class="code-copy-btn"
+                      aria-label="Copy code to clipboard"
+                    >
+                      Copy
+                    </button>
+                    <pre><code class="language-bash"># Clean install dependencies
+rm -rf node_modules bun.lock
+bun install
+
+# Run build again
+bun run build</code></pre>
+                  </div>
+                </div>
+
+                <div class="alert alert-help">
+                  <div class="alert-icon">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      aria-hidden="true"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                      <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                  </div>
+                  <div class="alert-content">
+                    <strong>Need more help?</strong>
+                    Check our
+                    <a
+                      href="https://github.com/involvex/npm-global-updater/issues"
+                      target="_blank"
+                      rel="noopener"
+                      >GitHub Issues</a
+                    >
+                    or start a
+                    <a
+                      href="https://github.com/involvex/npm-global-updater/discussions"
+                      target="_blank"
+                      rel="noopener"
+                      >Discussion</a
+                    >.
+                  </div>
+                </div>
+              </section>
+
+              <!-- Next Steps -->
+              <section class="section">
+                <h2 class="section-title">🎯 Next Steps</h2>
+
+                <div class="next-steps-grid">
+                  <div class="next-step-card">
+                    <h3 class="next-step-title">Learn Usage</h3>
+                    <p class="next-step-description">
+                      Explore all available commands and features with practical
+                      examples.
+                    </p>
+                    <a href="usage.html" class="btn btn-primary"
+                      >View Usage Guide</a
+                    >
+                  </div>
+
+                  <div class="next-step-card">
+                    <h3 class="next-step-title">API Reference</h3>
+                    <p class="next-step-description">
+                      Dive deep into the TypeScript API and programmatic usage.
+                    </p>
+                    <a href="../api/index.html" class="btn btn-secondary"
+                      >View API Docs</a
+                    >
+                  </div>
+
+                  <div class="next-step-card">
+                    <h3 class="next-step-title">Contribute</h3>
+                    <p class="next-step-description">
+                      Help improve npm-updater by contributing code,
+                      documentation, or reporting issues.
+                    </p>
+                    <a
+                      href="https://github.com/involvex/npm-global-updater/blob/main/CONTRIBUTING.md"
+                      class="btn btn-secondary"
+                      target="_blank"
+                      rel="noopener"
+                      >Contributing Guide</a
+                    >
+                  </div>
+                </div>
+              </section>
+            </article>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3 class="footer-title">npm-updater</h3>
+            <p class="footer-description">
+              A powerful command-line tool for managing and updating globally
+              installed npm packages.
+            </p>
+            <div class="footer-links">
+              <a
+                href="https://github.com/involvex/npm-global-updater"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                  ></path>
+                </svg>
+                GitHub
+              </a>
+              <a
+                href="https://github.com/involvex/npm-global-updater/issues"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                Issues
+              </a>
+              <a
+                href="https://github.com/involvex/npm-global-updater/discussions"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                  ></path>
+                </svg>
+                Discussions
+              </a>
+            </div>
+          </div>
+
+          <div class="footer-section">
+            <h3 class="footer-title">Documentation</h3>
+            <ul class="footer-links">
+              <li>
+                <a href="installation.html" class="footer-link">Installation</a>
+              </li>
+              <li><a href="usage.html" class="footer-link">Usage</a></li>
+              <li>
+                <a href="../api/index.html" class="footer-link"
+                  >API Reference</a
+                >
+              </li>
+              <li>
+                <a href="../changelog.html" class="footer-link">Changelog</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h3 class="footer-title">Package Managers</h3>
+            <ul class="footer-links">
+              <li><a href="usage.html#npm" class="footer-link">npm</a></li>
+              <li><a href="usage.html#pnpm" class="footer-link">pnpm</a></li>
+              <li><a href="usage.html#yarn" class="footer-link">Yarn</a></li>
+              <li><a href="usage.html#bun" class="footer-link">Bun</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h3 class="footer-title">Community</h3>
+            <ul class="footer-links">
+              <li>
+                <a
+                  href="https://github.com/involvex/npm-global-updater/blob/main/CONTRIBUTING.md"
+                  class="footer-link"
+                  >Contributing</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://github.com/involvex/npm-global-updater/blob/main/LICENSE"
+                  class="footer-link"
+                  >License</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://github.com/involvex/npm-global-updater/issues/new/choose"
+                  class="footer-link"
+                  >Report Issue</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://github.com/involvex/npm-global-updater/discussions/new/choose"
+                  class="footer-link"
+                  >Request Feature</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p class="footer-copyright">
+            © 2024 npm-updater. Built with
+            <a
+              href="https://bun.sh/"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+              >Bun</a
+            >,
+            <a
+              href="https://www.typescriptlang.org/"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+              >TypeScript</a
+            >,
+            <a
+              href="https://eslint.org/"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+              >ESLint</a
+            >, and
+            <a
+              href="https://prettier.io/"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+              >Prettier</a
+            >.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/prismjs@1.29.0/components/prism-core.min.js"></script>
+    <script src="https://unpkg.com/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="../assets/main.js"></script>
+
+    <!-- Page-specific JavaScript -->
+    <script>
+      // Tabbed content functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        const tabButtons = document.querySelectorAll(".tab-btn");
+        const tabContents = document.querySelectorAll(".tab-content");
+
+        tabButtons.forEach(button => {
+          button.addEventListener("click", () => {
+            const targetTab = button.dataset.tab;
+
+            // Remove active class from all buttons and contents
+            tabButtons.forEach(btn => btn.classList.remove("active"));
+            tabContents.forEach(content => content.classList.remove("active"));
+
+            // Add active class to clicked button and corresponding content
+            button.classList.add("active");
+            document
+              .querySelector(`[data-tab="${targetTab}"]`)
+              .classList.add("active");
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

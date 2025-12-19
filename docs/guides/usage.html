@@ -1,0 +1,1547 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Usage guide for npm-updater - Complete command reference with examples for managing global npm packages across different package managers."
+    />
+    <meta
+      name="keywords"
+      content="npm-updater usage, command reference, npm packages, package manager, CLI guide"
+    />
+
+    <title>Usage Guide - npm-updater</title>
+
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
+    <link rel="alternate icon" href="../assets/favicon.ico" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Prism.js for syntax highlighting -->
+    <link
+      href="https://unpkg.com/prismjs@1.29.0/themes/prism-tomorrow.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../assets/main.css" />
+  </head>
+  <body>
+    <!-- Skip to content link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Header -->
+    <header class="header" role="banner">
+      <div class="container">
+        <nav class="nav" role="navigation" aria-label="Main navigation">
+          <div class="nav-brand">
+            <a
+              href="../index.html"
+              class="brand-link"
+              aria-label="npm-updater home"
+            >
+              <svg
+                class="brand-icon"
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                aria-hidden="true"
+              >
+                <path
+                  d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+                ></path>
+                <polyline points="3.27,6.96 12,12.01 20.73,6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+              </svg>
+              <span class="brand-text">npm-updater</span>
+            </a>
+          </div>
+
+          <div class="nav-menu">
+            <button
+              class="nav-toggle"
+              aria-expanded="false"
+              aria-controls="nav-menu"
+              aria-label="Toggle navigation menu"
+            >
+              <span class="nav-toggle-bar"></span>
+              <span class="nav-toggle-bar"></span>
+              <span class="nav-toggle-bar"></span>
+            </button>
+
+            <div class="nav-links" id="nav-menu">
+              <a href="../index.html" class="nav-link">Home</a>
+              <a href="installation.html" class="nav-link">Installation</a>
+              <a href="usage.html" class="nav-link active" aria-current="page"
+                >Usage</a
+              >
+              <a href="../api/index.html" class="nav-link">API</a>
+              <a href="../changelog.html" class="nav-link">Changelog</a>
+              <a
+                href="https://github.com/involvex/npm-global-updater"
+                class="nav-link"
+                target="_blank"
+                rel="noopener"
+                >GitHub</a
+              >
+            </div>
+          </div>
+
+          <button
+            class="theme-toggle"
+            aria-label="Toggle dark/light mode"
+            title="Toggle dark/light mode"
+          >
+            <svg
+              class="theme-icon theme-icon-sun"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="5"></circle>
+              <path
+                d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+              ></path>
+            </svg>
+            <svg
+              class="theme-icon theme-icon-moon"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main content -->
+    <main id="main-content" class="main" role="main">
+      <div class="container">
+        <div class="content-layout">
+          <!-- Sidebar navigation -->
+          <aside class="sidebar" role="complementary">
+            <nav class="sidebar-nav" aria-label="Usage guide navigation">
+              <h3 class="sidebar-title">Usage</h3>
+              <ul class="sidebar-links">
+                <li>
+                  <a href="#quick-start" class="sidebar-link">Quick Start</a>
+                </li>
+                <li>
+                  <a href="#package-managers" class="sidebar-link"
+                    >Package Managers</a
+                  >
+                </li>
+                <li>
+                  <a href="#ls-command" class="sidebar-link">ls Command</a>
+                </li>
+                <li>
+                  <a href="#update-command" class="sidebar-link"
+                    >update Command</a
+                  >
+                </li>
+                <li>
+                  <a href="#updateall-command" class="sidebar-link"
+                    >updateall Command</a
+                  >
+                </li>
+                <li>
+                  <a href="#latestversion-command" class="sidebar-link"
+                    >latestversion Command</a
+                  >
+                </li>
+                <li>
+                  <a href="#version-command" class="sidebar-link"
+                    >version Command</a
+                  >
+                </li>
+                <li>
+                  <a href="#help-command" class="sidebar-link">help Command</a>
+                </li>
+                <li>
+                  <a href="#advanced-usage" class="sidebar-link"
+                    >Advanced Usage</a
+                  >
+                </li>
+                <li><a href="#examples" class="sidebar-link">Examples</a></li>
+              </ul>
+
+              <div class="sidebar-cta">
+                <a href="installation.html" class="btn btn-primary"
+                  >Install npm-updater</a
+                >
+              </div>
+            </nav>
+          </aside>
+
+          <!-- Main content area -->
+          <div class="content">
+            <article class="article">
+              <header class="article-header">
+                <h1 class="article-title">Usage Guide</h1>
+                <p class="article-description">
+                  Complete command reference and examples for managing your
+                  global npm packages efficiently.
+                </p>
+              </header>
+
+              <!-- Quick Start -->
+              <section id="quick-start" class="section">
+                <h2 class="section-title">⚡ Quick Start</h2>
+
+                <p class="section-description">
+                  Get started with npm-updater in seconds. Here are the most
+                  common commands you'll use:
+                </p>
+
+                <div class="quick-commands">
+                  <div class="command-example">
+                    <h3 class="command-example-title">List global packages</h3>
+                    <div class="code-block">
+                      <button
+                        class="code-copy-btn"
+                        aria-label="Copy code to clipboard"
+                      >
+                        Copy
+                      </button>
+                      <pre><code class="language-bash">npm-updater ls</code></pre>
+                    </div>
+                  </div>
+
+                  <div class="command-example">
+                    <h3 class="command-example-title">
+                      Update a specific package
+                    </h3>
+                    <div class="code-block">
+                      <button
+                        class="code-copy-btn"
+                        aria-label="Copy code to clipboard"
+                      >
+                        Copy
+                      </button>
+                      <pre><code class="language-bash">npm-updater update prettier</code></pre>
+                    </div>
+                  </div>
+
+                  <div class="command-example">
+                    <h3 class="command-example-title">Update all packages</h3>
+                    <div class="code-block">
+                      <button
+                        class="code-copy-btn"
+                        aria-label="Copy code to clipboard"
+                      >
+                        Copy
+                      </button>
+                      <pre><code class="language-bash">npm-updater updateall</code></pre>
+                    </div>
+                  </div>
+
+                  <div class="command-example">
+                    <h3 class="command-example-title">Check latest version</h3>
+                    <div class="code-block">
+                      <button
+                        class="code-copy-btn"
+                        aria-label="Copy code to clipboard"
+                      >
+                        Copy
+                      </button>
+                      <pre><code class="language-bash">npm-updater latestversion react</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Package Managers -->
+              <section id="package-managers" class="section">
+                <h2 class="section-title">📦 Package Manager Support</h2>
+
+                <p class="section-description">
+                  npm-updater works with all major JavaScript package managers.
+                  Use the <code>--pm</code> flag to specify your preferred
+                  package manager.
+                </p>
+
+                <div class="package-managers-grid">
+                  <div class="package-manager-card" id="npm">
+                    <div class="package-manager-header">
+                      <h3 class="package-manager-title">npm</h3>
+                      <span class="package-manager-default">Default</span>
+                    </div>
+                    <p class="package-manager-description">
+                      The most widely used package manager for JavaScript.
+                      Pre-installed with Node.js.
+                    </p>
+                    <div class="code-block">
+                      <button
+                        class="code-copy-btn"
+                        aria-label="Copy code to clipboard"
+                      >
+                        Copy
+                      </button>
+                      <pre><code class="language-bash"># Use npm (default)
+npm-updater ls
+npm-updater update prettier</code></pre>
+                    </div>
+                  </div>
+
+                  <div class="package-manager-card" id="pnpm">
+                    <div class="package-manager-header">
+                      <h3 class="package-manager-title">pnpm</h3>
+                      <span class="package-manager-badge">Fast</span>
+                    </div>
+                    <p class="package-manager-description">
+                      Fast, disk space efficient package manager that uses hard
+                      links and symlinks.
+                    </p>
+                    <div class="code-block">
+                      <button
+                        class="code-copy-btn"
+                        aria-label="Copy code to clipboard"
+                      >
+                        Copy
+                      </button>
+                      <pre><code class="language-bash"># Use pnpm
+npm-updater --pm pnpm ls
+npm-updater --pm pnpm update prettier</code></pre>
+                    </div>
+                  </div>
+
+                  <div class="package-manager-card" id="yarn">
+                    <div class="package-manager-header">
+                      <h3 class="package-manager-title">Yarn</h3>
+                      <span class="package-manager-badge">Classic</span>
+                    </div>
+                    <p class="package-manager-description">
+                      Fast, reliable, and secure dependency management.
+                      Available in classic and modern versions.
+                    </p>
+                    <div class="code-block">
+                      <button
+                        class="code-copy-btn"
+                        aria-label="Copy code to clipboard"
+                      >
+                        Copy
+                      </button>
+                      <pre><code class="language-bash"># Use Yarn
+npm-updater --pm yarn ls
+npm-updater --pm yarn update prettier</code></pre>
+                    </div>
+                  </div>
+
+                  <div class="package-manager-card" id="bun">
+                    <div class="package-manager-header">
+                      <h3 class="package-manager-title">Bun</h3>
+                      <span class="package-manager-badge">Ultra Fast</span>
+                    </div>
+                    <p class="package-manager-description">
+                      Incredibly fast JavaScript runtime, package manager, and
+                      test runner.
+                    </p>
+                    <div class="code-block">
+                      <button
+                        class="code-copy-btn"
+                        aria-label="Copy code to clipboard"
+                      >
+                        Copy
+                      </button>
+                      <pre><code class="language-bash"># Use Bun
+npm-updater --pm bun ls
+npm-updater --pm bun update prettier</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ls Command -->
+              <section id="ls-command" class="section">
+                <h2 class="section-title">📋 ls Command</h2>
+
+                <div class="command-section">
+                  <p class="command-description">
+                    Lists all globally installed packages with their current
+                    versions using the specified package manager.
+                  </p>
+
+                  <h3 class="subsection-title">Syntax</h3>
+                  <div class="code-block">
+                    <button
+                      class="code-copy-btn"
+                      aria-label="Copy code to clipboard"
+                    >
+                      Copy
+                    </button>
+                    <pre><code class="language-bash">npm-updater [--pm <package-manager></package-manager>] ls</code></pre>
+                  </div>
+
+                  <h3 class="subsection-title">Aliases</h3>
+                  <ul class="feature-list">
+                    <li><code>list</code> - Alternative command name</li>
+                  </ul>
+
+                  <h3 class="subsection-title">Examples</h3>
+                  <div class="tabbed-content">
+                    <div class="tab-buttons">
+                      <button class="tab-btn active" data-tab="ls-npm">
+                        npm
+                      </button>
+                      <button class="tab-btn" data-tab="ls-pnpm">pnpm</button>
+                      <button class="tab-btn" data-tab="ls-yarn">Yarn</button>
+                      <button class="tab-btn" data-tab="ls-bun">Bun</button>
+                    </div>
+
+                    <div class="tab-content active" data-tab="ls-npm">
+                      <div class="code-block">
+                        <button
+                          class="code-copy-btn"
+                          aria-label="Copy code to clipboard"
+                        >
+                          Copy
+                        </button>
+                        <pre><code class="language-bash"># Use npm (default)
+npm-updater ls
+npm-updater list
+
+# Output:
+/usr/local/lib/node_modules
+├── prettier@3.1.0
+├── typescript@5.3.2
+├── eslint@8.55.0
+└── jest@29.7.0</code></pre>
+                      </div>
+                    </div>
+
+                    <div class="tab-content" data-tab="ls-pnpm">
+                      <div class="code-block">
+                        <button
+                          class="code-copy-btn"
+                          aria-label="Copy code to clipboard"
+                        >
+                          Copy
+                        </button>
+                        <pre><code class="language-bash"># Use pnpm
+npm-updater --pm pnpm ls
+npm-updater --pm pnpm list
+
+# Output:
+/home/user/.local/share/pnpm/global
+├── @types/node@20.8.0
+├── @vue/cli@5.0.8
+├── prettier@3.1.0
+├── typescript@5.3.2
+├── eslint@8.55.0
+└── jest@29.7.0</code></pre>
+                      </div>
+                    </div>
+
+                    <div class="tab-content" data-tab="ls-yarn">
+                      <div class="code-block">
+                        <button
+                          class="code-copy-btn"
+                          aria-label="Copy code to clipboard"
+                        >
+                          Copy
+                        </button>
+                        <pre><code class="language-bash"># Use Yarn
+npm-updater --pm yarn ls
+npm-updater --pm yarn list
+
+# Output:
+yarn global v1.22.19
+├─ @angular/cli@16.2.0
+├─ @babel/core@7.23.0
+├─ @types/node@20.8.0
+├─ prettier@3.1.0
+├─ typescript@5.3.2
+├─ eslint@8.55.0
+└─ jest@29.7.0</code></pre>
+                      </div>
+                    </div>
+
+                    <div class="tab-content" data-tab="ls-bun">
+                      <div class="code-block">
+                        <button
+                          class="code-copy-btn"
+                          aria-label="Copy code to clipboard"
+                        >
+                          Copy
+                        </button>
+                        <pre><code class="language-bash"># Use Bun
+npm-updater --pm bun ls
+npm-updater --pm bun list
+
+# Output:
+/root/.bun/install/global
+├── @nuxt/cli@3.8.0
+├── @types/node@20.8.0
+├── @vue/cli@5.0.8
+├── prettier@3.1.0
+├── typescript@5.3.2
+├── eslint@8.55.0
+└── jest@29.7.0</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- update Command -->
+              <section id="update-command" class="section">
+                <h2 class="section-title">🔄 update Command</h2>
+
+                <div class="command-section">
+                  <p class="command-description">
+                    Updates a specific package to its latest version (or a
+                    specified version) using the specified package manager.
+                  </p>
+
+                  <h3 class="subsection-title">Syntax</h3>
+                  <div class="code-block">
+                    <button
+                      class="code-copy-btn"
+                      aria-label="Copy code to clipboard"
+                    >
+                      Copy
+                    </button>
+                    <pre><code class="language-bash">npm-updater [--pm <package-manager></package-manager>] update <package-name></package-name>[@version]</code></pre>
+                  </div>
+
+                  <h3 class="subsection-title">Aliases</h3>
+                  <ul class="feature-list">
+                    <li><code>upgrade</code> - Alternative command name</li>
+                    <li><code>-u</code> - Short flag</li>
+                    <li><code>--update</code> - Long flag</li>
+                  </ul>
+
+                  <h3 class="subsection-title">Examples</h3>
+                  <div class="tabbed-content">
+                    <div class="tab-buttons">
+                      <button class="tab-btn active" data-tab="update-basic">
+                        Basic Update
+                      </button>
+                      <button class="tab-btn" data-tab="update-version">
+                        Specific Version
+                      </button>
+                      <button class="tab-btn" data-tab="update-special">
+                        Special Versions
+                      </button>
+                    </div>
+
+                    <div class="tab-content active" data-tab="update-basic">
+                      <div class="code-block">
+                        <button
+                          class="code-copy-btn"
+                          aria-label="Copy code to clipboard"
+                        >
+                          Copy
+                        </button>
+                        <pre><code class="language-bash"># Update to latest version
+npm-updater update prettier
+npm-updater --pm pnpm update typescript
+npm-updater --pm yarn update eslint
+
+# Output:
+Updating prettier to 3.1.1 using npm...
+✅ prettier updated successfully!</code></pre>
+                      </div>
+                    </div>
+
+                    <div class="tab-content" data-tab="update-version">
+                      <div class="code-block">
+                        <button
+                          class="code-copy-btn"
+                          aria-label="Copy code to clipboard"
+                        >
+                          Copy
+                        </button>
+                        <pre><code class="language-bash"># Update to specific version
+npm-updater update react@18.2.0
+npm-updater update typescript@5.0.0
+npm-updater --pm pnpm update @vue/cli@5.0.8
+npm-updater --pm yarn update @angular/cli@16.2.0
+
+# Update scoped packages to specific versions
+npm-updater update @types/node@20.8.0
+npm-updater update @babel/core@7.23.0
+npm-updater update @eslint/js@8.52.0
+
+# Update with semver ranges
+npm-updater update "react@^18.0.0"
+npm-updater update "typescript@~5.0.0"</code></pre>
+                      </div>
+                    </div>
+
+                    <div class="tab-content" data-tab="update-special">
+                      <div class="code-block">
+                        <button
+                          class="code-copy-btn"
+                          aria-label="Copy code to clipboard"
+                        >
+                          Copy
+                        </button>
+                        <pre><code class="language-bash"># Update to special versions
+npm-updater update @google/gemini-cli@nightly
+npm-updater update experimental-tool@dev
+npm-updater update next@canary
+
+# Common distribution tags
+npm-updater update react@next
+npm-updater update react@beta
+npm-updater update react@alpha
+npm-updater update node@latest
+npm-updater update typescript@beta
+
+# Scoped packages with special versions
+npm-updater update @types/node@nightly
+npm-updater update @babel/core@next
+npm-updater update @vue/cli@beta
+npm-updater update @angular/cli@rc
+npm-updater update @testing-library/dom@next
+
+# Experimental and development versions
+npm-updater update vite@experimental
+npm-updater update eslint@dev
+npm-updater update prettier@beta
+npm-updater update webpack@alpha</code></pre>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="alert alert-info">
+                    <div class="alert-icon">
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        aria-hidden="true"
+                      >
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                      </svg>
+                    </div>
+                    <div class="alert-content">
+                      <strong>Tip:</strong> You can specify any version format
+                      including semver ranges, dist-tags like
+                      <code>latest</code>, <code>next</code>, <code>beta</code>,
+                      or special versions like <code>@nightly</code>,
+                      <code>@dev</code>, <code>@preview</code>.
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- updateall Command -->
+              <section id="updateall-command" class="section">
+                <h2 class="section-title">🚀 updateall Command</h2>
+
+                <div class="command-section">
+                  <p class="command-description">
+                    Scans all global packages and updates them to their latest
+                    versions using the specified package manager. Automatically
+                    detects and handles conflicts.
+                  </p>
+
+                  <h3 class="subsection-title">Syntax</h3>
+                  <div class="code-block">
+                    <button
+                      class="code-copy-btn"
+                      aria-label="Copy code to clipboard"
+                    >
+                      Copy
+                    </button>
+                    <pre><code class="language-bash">npm-updater [--pm <package-manager></package-manager>] updateall</code></pre>
+                  </div>
+
+                  <h3 class="subsection-title">Features</h3>
+                  <ul class="feature-list">
+                    <li>Automatically detects all global packages</li>
+                    <li>Compares versions with package registry</li>
+                    <li>Updates packages sequentially to avoid conflicts</li>
+                    <li>Supports special versions (nightly, dev, preview)</li>
+                    <li>Provides detailed progress feedback</li>
+                    <li>Handles errors gracefully</li>
+                  </ul>
+
+                  <h3 class="subsection-title">Examples</h3>
+                  <div class="code-block">
+                    <button
+                      class="code-copy-btn"
+                      aria-label="Copy code to clipboard"
+                    >
+                      Copy
+                    </button>
+                    <pre><code class="language-bash"># Update all packages using npm (default)
+npm-updater updateall
+
+# Update all packages using pnpm
+npm-updater --pm pnpm updateall
+
+# Update all packages using Yarn
+npm-updater --pm yarn updateall
+
+# Output:
+Checking for globally installed packages using npm...
+Found 25 globally installed packages
+Checking for available updates...
+
+prettier: 3.1.0 → 3.1.1
+typescript: 5.3.2 → 5.3.3
+eslint: 8.55.0 → 8.56.0
+
+Found 3 packages with updates available.
+Starting updates...
+
+Updating prettier to 3.1.1 using npm...
+✅ prettier updated successfully!
+Updating typescript to 5.3.3 using npm...
+✅ typescript updated successfully!
+Updating eslint to 8.56.0 using npm...
+✅ eslint updated successfully!
+
+🎉 All updates completed!</code></pre>
+                  </div>
+
+                  <div class="alert alert-warning">
+                    <div class="alert-icon">
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+                        ></path>
+                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                      </svg>
+                    </div>
+                    <div class="alert-content">
+                      <strong>Note:</strong> The updateall command may take
+                      several minutes depending on the number of packages and
+                      your internet connection. Each package is updated
+                      individually to ensure stability.
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- latestversion Command -->
+              <section id="latestversion-command" class="section">
+                <h2 class="section-title">🔍 latestversion Command</h2>
+
+                <div class="command-section">
+                  <p class="command-description">
+                    Displays the latest available version of any package in the
+                    npm registry using the specified package manager.
+                  </p>
+
+                  <h3 class="subsection-title">Syntax</h3>
+                  <div class="code-block">
+                    <button
+                      class="code-copy-btn"
+                      aria-label="Copy code to clipboard"
+                    >
+                      Copy
+                    </button>
+                    <pre><code class="language-bash">npm-updater [--pm <package-manager></package-manager>] latestversion <package-name></package-name></code></pre>
+                  </div>
+
+                  <h3 class="subsection-title">Features</h3>
+                  <ul class="feature-list">
+                    <li>Queries the npm registry for the latest version</li>
+                    <li>Works for any npm package</li>
+                    <li>Quick version checking without installation</li>
+                    <li>Supports scoped packages</li>
+                  </ul>
+
+                  <h3 class="subsection-title">Examples</h3>
+                  <div class="tabbed-content">
+                    <div class="tab-buttons">
+                      <button class="tab-btn active" data-tab="lv-basic">
+                        Basic Usage
+                      </button>
+                      <button class="tab-btn" data-tab="lv-scoped">
+                        Scoped Packages
+                      </button>
+                      <button class="tab-btn" data-tab="lv-special">
+                        Special Versions
+                      </button>
+                    </div>
+
+                    <div class="tab-content active" data-tab="lv-basic">
+                      <div class="code-block">
+                        <button
+                          class="code-copy-btn"
+                          aria-label="Copy code to clipboard"
+                        >
+                          Copy
+                        </button>
+                        <pre><code class="language-bash"># Check latest version of popular packages
+npm-updater latestversion prettier
+npm-updater latestversion react
+npm-updater latestversion typescript
+
+# Output:
+Fetching latest version of prettier using npm...
+Latest version of prettier: 3.1.1</code></pre>
+                      </div>
+                    </div>
+
+                    <div class="tab-content" data-tab="lv-scoped">
+                      <div class="code-block">
+                        <button
+                          class="code-copy-btn"
+                          aria-label="Copy code to clipboard"
+                        >
+                          Copy
+                        </button>
+                        <pre><code class="language-bash"># Check scoped packages
+npm-updater latestversion @types/node
+npm-updater latestversion @vue/cli
+npm-updater latestversion @angular/cli
+npm-updater latestversion @babel/core
+npm-updater latestversion @eslint/js
+npm-updater latestversion @testing-library/dom
+npm-updater latestversion @storybook/addon-essentials
+npm-updater latestversion @nestjs/cli
+npm-updater latestversion @remix-run/dev
+
+# Output:
+Fetching latest version of @types/node using npm...
+Latest version of @types/node: 20.8.10
+
+Fetching latest version of @vue/cli using npm...
+Latest version of @vue/cli: 5.0.8</code></pre>
+                      </div>
+                    </div>
+
+                    <div class="tab-content" data-tab="lv-special">
+                      <div class="code-block">
+                        <button
+                          class="code-copy-btn"
+                          aria-label="Copy code to clipboard"
+                        >
+                          Copy
+                        </button>
+                        <pre><code class="language-bash"># Check special versions
+npm-updater latestversion react@next
+npm-updater latestversion node@latest
+npm-updater latestversion typescript@beta
+npm-updater latestversion react@alpha
+npm-updater latestversion webpack@rc
+npm-updater latestversion eslint@dev
+
+# Check special versions of scoped packages
+npm-updater latestversion @types/node@latest
+npm-updater latestversion @babel/core@next
+npm-updater latestversion @vue/cli@beta
+npm-updater latestversion @angular/cli@rc
+npm-updater latestversion @storybook/addon-essentials@next
+
+# Output:
+Fetching latest version of react@next using npm...
+Latest version of react@next: 18.3.0-next.1
+
+Fetching latest version of typescript@beta using npm...
+Latest version of typescript@beta: 5.4.0-beta</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- version Command -->
+              <section id="version-command" class="section">
+                <h2 class="section-title">📦 version Command</h2>
+
+                <div class="command-section">
+                  <p class="command-description">
+                    Displays the current version of npm-updater itself.
+                  </p>
+
+                  <h3 class="subsection-title">Syntax</h3>
+                  <div class="code-block">
+                    <button
+                      class="code-copy-btn"
+                      aria-label="Copy code to clipboard"
+                    >
+                      Copy
+                    </button>
+                    <pre><code class="language-bash">npm-updater version</code></pre>
+                  </div>
+
+                  <h3 class="subsection-title">Aliases</h3>
+                  <ul class="feature-list">
+                    <li><code>--version</code> - Long flag</li>
+                    <li><code>-v</code> - Short flag</li>
+                  </ul>
+
+                  <h3 class="subsection-title">Examples</h3>
+                  <div class="code-block">
+                    <button
+                      class="code-copy-btn"
+                      aria-label="Copy code to clipboard"
+                    >
+                      Copy
+                    </button>
+                    <pre><code class="language-bash"># All of these show the same result
+npm-updater version
+npm-updater --version
+npm-updater -v
+
+# Output:
+Version: 0.0.12</code></pre>
+                  </div>
+                </div>
+              </section>
+
+              <!-- help Command -->
+              <section id="help-command" class="section">
+                <h2 class="section-title">❓ help Command</h2>
+
+                <div class="command-section">
+                  <p class="command-description">
+                    Displays usage information, available commands, and help
+                    documentation.
+                  </p>
+
+                  <h3 class="subsection-title">Syntax</h3>
+                  <div class="code-block">
+                    <button
+                      class="code-copy-btn"
+                      aria-label="Copy code to clipboard"
+                    >
+                      Copy
+                    </button>
+                    <pre><code class="language-bash">npm-updater help</code></pre>
+                  </div>
+
+                  <h3 class="subsection-title">Aliases</h3>
+                  <ul class="feature-list">
+                    <li><code>--help</code> - Long flag</li>
+                    <li><code>-h</code> - Short flag</li>
+                  </ul>
+
+                  <h3 class="subsection-title">Examples</h3>
+                  <div class="code-block">
+                    <button
+                      class="code-copy-btn"
+                      aria-label="Copy code to clipboard"
+                    >
+                      Copy
+                    </button>
+                    <pre><code class="language-bash"># All of these show help
+npm-updater help
+npm-updater --help
+npm-updater -h
+
+# Output:
+Usage: npm-updater [--pm <package-manager></package-manager>] <command></command>
+
+Package Managers:
+  --pm npm                Use npm (default)
+  --pm pnpm               Use pnpm
+  --pm yarn               Use Yarn
+  --pm bun                Use Bun
+
+Commands:
+  version(-v, --version)        Show npm-updater version
+  ls                            List all global packages
+  updateall                     Update all global packages
+  update                        Update single global package
+  help                          Show this help message
+  latestversion                 Show latest version of a npm package
+  about                         Show information about npm-updater
+
+Options:
+  --help, -h                    Show this help message
+  --pm <package-manager></package-manager>        Specify package manager (npm, pnpm, yarn, bun)
+  --update, -u                  Update a package
+  --version, -v                 Show npm-updater version
+
+Examples:
+  npm-updater ls                    # List packages using npm
+  npm-updater --pm pnpm ls          # List packages using pnpm
+  npm-updater --pm yarn updateall   # Update all packages using Yarn
+  npm-updater update prettier       # Update prettier using npm (default)</code></pre>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Advanced Usage -->
+              <section id="advanced-usage" class="section">
+                <h2 class="section-title">⚙️ Advanced Usage</h2>
+
+                <div class="advanced-sections">
+                  <div class="advanced-section">
+                    <h3 class="subsection-title">Batch Operations</h3>
+                    <p>
+                      Combine multiple commands in a single script for automated
+                      workflows:
+                    </p>
+                    <div class="code-block">
+                      <button
+                        class="code-copy-btn"
+                        aria-label="Copy code to clipboard"
+                      >
+                        Copy
+                      </button>
+                      <pre><code class="language-bash">#!/bin/bash
+
+# Check for outdated packages
+echo "Checking for outdated packages..."
+npm-updater ls
+
+# Update all packages
+echo "Updating all packages..."
+npm-updater updateall
+
+# Verify updates
+echo "Verifying updates..."
+npm-updater ls</code></pre>
+                    </div>
+                  </div>
+
+                  <div class="advanced-section">
+                    <h3 class="subsection-title">CI/CD Integration</h3>
+                    <p>Use npm-updater in continuous integration pipelines:</p>
+                    <div class="code-block">
+                      <button
+                        class="code-copy-btn"
+                        aria-label="Copy code to clipboard"
+                      >
+                        Copy
+                      </button>
+                      <pre><code class="language-yaml"># GitHub Actions example
+name: Update Global Packages
+on:
+  schedule:
+    - cron: '0 0 * * 0' # Weekly on Sunday
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install npm-updater
+        run: |
+          git clone https://github.com/involvex/npm-global-updater.git
+          cd npm-global-updater
+          npm install
+          npm run build
+      - name: Update global packages
+        run: |
+          cd npm-global-updater
+          ./bin/npm-updater.js updateall</code></pre>
+                    </div>
+                  </div>
+
+                  <div class="advanced-section">
+                    <h3 class="subsection-title">Error Handling</h3>
+                    <p>Handle errors gracefully in your scripts:</p>
+                    <div class="code-block">
+                      <button
+                        class="code-copy-btn"
+                        aria-label="Copy code to clipboard"
+                      >
+                        Copy
+                      </button>
+                      <pre><code class="language-bash">#!/bin/bash
+
+# Update with error handling
+update_package() {
+    local package=$1
+    echo "Updating $package..."
+    if npm-updater update "$package"; then
+        echo "✅ Successfully updated $package"
+    else
+        echo "❌ Failed to update $package"
+        return 1
+    fi
+}
+
+# Update specific packages
+packages=("prettier" "typescript" "eslint")
+
+for package in "${packages[@]}"; do
+    update_package "$package" || echo "Continuing with next package..."
+done</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Examples -->
+              <section id="examples" class="section">
+                <h2 class="section-title">💡 Real-world Examples</h2>
+
+                <div class="examples-grid">
+                  <div class="example-card">
+                    <h3 class="example-title">Development Setup</h3>
+                    <p class="example-description">
+                      Fresh development environment setup with essential tools.
+                    </p>
+                    <div class="code-block">
+                      <button
+                        class="code-copy-btn"
+                        aria-label="Copy code to clipboard"
+                      >
+                        Copy
+                      </button>
+                      <pre><code class="language-bash"># Install development tools globally
+npm-updater update prettier typescript eslint jest
+
+# Verify installations
+npm-updater ls</code></pre>
+                    </div>
+                  </div>
+
+                  <div class="example-card">
+                    <h3 class="example-title">Team Environment Sync</h3>
+                    <p class="example-description">
+                      Ensure all team members have the same tool versions.
+                    </p>
+                    <div class="code-block">
+                      <button
+                        class="code-copy-btn"
+                        aria-label="Copy code to clipboard"
+                      >
+                        Copy
+                      </button>
+                      <pre><code class="language-bash"># Update to latest stable versions
+npm-updater updateall
+
+# Check for critical updates
+npm-updater latestversion typescript
+npm-updater latestversion eslint</code></pre>
+                    </div>
+                  </div>
+
+                  <div class="example-card">
+                    <h3 class="example-title">Multi-Project Workflow</h3>
+                    <p class="example-description">
+                      Manage packages across different package managers.
+                    </p>
+                    <div class="code-block">
+                      <button
+                        class="code-copy-btn"
+                        aria-label="Copy code to clipboard"
+                      >
+                        Copy
+                      </button>
+                      <pre><code class="language-bash"># Check npm packages
+npm-updater ls
+
+# Check pnpm packages
+npm-updater --pm pnpm ls
+
+# Update Yarn packages
+npm-updater --pm yarn updateall</code></pre>
+                    </div>
+                  </div>
+
+                  <div class="example-card">
+                    <h3 class="example-title">Monitoring Tool</h3>
+                    <p class="example-description">
+                      Monitor for outdated packages regularly.
+                    </p>
+                    <div class="code-block">
+                      <button
+                        class="code-copy-btn"
+                        aria-label="Copy code to clipboard"
+                      >
+                        Copy
+                      </button>
+                      <pre><code class="language-bash"># Quick version check for specific tools
+npm-updater latestversion prettier
+npm-updater latestversion typescript
+npm-updater latestversion eslint
+npm-updater latestversion jest</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Next Steps -->
+              <section class="section">
+                <h2 class="section-title">🎯 Next Steps</h2>
+
+                <div class="next-steps-grid">
+                  <div class="next-step-card">
+                    <h3 class="next-step-title">API Reference</h3>
+                    <p class="next-step-description">
+                      Explore the TypeScript API and programmatic usage of
+                      npm-updater.
+                    </p>
+                    <a href="../api/index.html" class="btn btn-primary"
+                      >View API Docs</a
+                    >
+                  </div>
+
+                  <div class="next-step-card">
+                    <h3 class="next-step-title">Installation</h3>
+                    <p class="next-step-description">
+                      Haven't installed npm-updater yet? Follow our step-by-step
+                      installation guide.
+                    </p>
+                    <a href="installation.html" class="btn btn-secondary"
+                      >View Installation Guide</a
+                    >
+                  </div>
+
+                  <div class="next-step-card">
+                    <h3 class="next-step-title">Contribute</h3>
+                    <p class="next-step-description">
+                      Help improve npm-updater by contributing code,
+                      documentation, or reporting issues.
+                    </p>
+                    <a
+                      href="https://github.com/involvex/npm-global-updater/blob/main/CONTRIBUTING.md"
+                      class="btn btn-secondary"
+                      target="_blank"
+                      rel="noopener"
+                      >Contributing Guide</a
+                    >
+                  </div>
+                </div>
+              </section>
+            </article>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3 class="footer-title">npm-updater</h3>
+            <p class="footer-description">
+              A powerful command-line tool for managing and updating globally
+              installed npm packages.
+            </p>
+            <div class="footer-links">
+              <a
+                href="https://github.com/involvex/npm-global-updater"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                  ></path>
+                </svg>
+                GitHub
+              </a>
+              <a
+                href="https://github.com/involvex/npm-global-updater/issues"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                Issues
+              </a>
+              <a
+                href="https://github.com/involvex/npm-global-updater/discussions"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                  ></path>
+                </svg>
+                Discussions
+              </a>
+            </div>
+          </div>
+
+          <div class="footer-section">
+            <h3 class="footer-title">Documentation</h3>
+            <ul class="footer-links">
+              <li>
+                <a href="installation.html" class="footer-link">Installation</a>
+              </li>
+              <li><a href="usage.html" class="footer-link">Usage</a></li>
+              <li>
+                <a href="../api/index.html" class="footer-link"
+                  >API Reference</a
+                >
+              </li>
+              <li>
+                <a href="../changelog.html" class="footer-link">Changelog</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h3 class="footer-title">Package Managers</h3>
+            <ul class="footer-links">
+              <li><a href="usage.html#npm" class="footer-link">npm</a></li>
+              <li><a href="usage.html#pnpm" class="footer-link">pnpm</a></li>
+              <li><a href="usage.html#yarn" class="footer-link">Yarn</a></li>
+              <li><a href="usage.html#bun" class="footer-link">Bun</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h3 class="footer-title">Community</h3>
+            <ul class="footer-links">
+              <li>
+                <a
+                  href="https://github.com/involvex/npm-global-updater/blob/main/CONTRIBUTING.md"
+                  class="footer-link"
+                  >Contributing</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://github.com/involvex/npm-global-updater/blob/main/LICENSE"
+                  class="footer-link"
+                  >License</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://github.com/involvex/npm-global-updater/issues/new/choose"
+                  class="footer-link"
+                  >Report Issue</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://github.com/involvex/npm-global-updater/discussions/new/choose"
+                  class="footer-link"
+                  >Request Feature</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p class="footer-copyright">
+            © 2024 npm-updater. Built with
+            <a
+              href="https://bun.sh/"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+              >Bun</a
+            >,
+            <a
+              href="https://www.typescriptlang.org/"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+              >TypeScript</a
+            >,
+            <a
+              href="https://eslint.org/"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+              >ESLint</a
+            >, and
+            <a
+              href="https://prettier.io/"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+              >Prettier</a
+            >.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/prismjs@1.29.0/components/prism-core.min.js"></script>
+    <script src="https://unpkg.com/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="../assets/main.js"></script>
+
+    <!-- Page-specific JavaScript -->
+    <script>
+      // Enhanced tabbed content functionality with proper scoping and accessibility
+      document.addEventListener("DOMContentLoaded", function () {
+        const tabContainers = document.querySelectorAll(".tabbed-content");
+
+        tabContainers.forEach((container, containerIndex) => {
+          const tabButtons = container.querySelectorAll(".tab-btn");
+          const tabContents = container.querySelectorAll(".tab-content");
+          const tabListId = `tablist-${containerIndex}`;
+
+          // Set up ARIA attributes
+          container.setAttribute("role", "tablist");
+          container.setAttribute("aria-label", "Tab navigation");
+
+          tabButtons.forEach((button, index) => {
+            const tabId = `tab-${containerIndex}-${index}`;
+            const panelId = `panel-${containerIndex}-${index}`;
+
+            // Set ARIA attributes for tab
+            button.setAttribute("role", "tab");
+            button.setAttribute("id", tabId);
+            button.setAttribute("aria-controls", panelId);
+            button.setAttribute("tabindex", index === 0 ? "0" : "-1");
+
+            // Set ARIA attributes for panel
+            const content = tabContents[index];
+            if (content) {
+              content.setAttribute("role", "tabpanel");
+              content.setAttribute("id", panelId);
+              content.setAttribute("aria-labelledby", tabId);
+            }
+
+            button.addEventListener("click", () => {
+              activateTab(container, button, tabButtons, tabContents);
+            });
+
+            // Add keyboard support
+            button.addEventListener("keydown", e => {
+              const currentIndex = Array.from(tabButtons).indexOf(button);
+              let nextIndex;
+
+              switch (e.key) {
+                case "ArrowLeft":
+                  e.preventDefault();
+                  nextIndex =
+                    currentIndex > 0 ? currentIndex - 1 : tabButtons.length - 1;
+                  tabButtons[nextIndex].focus();
+                  break;
+                case "ArrowRight":
+                  e.preventDefault();
+                  nextIndex =
+                    currentIndex < tabButtons.length - 1 ? currentIndex + 1 : 0;
+                  tabButtons[nextIndex].focus();
+                  break;
+                case "Home":
+                  e.preventDefault();
+                  tabButtons[0].focus();
+                  break;
+                case "End":
+                  e.preventDefault();
+                  tabButtons[tabButtons.length - 1].focus();
+                  break;
+                case "Enter":
+                case " ":
+                  e.preventDefault();
+                  activateTab(container, button, tabButtons, tabContents);
+                  break;
+              }
+            });
+          });
+        });
+
+        // Function to activate a specific tab
+        function activateTab(container, activeButton, tabButtons, tabContents) {
+          const targetTab = activeButton.dataset.tab;
+
+          // Remove active state from all tabs in this container
+          tabButtons.forEach(btn => {
+            btn.classList.remove("active");
+            btn.setAttribute("aria-selected", "false");
+            btn.setAttribute("tabindex", "-1");
+          });
+
+          tabContents.forEach(content => {
+            content.classList.remove("active");
+            content.setAttribute("aria-hidden", "true");
+          });
+
+          // Activate the clicked tab
+          activeButton.classList.add("active");
+          activeButton.setAttribute("aria-selected", "true");
+          activeButton.setAttribute("tabindex", "0");
+
+          // Find the target content by matching data-tab attributes
+          const targetContent = Array.from(tabContents).find(
+            content => content.dataset.tab === targetTab,
+          );
+
+          if (targetContent) {
+            targetContent.classList.add("active");
+            targetContent.setAttribute("aria-hidden", "false");
+          } else {
+            console.warn(`No content found for tab: ${targetTab}`);
+          }
+        }
+
+        // Initialize first tab as active for each tab group
+        tabContainers.forEach((container, containerIndex) => {
+          const firstButton = container.querySelector(".tab-btn");
+          const firstContent = container.querySelector(".tab-content");
+
+          if (firstButton && firstContent) {
+            firstButton.classList.add("active");
+            firstButton.setAttribute("aria-selected", "true");
+            firstContent.classList.add("active");
+            firstContent.setAttribute("aria-hidden", "false");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
