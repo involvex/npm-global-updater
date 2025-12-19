@@ -243,15 +243,28 @@ jobs:
             echo "ℹ️  Using default patch release"
           fi
 
-          echo "📦 Running: npm version $RELEASE_TYPE"
+          echo "📦 Bumping version: $RELEASE_TYPE"
 
-          # Run npm version with proper error handling
-          if npm version "$RELEASE_TYPE"; then
+          # Get current version
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "📋 Current version: $CURRENT_VERSION"
+
+          # Use npm version without running post scripts to avoid bun dependency
+          if npm version "$RELEASE_TYPE" --no-git-tag-version --no-commit-hooks; then
             echo "✅ Version bumped successfully"
             # Get the new version
             NEW_VERSION=$(node -p "require('./package.json').version")
             echo "📋 New version: $NEW_VERSION"
             echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+            
+            # Create and commit the version change
+            git add package.json package-lock.json
+            git commit -m "chore: bump version to $NEW_VERSION"
+            echo "✅ Version commit created"
+            
+            # Push the commit
+            git push origin main
+            echo "✅ Version commit pushed to repository"
           else
             echo "❌ Failed to bump version"
             exit 1
