@@ -79,108 +79,6 @@ function showlogo() {
         ░▀▀▀░▀░▀░░▀░░▀▀▀░▀▀▀░░▀░░▀▀▀░▀░▀`);
 }
 
-// package.json
-var package_default;
-var init_package = __esm(() => {
-  package_default = {
-    name: "@involvex/npm-global-updater",
-    version: "0.1.7",
-    description: "global npm package updater",
-    license: "MIT",
-    author: "involvex",
-    main: "bin/npm-updater.js",
-    type: "module",
-    repository: {
-      type: "git",
-      url: "https://github.com/involvex/npm-global-updater"
-    },
-    bin: {
-      "npm-updater": "bin/npm-updater.js"
-    },
-    scripts: {
-      lint: "eslint src ",
-      "lint:fix": "eslint src --fix",
-      format: "prettier --write .",
-      "format:check": "prettier --check .",
-      dev: "bun run src/index.ts",
-      start: "bun bin/npm-updater.js",
-      build: "bun build src/index.ts  --target node --outfile bin/npm-updater.js",
-      prebuild: "bun run format && bun run lint:fix && bun run typecheck",
-      typecheck: "tsc --noEmit",
-      "build:portable": "bun build --compile src/index.ts --outfile bin/npm-updater.exe --compile-autoload-package-json --compile-autoload-tsconfig",
-      prepublish: "bun run build",
-      changelog: "changelogen --output CHANGELOG.md ",
-      postversion: "bun run build",
-      release: "bun run scripts/release.ts"
-    },
-    devDependencies: {
-      "@eslint/js": "^9.39.2",
-      "@eslint/json": "^0.14.0",
-      "@types/bun": "^1.3.5",
-      changelogen: "^0.6.2",
-      eslint: "^9.39.2",
-      globals: "^16.5.0",
-      prettier: "^3.7.4",
-      "typescript-eslint": "^8.50.0"
-    },
-    peerDependencies: {
-      typescript: "^5.9.3"
-    },
-    dependencies: {
-      jiti: "^2.6.1"
-    },
-    files: [
-      "src/**",
-      "bin/**",
-      "./",
-      ".",
-      "package.json"
-    ],
-    packageManager: "bun@1.3.5",
-    readme: "README.md",
-    homepage: "https://github.com/involvex/npm-global-updater#readme",
-    bugs: "https://github.com/involvex/npm-global-updater/issues",
-    keywords: [
-      "npm",
-      "global",
-      "updater",
-      "bun",
-      "npm-updater",
-      "npm-global-updater",
-      "updater",
-      "update"
-    ],
-    categories: [
-      "Other"
-    ],
-    sponsor: {
-      url: "https://github.com/sponsors/involvex"
-    },
-    funding: {
-      type: "github",
-      url: "https://github.com/sponsors/involvex"
-    },
-    dist: {
-      bin: [
-        "bin/npm-updater.js",
-        "bin/npm-updater.exe"
-      ]
-    },
-    directories: {
-      bin: "bin",
-      docs: "docs",
-      src: "src",
-      scripts: "scripts"
-    },
-    galleryBanner: {
-      color: "#000000",
-      theme: "dark"
-    },
-    icon: "assets/logo.png",
-    banner: "assets/banner.png"
-  };
-});
-
 // src/commands/ls.ts
 var exports_ls = {};
 __export(exports_ls, {
@@ -392,7 +290,7 @@ var init_update = __esm(() => {
 
 // src/config/configManager.ts
 import { promises as fs } from "fs";
-import { join, dirname } from "path";
+import { join as join2, dirname as dirname2 } from "path";
 import { homedir } from "os";
 
 class ConfigManager {
@@ -401,8 +299,8 @@ class ConfigManager {
   dataPath;
   config = null;
   constructor() {
-    this.configPath = join(homedir(), ".config", "npm-updater", "config.json");
-    this.dataPath = join(homedir(), ".config", "npm-updater", "data");
+    this.configPath = join2(homedir(), ".config", "npm-updater", "config.json");
+    this.dataPath = join2(homedir(), ".config", "npm-updater", "data");
   }
   static getInstance() {
     if (!ConfigManager.instance) {
@@ -416,7 +314,7 @@ class ConfigManager {
   }
   async ensureDirectories() {
     try {
-      await fs.mkdir(dirname(this.configPath), { recursive: true });
+      await fs.mkdir(dirname2(this.configPath), { recursive: true });
       await fs.mkdir(this.dataPath, { recursive: true });
     } catch {
       console.warn("Failed to create config directories");
@@ -441,7 +339,7 @@ class ConfigManager {
       },
       export: {
         defaultFormat: "txt",
-        defaultDirectory: join(homedir(), "Downloads"),
+        defaultDirectory: join2(homedir(), "Downloads"),
         includeTimestamps: true,
         autoTimestamp: true
       },
@@ -475,7 +373,7 @@ class ConfigManager {
     if (!this.config) {
       throw new Error("Config not initialized");
     }
-    const configDir = dirname(this.configPath);
+    const configDir = dirname2(this.configPath);
     await fs.mkdir(configDir, { recursive: true });
     await fs.writeFile(this.configPath, JSON.stringify(this.config, null, 2), "utf-8");
   }
@@ -496,7 +394,7 @@ class ConfigManager {
     return this.dataPath;
   }
   async savePackageMetadata(packageData) {
-    const packageFile = join(this.dataPath, "packages.json");
+    const packageFile = join2(this.dataPath, "packages.json");
     let packages = [];
     try {
       const data = await fs.readFile(packageFile, "utf-8");
@@ -511,7 +409,7 @@ class ConfigManager {
     await fs.writeFile(packageFile, JSON.stringify(packages, null, 2));
   }
   async getPackageMetadata(packageManager) {
-    const packageFile = join(this.dataPath, "packages.json");
+    const packageFile = join2(this.dataPath, "packages.json");
     try {
       const data = await fs.readFile(packageFile, "utf-8");
       const packages = JSON.parse(data);
@@ -524,7 +422,7 @@ class ConfigManager {
     }
   }
   async saveAlertHistory(alert) {
-    const alertsFile = join(this.dataPath, "alerts.json");
+    const alertsFile = join2(this.dataPath, "alerts.json");
     let alerts = [];
     try {
       const data = await fs.readFile(alertsFile, "utf-8");
@@ -538,7 +436,7 @@ class ConfigManager {
     await fs.writeFile(alertsFile, JSON.stringify(filteredAlerts, null, 2));
   }
   async getAlertHistory(days) {
-    const alertsFile = join(this.dataPath, "alerts.json");
+    const alertsFile = join2(this.dataPath, "alerts.json");
     try {
       const data = await fs.readFile(alertsFile, "utf-8");
       let alerts = JSON.parse(data);
@@ -558,7 +456,7 @@ class ConfigManager {
     cutoffDate.setDate(cutoffDate.getDate() - retentionDays);
     const alerts = await this.getAlertHistory();
     const filteredAlerts = alerts.filter((alert) => new Date(alert.timestamp) > cutoffDate);
-    const alertsFile = join(this.dataPath, "alerts.json");
+    const alertsFile = join2(this.dataPath, "alerts.json");
     await fs.writeFile(alertsFile, JSON.stringify(filteredAlerts, null, 2));
   }
 }
@@ -774,7 +672,7 @@ var init_packageTracker = __esm(() => {
 
 // src/export/exportManager.ts
 import { promises as fs2 } from "fs";
-import { join as join2 } from "path";
+import { join as join3 } from "path";
 
 class ExportManager {
   configManager;
@@ -840,7 +738,7 @@ class ExportManager {
     const extension = options.format;
     const directory = config.export.defaultDirectory;
     const filename = `npm-packages${timestamp ? `-${timestamp}` : ""}.${extension}`;
-    return join2(directory, filename);
+    return join3(directory, filename);
   }
   getTimestamp() {
     const now = new Date;
@@ -1095,16 +993,16 @@ var init_export = __esm(() => {
 
 // src/notifications/notificationManager.ts
 import { promises as fs3 } from "fs";
-import { join as join3 } from "path";
+import { join as join4 } from "path";
 import { homedir as homedir2 } from "os";
-import { execSync } from "child_process";
+import { execSync as execSync2 } from "child_process";
 
 class NotificationManager {
   configManager;
   logPath;
   constructor() {
     this.configManager = ConfigManager.getInstance();
-    this.logPath = join3(homedir2(), ".config", "npm-updater", "notifications.log");
+    this.logPath = join4(homedir2(), ".config", "npm-updater", "notifications.log");
   }
   async initialize() {
     await this.configManager.initialize();
@@ -1149,7 +1047,7 @@ class NotificationManager {
         for (const alert of alerts) {
           const command = `powershell -Command "Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show('${alert.message}', 'NPM Package Alert', 'OK', 'Information')"`;
           try {
-            execSync(command);
+            execSync2(command);
           } catch (error) {
             console.warn("Desktop notification failed:", error);
           }
@@ -1878,11 +1776,130 @@ var exports_version = {};
 __export(exports_version, {
   showversion: () => showversion
 });
+import { join as join5 } from "path";
+import { readFileSync as readFileSync2 } from "node:fs";
+import { execSync as execSync3 } from "child_process";
+import { fileURLToPath as fileURLToPath2 } from "url";
+import { dirname as dirname3 } from "path";
 function showversion() {
-  console.log(`Version: ` + package_default.version);
+  console.log(`Version: ` + packageJson.version);
 }
+var packageJson;
 var init_version = __esm(() => {
-  init_package();
+  try {
+    const globalpath = execSync3('cmd /c "where npm-updater.cmd"').toString().trim();
+    const packageJsonPath = join5(globalpath, "../node_modules", "@involvex/npm-global-updater", "package.json");
+    const packageJsonContent = readFileSync2(packageJsonPath);
+    packageJson = JSON.parse(packageJsonContent.toString());
+  } catch {
+    const __filename2 = fileURLToPath2(import.meta.url);
+    const __dirname2 = dirname3(__filename2);
+    const packageJsonPath = join5(__dirname2, "..", "..", "package.json");
+    const packageJsonContent = readFileSync2(packageJsonPath);
+    packageJson = JSON.parse(packageJsonContent.toString());
+  }
+});
+
+// package.json
+var package_default;
+var init_package = __esm(() => {
+  package_default = {
+    name: "@involvex/npm-global-updater",
+    version: "0.1.8",
+    description: "global npm package updater",
+    license: "MIT",
+    author: "involvex",
+    main: "bin/npm-updater.js",
+    type: "module",
+    repository: {
+      type: "git",
+      url: "https://github.com/involvex/npm-global-updater"
+    },
+    bin: {
+      "npm-updater": "bin/npm-updater.js"
+    },
+    scripts: {
+      lint: "eslint src ",
+      "lint:fix": "eslint src --fix",
+      format: "prettier --write .",
+      "format:check": "prettier --check .",
+      dev: "bun run src/index.ts",
+      start: "bun bin/npm-updater.js",
+      build: "bun build src/index.ts  --target node --outfile bin/npm-updater.js",
+      prebuild: "bun run format && bun run lint:fix && bun run typecheck",
+      typecheck: "tsc --noEmit",
+      "build:portable": "bun build --compile src/index.ts --outfile bin/npm-updater.exe --compile-autoload-package-json --compile-autoload-tsconfig",
+      prepublish: "bun run build",
+      changelog: "changelogen --output CHANGELOG.md ",
+      postversion: "bun run build",
+      release: "bun run scripts/release.ts"
+    },
+    devDependencies: {
+      "@eslint/js": "^9.39.2",
+      "@eslint/json": "^0.14.0",
+      "@types/bun": "^1.3.5",
+      changelogen: "^0.6.2",
+      eslint: "^9.39.2",
+      globals: "^16.5.0",
+      prettier: "^3.7.4",
+      "typescript-eslint": "^8.50.0"
+    },
+    peerDependencies: {
+      typescript: "^5.9.3"
+    },
+    dependencies: {
+      jiti: "^2.6.1"
+    },
+    files: [
+      "src/**",
+      "bin/**",
+      "./",
+      ".",
+      "package.json"
+    ],
+    packageManager: "bun@1.3.5",
+    readme: "README.md",
+    homepage: "https://github.com/involvex/npm-global-updater#readme",
+    bugs: "https://github.com/involvex/npm-global-updater/issues",
+    keywords: [
+      "npm",
+      "global",
+      "updater",
+      "bun",
+      "npm-updater",
+      "npm-global-updater",
+      "updater",
+      "update"
+    ],
+    categories: [
+      "Other"
+    ],
+    sponsor: {
+      url: "https://github.com/sponsors/involvex"
+    },
+    funding: {
+      type: "github",
+      url: "https://github.com/sponsors/involvex"
+    },
+    dist: {
+      bin: [
+        "bin/npm-updater.js",
+        "bin/npm-updater.exe"
+      ]
+    },
+    directories: {
+      bin: "bin",
+      docs: "docs",
+      src: "src",
+      scripts: "scripts"
+    },
+    galleryBanner: {
+      color: "#000000",
+      theme: "dark"
+    },
+    icon: "assets/logo.png",
+    banner: "assets/banner.png"
+  };
 });
 
 // src/commands/about.ts
@@ -1912,8 +1929,24 @@ var init_about = __esm(() => {
 init_packageManager();
 
 // src/utils/self-updater.ts
-init_package();
+import { readFileSync } from "fs";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 import { exec } from "child_process";
+import { execSync } from "child_process";
+var packagejson;
+try {
+  const globalpath = execSync('cmd /c "where npm-updater.cmd"').toString().trim();
+  const packageJsonPath = join(globalpath, "../node_modules", "@involvex/npm-global-updater", "package.json");
+  const packageJsonContent = readFileSync(packageJsonPath);
+  packagejson = JSON.parse(packageJsonContent.toString());
+} catch {
+  const __filename2 = fileURLToPath(import.meta.url);
+  const __dirname2 = dirname(__filename2);
+  const packageJsonPath = join(__dirname2, "..", "..", "package.json");
+  const packageJsonContent = readFileSync(packageJsonPath);
+  packagejson = JSON.parse(packageJsonContent.toString());
+}
 var npmpackage = "https://registry.npmjs.org/@involvex/npm-global-updater/latest";
 async function getLatestVersion() {
   const response = await fetch(npmpackage);
@@ -1926,35 +1959,40 @@ async function getLatestVersion() {
 }
 async function notifyupdate() {
   const latestVersion = await getLatestVersion();
-  const currentVersion = package_default.version;
+  const currentVersion = packagejson.version;
   if (currentVersion < latestVersion) {
     console.log("=".repeat(60));
     console.log(`	A new version of npm-global-updater is available.
 `, `	Please update by running:
-`, "\tnpm install -g @involvex/npm-global-updater@latest");
+`, `	npm install -g @involvex/npm-global-updater@latest
+`, `	or run:
+`, `	npm-updater self-update
+`);
     console.log("=".repeat(60));
-    console.log("Do you want to update? (y/n)");
-    process.stdin.setEncoding("utf8");
-    process.stdin.on("data", (data) => {
-      const answer = data.toString().trim().toLowerCase();
-      if (answer === "y") {
-        exec("npm install -g @involvex/npm-global-updater@latest", (error, stdout, stderr) => {
-          if (error) {
-            console.error(`Error updating npm-global-updater: ${error}`);
-            return;
-          }
-          console.log(stdout);
-          console.error(stderr);
-          console.log("npm-global-updater updated successfully. Please restart the application.");
+    if (process.argv.includes("self-update")) {
+      console.log("Do you want to update? (y/n)");
+      process.stdin.setEncoding("utf8");
+      process.stdin.on("data", (data) => {
+        const answer = data.toString().trim().toLowerCase();
+        if (answer === "y") {
+          exec("npm install -g @involvex/npm-global-updater@latest", (error, stdout, stderr) => {
+            if (error) {
+              console.error(`Error updating npm-global-updater: ${error}`);
+              return;
+            }
+            console.log(stdout);
+            console.error(stderr);
+            console.log("npm-global-updater updated successfully. Please restart the application.");
+            process.exit(0);
+          });
+        } else {
+          console.log("Update cancelled.");
           process.exit(0);
-        });
-      } else {
-        console.log("Update cancelled.");
-        process.exit(0);
-      }
-      process.stdin.pause();
-      return true;
-    });
+        }
+        process.stdin.pause();
+        return true;
+      });
+    }
   } else if (latestVersion <= currentVersion) {
     if (process.argv.includes("self-update")) {
       console.log("You are using the latest version of npm-global-updater.");

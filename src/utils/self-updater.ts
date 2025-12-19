@@ -1,5 +1,30 @@
-import packagejson from "../../package.json";
+import { readFileSync } from "fs";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 import { exec } from "child_process";
+import { execSync } from "child_process";
+
+let packagejson: { version: string };
+
+try {
+  const globalpath = execSync('cmd /c "where npm-updater.cmd"')
+    .toString()
+    .trim();
+  const packageJsonPath = join(
+    globalpath,
+    "../node_modules",
+    "@involvex/npm-global-updater",
+    "package.json",
+  );
+  const packageJsonContent = readFileSync(packageJsonPath);
+  packagejson = JSON.parse(packageJsonContent.toString());
+} catch {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
+  const packageJsonPath = join(__dirname, "..", "..", "package.json");
+  const packageJsonContent = readFileSync(packageJsonPath);
+  packagejson = JSON.parse(packageJsonContent.toString());
+}
 
 const npmpackage =
   "https://registry.npmjs.org/@involvex/npm-global-updater/latest";
@@ -25,36 +50,41 @@ async function notifyupdate() {
     console.log(
       "\tA new version of npm-global-updater is available.\n",
       "\tPlease update by running:\n",
-      "\tnpm install -g @involvex/npm-global-updater@latest",
+      "\tnpm install -g @involvex/npm-global-updater@latest\n",
+      "\tor run:\n",
+      "\tnpm-updater self-update\n",
     );
     console.log("=".repeat(60));
-    console.log("Do you want to update? (y/n)");
-    process.stdin.setEncoding("utf8");
-    process.stdin.on("data", data => {
-      const answer = data.toString().trim().toLowerCase();
-      if (answer === "y") {
-        exec(
-          "npm install -g @involvex/npm-global-updater@latest",
-          (error, stdout, stderr) => {
-            if (error) {
-              console.error(`Error updating npm-global-updater: ${error}`);
-              return;
-            }
-            console.log(stdout);
-            console.error(stderr);
-            console.log(
-              "npm-global-updater updated successfully. Please restart the application.",
-            );
-            process.exit(0);
-          },
-        );
-      } else {
-        console.log("Update cancelled.");
-        process.exit(0);
-      }
-      process.stdin.pause(); // Pause stdin after handling the input
-      return true;
-    });
+
+    if (process.argv.includes("self-update")) {
+      console.log("Do you want to update? (y/n)");
+      process.stdin.setEncoding("utf8");
+      process.stdin.on("data", data => {
+        const answer = data.toString().trim().toLowerCase();
+        if (answer === "y") {
+          exec(
+            "npm install -g @involvex/npm-global-updater@latest",
+            (error, stdout, stderr) => {
+              if (error) {
+                console.error(`Error updating npm-global-updater: ${error}`);
+                return;
+              }
+              console.log(stdout);
+              console.error(stderr);
+              console.log(
+                "npm-global-updater updated successfully. Please restart the application.",
+              );
+              process.exit(0);
+            },
+          );
+        } else {
+          console.log("Update cancelled.");
+          process.exit(0);
+        }
+        process.stdin.pause(); // Pause stdin after handling the input
+        return true;
+      });
+    }
   } else if (latestVersion <= currentVersion) {
     if (process.argv.includes("self-update")) {
       console.log("You are using the latest version of npm-global-updater.");
