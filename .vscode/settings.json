@@ -1,28 +1,198 @@
 {
+  // ========================================================================
+  // DEBUGGING SETTINGS
+  // ========================================================================
+
+  // Debug console settings
+  "debug.console.fontSize": 14,
+  "debug.console.wordWrap": true,
+  "debug.showBreakpointsInOverviewRuler": true,
+  "debug.showInlineBreakpointCandidates": true,
+  "debug.allowBreakpointsEverywhere": true,
+  "debug.showInStatusBar": "always",
+  "debug.onTaskErrors": "debugAnyway",
+
+  // Auto configuration
+  "debug.autoAttach": "off",
+  "debug.javascript.unmapMissingSources": true,
+
+  // ========================================================================
+  // EDITOR SETTINGS FOR DEBUGGING
+  // ========================================================================
+
+  // Editor formatting and linting
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "editor.rulers": [80, 120],
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+
+  // Editor debugging features
+  "editor.gotoLocation.multipleReferences": "goto",
+  "editor.gotoLocation.multipleDefinitions": "goto",
+  "editor.gotoLocation.multipleDeclarations": "goto",
+  "editor.gotoLocation.multipleImplementations": "goto",
+  "editor.gotoLocation.multipleTypeDefinitions": "goto",
+
+  // Minimap settings
+  "editor.minimap.enabled": true,
+  "editor.minimap.showSlider": "always",
+  "editor.minimap.renderCharacters": false,
+
+  // ========================================================================
+  // FILE ASSOCIATIONS
+  // ========================================================================
+
+  "files.associations": {
+    "*.ts": "typescript",
+    "*.js": "javascript",
+    "*.json": "json",
+    "*.toml": "toml",
+    "*.md": "markdown"
+  },
+
+  // ========================================================================
+  // SEARCH AND INTELLISENSE
+  // ========================================================================
+
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/*.code-search": true,
+    "**/bin": true,
+    "**/.coverage": true,
+    "**/dist": true,
+    "**/build": true
+  },
+
+  "typescript.preferences.includePackageJsonAutoImports": "auto",
+  "typescript.suggest.autoImports": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+
+  // ========================================================================
+  // TERMINAL SETTINGS
+  // ========================================================================
+
+  "terminal.integrated.fontSize": 14,
+  "terminal.integrated.scrollback": 10000,
+  "terminal.integrated.tabs.location": "editor",
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "terminal.integrated.profiles.windows": {
+    "PowerShell": {
+      "source": "PowerShell",
+      "icon": "terminal-powershell"
+    },
+    "Command Prompt": {
+      "path": "cmd.exe",
+      "icon": "terminal-cmd"
+    }
+  },
+
+  // ========================================================================
+  // BUN AND NODE.JS SPECIFIC
+  // ========================================================================
+
+  "node.restart": true,
+  "npm.packageManager": "bun",
+  "npm.exclude": "**/{.git,node_modules,.coverage,dist,build}/**",
+
+  // ========================================================================
+  // CODE QUALITY AND FORMATTING
+  // ========================================================================
+
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+
+  "prettier.singleQuote": true,
+  "prettier.semi": true,
+  "prettier.trailingComma": "es5",
+  "prettier.arrowParens": "avoid",
+  "prettier.printWidth": 100,
+
+  // ========================================================================
+  // EMET AND EDITOR EXPERIMENTS
+  // ========================================================================
+
+  "emmet.includeLanguages": {
+    "typescript": "html",
+    "javascript": "javascriptreact"
+  },
+
+  // ========================================================================
+  // WORKSPACE SPECIFIC SETTINGS
+  // ========================================================================
+
+  "typescript.preferences.includePackageJsonAutoImports": "on",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "typescript.suggest.autoImports": true,
+
+  "javascript.preferences.includePackageJsonAutoImports": "on",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "javascript.suggest.autoImports": true,
+
+  // ========================================================================
+  // ERROR AND WARNING SETTINGS
+  // ========================================================================
+
+  "problems.decorations.enabled": true,
+  "typescript.preferences.includePackageJsonAutoImports": "on",
+
+  // ========================================================================
+  // PERFORMANCE SETTINGS
+  // ========================================================================
+
+  "extensions.experimental.affinity": {
+    "ms-vscode.vscode-typescript-next": 1,
+    "bradlc.vscode-tailwindcss": 1
+  },
+
+  "search.smartCase": true,
+  "search.globalFindClipboard": true,
+  "search.seedOnFocusChange": true,
+
+  // ========================================================================
+  // GIT SETTINGS
+  // ========================================================================
+
+  "git.autofetch": true,
+  "git.autostash": true,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+  "git.untrackedChanges": "separate",
+
+  // ========================================================================
+  // THEME AND APPEARANCE
+  // ========================================================================
+
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.editorAssociations": {
+    "*.md": "default"
+  },
+
+  // ========================================================================
+  // KEYBOARD SHORTCUTS
+  // ========================================================================
+
+  "keyboard.dispatch": "keyCode",
+
+  // ========================================================================
+  // BUNDLER SPECIFIC
+  // ========================================================================
+
   "files.watcherExclude": {
     "**/.git/objects/**": true,
     "**/.git/subtree-cache/**": true,
-    "**/.hg/store/**": true,
-    "**/.dart_tool": true,
-    "**/node_modules/**": true
-  },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "cSpell.words": [
-    "bunfig",
-    "dotenv",
-    "eslintcache",
-    "latestversion",
-    "packageinfo",
-    "porteable",
-    "prebuild",
-    "rgba",
-    "runls",
-    "runupdate",
-    "runupdateall",
-    "showabout",
-    "showconfiguration",
-    "showlatestversion",
-    "showversion",
-    "updateall"
-  ]
+    "**/node_modules/*/**": true,
+    "**/bin/**": true,
+    "**/.coverage/**": true,
+    "**/dist/**": true,
+    "**/build/**": true
+  }
 }

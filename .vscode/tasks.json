@@ -1,0 +1,146 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "npm: typecheck",
+      "type": "shell",
+      "command": "bun",
+      "args": ["run", "typecheck"],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": ["$tsc"]
+    },
+    {
+      "label": "npm: build",
+      "type": "shell",
+      "command": "bun",
+      "args": ["run", "build"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "dependsOn": "npm: typecheck"
+    },
+    {
+      "label": "npm: lint",
+      "type": "shell",
+      "command": "bun",
+      "args": ["run", "lint"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": ["$eslint"]
+    },
+    {
+      "label": "npm: test",
+      "type": "shell",
+      "command": "bun",
+      "args": ["test"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "npm: test:watch",
+      "type": "shell",
+      "command": "bun",
+      "args": ["test", "--watch"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "isBackground": true
+    },
+    {
+      "label": "npm: dev:watch",
+      "type": "shell",
+      "command": "bun",
+      "args": ["run", "dev:watch"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "isBackground": true
+    },
+    {
+      "label": "Clean Build Artifacts",
+      "type": "shell",
+      "command": "rm",
+      "args": ["-rf", "bin/*", ".coverage", "node_modules/.cache"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Generate Debug Config",
+      "type": "shell",
+      "command": "node",
+      "args": [
+        "-e",
+        "const fs=require('fs');const path=require('path');const debugConfig={logLevel:'debug',enableNotifications:false,testMode:true,cacheDir:'./.vscode-debug-cache',maxRetries:3,timeout:30000,verbose:true};fs.writeFileSync(path.join(process.cwd(),'.vscode','debug-config.json'),JSON.stringify(debugConfig,null,2));console.log('✅ Debug configuration generated');"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": []
+    }
+  ]
+}

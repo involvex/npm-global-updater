@@ -20,6 +20,7 @@
     "format:check": "prettier --check .",
     "dev": "bun run src/index.ts",
     "dev:watch": "bun build src/index.ts --target node --outfile bin/npm-updater.js --watch",
+    "dev:debug": "bun run --inspect-brk src/index.ts",
     "start": "bun bin/npm-updater.js",
     "build": "bun build src/index.ts  --target node --outfile bin/npm-updater.js",
     "prebuild": "bun run format && bun run lint:fix && bun run typecheck",

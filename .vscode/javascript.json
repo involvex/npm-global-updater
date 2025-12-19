@@ -1,0 +1,211 @@
+{
+  "Debug Breakpoint": {
+    "prefix": "debug",
+    "body": ["debugger; // Breakpoint set at ${1:line}", "$0"],
+    "description": "Add a debugger statement"
+  },
+  "Console Log Object": {
+    "prefix": "clog",
+    "body": ["console.log('${1:variable}:', ${1:variable});", "$0"],
+    "description": "Log variable name and value"
+  },
+  "Console Log with Label": {
+    "prefix": "clog-label",
+    "body": ["console.log('🔍 ${1:label}:', ${2:object});", "$0"],
+    "description": "Log with emoji label"
+  },
+  "Debug Environment Variables": {
+    "prefix": "cenv",
+    "body": [
+      "console.log('🌍 Environment:', {",
+      "  NODE_ENV: process.env.NODE_ENV,",
+      "  BUN_ENV: process.env.BUN_ENV,",
+      "  DEBUG: process.env.DEBUG,",
+      "  NPM_UPDATER_PM: process.env.NPM_UPDATER_PM",
+      "});",
+      "$0"
+    ],
+    "description": "Debug environment variables"
+  },
+  "Debug Process Arguments": {
+    "prefix": "cargs",
+    "body": [
+      "console.log('📋 Process args:', process.argv);",
+      "console.log('📋 Parsed args:', ${1:args});",
+      "$0"
+    ],
+    "description": "Debug process arguments"
+  },
+  "Debug Function Entry": {
+    "prefix": "cfunc",
+    "body": [
+      "console.log('🚀 Entering ${1:functionName}(${2:params})');",
+      "$0"
+    ],
+    "description": "Log function entry"
+  },
+  "Debug Function Exit": {
+    "prefix": "creturn",
+    "body": [
+      "console.log('✅ Exiting ${1:functionName} with:', ${2:result});",
+      "$0"
+    ],
+    "description": "Log function return value"
+  },
+  "Debug Async Function": {
+    "prefix": "casync",
+    "body": [
+      "console.log('⏳ ${1:functionName} starting...');",
+      "try {",
+      "  const ${2:result} = await ${3:asyncCall}();",
+      "  console.log('✅ ${1:functionName} completed:', ${2:result});",
+      "  return ${2:result};",
+      "} catch (error) {",
+      "  console.error('❌ ${1:functionName} failed:', error);",
+      "  throw error;",
+      "}",
+      "$0"
+    ],
+    "description": "Debug async function with try-catch"
+  },
+  "Debug Package Manager Context": {
+    "prefix": "cpm",
+    "body": [
+      "console.log('📦 Package Manager Context:', {",
+      "  packageManager: ${1:packageManager},",
+      "  command: ${2:command},",
+      "  args: ${3:args}",
+      "});",
+      "$0"
+    ],
+    "description": "Debug package manager context"
+  },
+  "Debug Performance Timing": {
+    "prefix": "ctime",
+    "body": [
+      "const startTime = Date.now();",
+      "// ${1:your code here}",
+      "const endTime = Date.now();",
+      "console.log(`⏱️ ${2:operation} took ${endTime - startTime}ms`);",
+      "$0"
+    ],
+    "description": "Time function execution"
+  },
+  "Debug Array Contents": {
+    "prefix": "carr",
+    "body": [
+      "console.log('📋 ${1:arrayName} (${1:arrayName}.length: ${1:arrayName}.length):');",
+      "${1:arrayName}.forEach((item, index) => console.log(`  [${index}]:`, item));",
+      "$0"
+    ],
+    "description": "Debug array with indexes"
+  },
+  "Debug Object Properties": {
+    "prefix": "cobj",
+    "body": [
+      "console.log('🏗️ ${1:objectName} properties:');",
+      "Object.keys(${1:objectName}).forEach(key => console.log(`  ${key}:`, ${1:objectName}[key]));",
+      "$0"
+    ],
+    "description": "Debug object properties"
+  },
+  "Error Boundary": {
+    "prefix": "cerror",
+    "body": [
+      "try {",
+      "  // ${1:code that might fail}",
+      "  ${2:problematicCode}",
+      "} catch (error) {",
+      "  console.error('❌ Error in ${3:context}:', error);",
+      "  console.error('Stack trace:', error.stack);",
+      "  throw error; // Re-throw if you want the error to propagate",
+      "}",
+      "$0"
+    ],
+    "description": "Error boundary with detailed logging"
+  },
+  "Debug Configuration": {
+    "prefix": "cconfig",
+    "body": [
+      "console.log('⚙️ Configuration Debug:', {",
+      "  environment: process.env.NODE_ENV,",
+      "  bunEnv: process.env.BUN_ENV,",
+      "  isTest: process.env.NPM_UPDATER_TEST_MODE === 'true',",
+      "  debug: process.env.DEBUG,",
+      "  verbose: process.env.VERBOSE === 'true'",
+      "});",
+      "$0"
+    ],
+    "description": "Debug application configuration"
+  },
+  "Debug CLI Arguments": {
+    "prefix": "ccli",
+    "body": [
+      "console.log('💻 CLI Arguments:', {",
+      "  rawArgs: process.argv,",
+      "  nodeArgs: process.argv.slice(0, 2),",
+      "  scriptArgs: process.argv.slice(2),",
+      "  parsedArgs: ${1:parsedArgs}",
+      "});",
+      "$0"
+    ],
+    "description": "Debug CLI arguments parsing"
+  },
+  "Performance Monitor": {
+    "prefix": "cperf",
+    "body": [
+      "const perfMonitor = {",
+      "  start: Date.now(),",
+      "  mark: (name) => console.log(`📊 ${name}: ${Date.now() - perfMonitor.start}ms`),",
+      "  end: (name) => {",
+      "    const duration = Date.now() - perfMonitor.start;",
+      "    console.log(`🏁 ${name} completed: ${duration}ms`);",
+      "    return duration;",
+      "  }",
+      "};",
+      "$0"
+    ],
+    "description": "Performance monitoring utility"
+  },
+  "Debug Network/Request": {
+    "prefix": "crequest",
+    "body": [
+      "console.log('🌐 Request Debug:', {",
+      "  url: ${1:url},",
+      "  method: ${2:method},",
+      "  headers: ${3:headers},",
+      "  body: ${4:body},",
+      "  timestamp: new Date().toISOString()",
+      "});",
+      "$0"
+    ],
+    "description": "Debug network requests"
+  },
+  "Debug File System": {
+    "prefix": "cfs",
+    "body": [
+      "console.log('📁 File System Debug:', {",
+      "  cwd: process.cwd(),",
+      "  file: __filename,",
+      "  directory: __dirname,",
+      "  exists: require('fs').existsSync(${1:filePath}),",
+      "  stats: ${2:getFileStats}(${1:filePath})",
+      "});",
+      "$0"
+    ],
+    "description": "Debug file system operations"
+  },
+  "Debug Database Query": {
+    "prefix": "cdb",
+    "body": [
+      "console.log('🗄️ Database Query Debug:', {",
+      "  query: ${1:query},",
+      "  params: ${2:params},",
+      "  timestamp: new Date().toISOString(),",
+      "  result: ${3:queryResult}",
+      "});",
+      "$0"
+    ],
+    "description": "Debug database operations"
+  }
+}

@@ -1,0 +1,264 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    // ========================================================================
+    // LAUNCH CONFIGURATIONS - Start debugging from scratch
+    // ========================================================================
+
+    {
+      "name": "🚀 Launch TypeScript (src/index.ts)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/index.ts",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "--inspect-brk"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "NODE_ENV": "development",
+        "BUN_ENV": "development",
+        "DEBUG": "*"
+      },
+      "sourceMaps": true,
+      "restart": true,
+      "runtimeArgs": ["run", "--inspect-brk", "src/index.ts"],
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "preLaunchTask": "npm: typecheck"
+    },
+
+    {
+      "name": "🚀 Launch Built JavaScript (bin/npm-updater.js)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/bin/npm-updater.js",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "NODE_ENV": "production",
+        "BUN_ENV": "production"
+      },
+      "sourceMaps": true,
+      "restart": true,
+      "skipFiles": ["<node_internals>/**"],
+      "preLaunchTask": "npm: build"
+    },
+
+    {
+      "name": "🔍 Launch with Arguments",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/index.ts",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "--inspect-brk"],
+      "args": ["ls"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "NODE_ENV": "development",
+        "BUN_ENV": "development"
+      },
+      "sourceMaps": true,
+      "runtimeArgs": ["run", "--inspect-brk", "src/index.ts"],
+      "inputFiles": {
+        "ls": []
+      }
+    },
+
+    {
+      "name": "🧪 Launch Tests (Debug Mode)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/bun",
+      "runtimeArgs": ["test", "--debug"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "NODE_ENV": "test",
+        "BUN_ENV": "test",
+        "NPM_UPDATER_TEST_MODE": "true",
+        "DEBUG": "*"
+      },
+      "sourceMaps": true,
+      "restart": true
+    },
+
+    {
+      "name": "🧪 Launch Specific Test File",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/bun",
+      "runtimeArgs": ["test", "--debug", "${file}"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "NODE_ENV": "test",
+        "BUN_ENV": "test",
+        "NPM_UPDATER_TEST_MODE": "true"
+      },
+      "sourceMaps": true,
+      "restart": true
+    },
+
+    // ========================================================================
+    // ATTACH CONFIGURATIONS - Connect to running processes
+    // ========================================================================
+
+    {
+      "name": "🔌 Attach to Bun Process (9229)",
+      "type": "node",
+      "request": "attach",
+      "port": 9229,
+      "restart": true,
+      "localRoot": "${workspaceFolder}",
+      "remoteRoot": ".",
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"]
+    },
+
+    {
+      "name": "🔌 Attach to Bun Process (Auto-detect)",
+      "type": "node",
+      "request": "attach",
+      "processId": "${command:extension.pickProcess}",
+      "restart": true,
+      "localRoot": "${workspaceFolder}",
+      "remoteRoot": ".",
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"]
+    },
+
+    // ========================================================================
+    // COMPOUND CONFIGURATIONS - Multiple configurations for complex scenarios
+    // ========================================================================
+
+    {
+      "name": "🔧 Debug: Build + Launch TypeScript",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/index.ts",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "--inspect-brk"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "NODE_ENV": "development",
+        "BUN_ENV": "development",
+        "DEBUG": "*"
+      },
+      "sourceMaps": true,
+      "preLaunchTask": "npm: build",
+      "postDebugTask": "npm: typecheck",
+      "runtimeArgs": ["run", "--inspect-brk", "src/index.ts"]
+    },
+
+    {
+      "name": "🔧 Debug: TypeScript with Hot Reload",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/index.ts",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "--inspect-brk"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "NODE_ENV": "development",
+        "BUN_ENV": "development",
+        "DEBUG": "*"
+      },
+      "sourceMaps": true,
+      "restart": true,
+      "runtimeArgs": ["run", "--inspect-brk", "src/index.ts"]
+    },
+
+    // ========================================================================
+    // PERFORMANCE AND PRODUCTION DEBUGGING
+    // ========================================================================
+
+    {
+      "name": "⚡ Performance Profile",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/index.ts",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "--inspect-brk"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "NODE_ENV": "production",
+        "BUN_ENV": "production",
+        "NODE_OPTIONS": "--cpu-prof --heap-prof"
+      },
+      "sourceMaps": true,
+      "runtimeArgs": ["run", "--inspect-brk", "src/index.ts"]
+    },
+
+    {
+      "name": "🎯 Debug with Custom Environment",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/index.ts",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "--inspect-brk"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "NODE_ENV": "development",
+        "BUN_ENV": "development",
+        "NPM_UPDATER_CONFIG_PATH": "${workspaceFolder}/.vscode/debug-config.json",
+        "DEBUG": "*",
+        "VERBOSE": "true"
+      },
+      "sourceMaps": true,
+      "runtimeArgs": ["run", "--inspect-brk", "src/index.ts"]
+    },
+
+    // ========================================================================
+    // COVERAGE AND QUALITY DEBUGGING
+    // ========================================================================
+
+    {
+      "name": "📊 Debug with Coverage",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/bun",
+      "runtimeArgs": ["test", "--debug", "--coverage"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "NODE_ENV": "test",
+        "BUN_ENV": "test",
+        "NPM_UPDATER_TEST_MODE": "true",
+        "DEBUG": "*"
+      },
+      "sourceMaps": true,
+      "restart": true
+    },
+
+    {
+      "name": "📊 Debug Specific Test with Coverage",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/bun",
+      "runtimeArgs": ["test", "--debug", "--coverage", "${file}"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "NODE_ENV": "test",
+        "BUN_ENV": "test",
+        "NPM_UPDATER_TEST_MODE": "true"
+      },
+      "sourceMaps": true,
+      "restart": true
+    }
+  ],
+  "compounds": [
+    {
+      "name": "🔄 Full Debug Workflow",
+      "configurations": [
+        "npm: typecheck",
+        "🚀 Launch TypeScript (src/index.ts)"
+      ]
+    }
+  ]
+}

@@ -2284,7 +2284,7 @@ var package_default;
 var init_package = __esm(() => {
   package_default = {
     name: "@involvex/npm-global-updater",
-    version: "0.1.37",
+    version: "0.1.38",
     description: "global npm package updater",
     license: "MIT",
     author: "involvex",
@@ -2304,6 +2304,7 @@ var init_package = __esm(() => {
       "format:check": "prettier --check .",
       dev: "bun run src/index.ts",
       "dev:watch": "bun build src/index.ts --target node --outfile bin/npm-updater.js --watch",
+      "dev:debug": "bun run --inspect-brk src/index.ts",
       start: "bun bin/npm-updater.js",
       build: "bun build src/index.ts  --target node --outfile bin/npm-updater.js",
       prebuild: "bun run format && bun run lint:fix && bun run typecheck",
@@ -2311,7 +2312,6 @@ var init_package = __esm(() => {
       "build:porteable": "bun build --compile src/index.ts --outfile bin/npm-updater.exe --compile-autoload-package-json --compile-autoload-tsconfig",
       prepublish: "bun run build",
       changelog: "changelogen --output CHANGELOG.md ",
-      postversion: "bun run build",
       release: "bun run scripts/release.ts",
       "docs:dev": "bun --watch run docs/index.html",
       docs: "bun run docs/index.html",

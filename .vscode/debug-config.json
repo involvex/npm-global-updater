@@ -1,0 +1,96 @@
+{
+  "debug": {
+    "logLevel": "debug",
+    "enableNotifications": false,
+    "testMode": true,
+    "cacheDir": "./.vscode-debug-cache",
+    "maxRetries": 3,
+    "timeout": 30000,
+    "verbose": true,
+    "sourceMaps": true,
+    "env": {
+      "development": {
+        "NODE_ENV": "development",
+        "BUN_ENV": "development",
+        "DEBUG": "*",
+        "VERBOSE": "true"
+      },
+      "test": {
+        "NODE_ENV": "test",
+        "BUN_ENV": "test",
+        "NPM_UPDATER_TEST_MODE": "true",
+        "DEBUG": "*"
+      },
+      "production": {
+        "NODE_ENV": "production",
+        "BUN_ENV": "production"
+      }
+    },
+    "breakpoints": {
+      "enable": true,
+      "uncaughtExceptions": true,
+      "unhandledRejections": true,
+      "breakOnFirstLine": false,
+      "breakOnEntry": false
+    },
+    "performance": {
+      "enableProfiling": true,
+      "enableHeapProfiling": true,
+      "cpuProfiling": false,
+      "memoryTracking": true
+    },
+    "coverage": {
+      "enable": true,
+      "threshold": 80,
+      "excludePatterns": ["**/node_modules/**", "**/tests/**", "**/coverage/**"]
+    },
+    "logging": {
+      "console": true,
+      "file": "./.vscode-debug.log",
+      "level": "debug",
+      "format": "json",
+      "maxFileSize": "10MB",
+      "maxFiles": 5
+    },
+    "remote": {
+      "enable": false,
+      "host": "localhost",
+      "port": 9229,
+      "timeout": 5000
+    },
+    "ui": {
+      "showVariableTypes": true,
+      "compactMode": false,
+      "theme": "dark",
+      "fontSize": 14,
+      "wordWrap": true
+    }
+  },
+  "scripts": {
+    "debug:start": "bun run --inspect-brk src/index.ts",
+    "debug:test": "bun test --debug",
+    "debug:watch": "bun run dev:watch",
+    "debug:attach": "node --inspect=9229",
+    "debug:profile": "node --cpu-prof --heap-prof --inspect-brk"
+  },
+  "aliases": {
+    "@": "./src",
+    "@commands": "./src/commands",
+    "@utils": "./src/utils",
+    "@config": "./src/config",
+    "@database": "./src/database",
+    "@export": "./src/export",
+    "@monitoring": "./src/monitoring",
+    "@notifications": "./src/notifications"
+  },
+  "files": {
+    "include": ["src/**", "tests/**", "bin/**"],
+    "exclude": [
+      "node_modules/**",
+      ".coverage/**",
+      "dist/**",
+      "build/**",
+      "**/.git/**"
+    ]
+  }
+}

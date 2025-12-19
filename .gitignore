@@ -38,3 +38,5 @@ EXAMPLES.md
 RELEASE_MANAGER.md
 
 .coverage
+.vscode\DEBUG_GUIDE.md
+.vscode/DEBUG_GUIDE.md

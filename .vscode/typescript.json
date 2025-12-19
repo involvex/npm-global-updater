@@ -1,0 +1,244 @@
+{
+  "Debug TypeScript Object": {
+    "prefix": "tslog",
+    "body": [
+      "console.log('🔍 ${1:variableName} (${1:variableName}):', ${1:variableName});",
+      "$0"
+    ],
+    "description": "Log TypeScript variable with type information"
+  },
+  "Debug TypeScript Function": {
+    "prefix": "tsfunc",
+    "body": [
+      "console.log('🚀 Entering ${1:functionName}(${2:params}): ${3:returnType}');",
+      "$0"
+    ],
+    "description": "Log TypeScript function entry with types"
+  },
+  "Debug Interface Property": {
+    "prefix": "tsinterface",
+    "body": [
+      "console.log('🏗️ ${1:interfaceName} properties:');",
+      "Object.entries(${2:object}).forEach(([key, value]) => {",
+      "  console.log(`  ${key} (${typeof value}):`, value);",
+      "});",
+      "$0"
+    ],
+    "description": "Debug interface object with property types"
+  },
+  "Debug Promise Resolution": {
+    "prefix": "tspromise",
+    "body": [
+      "console.log('⏳ ${1:operationName} starting...');",
+      "${2:promise}",
+      "  .then((result: ${3:T}) => {",
+      "    console.log('✅ ${1:operationName} resolved:', result);",
+      "    return result;",
+      "  })",
+      "  .catch((error: Error) => {",
+      "    console.error('❌ ${1:operationName} rejected:', error);",
+      "    throw error;",
+      "  });",
+      "$0"
+    ],
+    "description": "Debug Promise with TypeScript typing"
+  },
+  "Debug Async Function TypeScript": {
+    "prefix": "tsasync",
+    "body": [
+      "async function ${1:functionName}(${2:params}): Promise<${3:ReturnType}> {",
+      "  console.log('🚀 ${1:functionName} starting with:', ${2:params});",
+      "  try {",
+      "    const result = await ${4:asyncOperation}();",
+      "    console.log('✅ ${1:functionName} completed:', result);",
+      "    return result;",
+      "  } catch (error) {",
+      "    console.error('❌ ${1:functionName} failed:', error);",
+      "    throw error;",
+      "  }",
+      "}",
+      "$0"
+    ],
+    "description": "TypeScript async function with debugging"
+  },
+  "Debug Generic Function": {
+    "prefix": "tsgeneric",
+    "body": [
+      "function ${1:functionName}<T>(input: T): T {",
+      "  console.log('🔧 Generic function input type:', typeof input, input);",
+      "  console.log('🔧 Generic function input:', input);",
+      "  return input;",
+      "}",
+      "$0"
+    ],
+    "description": "Debug generic function with type information"
+  },
+  "Debug Enum": {
+    "prefix": "tsenum",
+    "body": [
+      "console.log('📋 ${1:enumName} debug:', {",
+      "  ${1:enumName},",
+      "  ${2:enumValue}: ${1:enumName}.${2:enumValue},",
+      "  allValues: Object.values(${1:enumName})",
+      "});",
+      "$0"
+    ],
+    "description": "Debug TypeScript enum"
+  },
+  "Debug Type Guard": {
+    "prefix": "tsguard",
+    "body": [
+      "function is${1:TypeName}(obj: unknown): obj is ${1:TypeName} {",
+      "  const isValid = ${2:typeGuardCondition};",
+      "  console.log(`🔍 Type guard is${1:TypeName}:`, {",
+      "    object: obj,",
+      "    isValid,",
+      "    reason: ${3:debugReason}",
+      "  });",
+      "  return isValid;",
+      "}",
+      "$0"
+    ],
+    "description": "Debug TypeScript type guard function"
+  },
+  "Debug Type Assertion": {
+    "prefix": "tsassert",
+    "body": [
+      "console.log('🎯 Type assertion debug:', {",
+      "  originalType: typeof ${1:value},",
+      "  originalValue: ${1:value},",
+      "  assertingTo: '${2:TypeName}'",
+      "});",
+      "const ${3:newVar} = ${1:value} as ${2:TypeName};",
+      "console.log('✅ After assertion:', ${3:newVar});",
+      "$0"
+    ],
+    "description": "Debug type assertion with logging"
+  },
+  "Debug Array Methods": {
+    "prefix": "tsarray",
+    "body": [
+      "console.log('📋 Array debug (${1:arrayName}.length: ${1:arrayName}.length):');",
+      "${1:arrayName}.forEach((item: ${2:ItemType}, index: number) => {",
+      "  console.log(`  [${index}] (${2:ItemType}):`, item);",
+      "});",
+      "$0"
+    ],
+    "description": "Debug TypeScript array with item types"
+  },
+  "Debug Class Property": {
+    "prefix": "tsclass",
+    "body": [
+      "console.log('🏗️ ${1:className} debug:', {",
+      "  instance: this,",
+      "  properties: Object.getOwnPropertyNames(this),",
+      "  ${2:propertyName}: this.${2:propertyName},",
+      "  ${3:propertyType}: this.${3:propertyType}",
+      "});",
+      "$0"
+    ],
+    "description": "Debug TypeScript class instance"
+  },
+  "Debug Constructor": {
+    "prefix": "tsconstructor",
+    "body": [
+      "constructor(${1:params}) {",
+      "  console.log('🏗️ ${2:ClassName} constructor called with:', ${1:params});",
+      "  console.log('🏗️ Constructor context:', this);",
+      "  // Initialize properties",
+      "  ${3:propertyInitializations}",
+      "}",
+      "$0"
+    ],
+    "description": "Debug TypeScript class constructor"
+  },
+  "Debug Module Import": {
+    "prefix": "tsimport",
+    "body": [
+      "console.log('📦 Import debug:', {",
+      "  module: '${1:moduleName}',",
+      "  imported: ${2:importedSymbol},",
+      "  type: typeof ${2:importedSymbol},",
+      "  isFunction: typeof ${2:importedSymbol} === 'function'",
+      "});",
+      "$0"
+    ],
+    "description": "Debug module imports with TypeScript"
+  },
+  "Debug API Response": {
+    "prefix": "tsapi",
+    "body": [
+      "console.log('🌐 API Response Debug:', {",
+      "  status: ${1:response}.status,",
+      "  statusText: ${1:response}.statusText,",
+      "  data: ${1:response}.data,",
+      "  headers: ${1:response}.headers,",
+      "  timestamp: new Date().toISOString()",
+      "});",
+      "$0"
+    ],
+    "description": "Debug API responses with TypeScript interfaces"
+  },
+  "Debug Event Handler": {
+    "prefix": "tsevent",
+    "body": [
+      "function ${1:handlerName}(event: ${2:EventType}): void {",
+      "  console.log('🎯 Event handler debug:', {",
+      "    eventType: event.type,",
+      "    eventTarget: event.target,",
+      "    eventData: ${3:eventData},",
+      "    timestamp: new Date().toISOString()",
+      "  });",
+      "  ${4:handlerLogic}",
+      "}",
+      "$0"
+    ],
+    "description": "Debug TypeScript event handlers"
+  },
+  "Debug Configuration Object": {
+    "prefix": "tsconfig",
+    "body": [
+      "console.log('⚙️ Configuration debug:', {",
+      "  NODE_ENV: process.env.NODE_ENV,",
+      "  BUN_ENV: process.env.BUN_ENV,",
+      "  config: ${1:configObject},",
+      "  configType: typeof ${1:configObject},",
+      "  requiredFields: ${2:requiredFields}",
+      "});",
+      "$0"
+    ],
+    "description": "Debug configuration objects with validation"
+  },
+  "Debug File Operation": {
+    "prefix": "tsfile",
+    "body": [
+      "console.log('📁 File operation debug:', {",
+      "  filePath: ${1:filePath},",
+      "  operation: '${2:operation}',",
+      "  exists: require('fs').existsSync(${1:filePath}),",
+      "  stats: ${3:getFileStats}(${1:filePath}),",
+      "  timestamp: new Date().toISOString()",
+      "});",
+      "$0"
+    ],
+    "description": "Debug file operations with TypeScript"
+  },
+  "Debug Error with Stack": {
+    "prefix": "tserror",
+    "body": [
+      "try {",
+      "  ${1:problematicCode}",
+      "} catch (error) {",
+      "  console.error('❌ Error details:', {",
+      "    message: error instanceof Error ? error.message : error,",
+      "    stack: error instanceof Error ? error.stack : 'No stack trace',",
+      "    name: error instanceof Error ? error.name : 'UnknownError',",
+      "    context: ${2:context}",
+      "  });",
+      "  throw error;",
+      "}",
+      "$0"
+    ],
+    "description": "Debug TypeScript errors with stack traces"
+  }
+}
