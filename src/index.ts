@@ -5,7 +5,7 @@ import {
 } from "./utils/packageManager";
 
 import { showlogo } from "./utils/logo";
-import notifyupdate from "./utils/npm-global-updater-release";
+import notifyupdate from "./utils/self-updater";
 
 export async function run() {
   notifyupdate();

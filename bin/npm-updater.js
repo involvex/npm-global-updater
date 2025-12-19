@@ -84,7 +84,7 @@ var package_default;
 var init_package = __esm(() => {
   package_default = {
     name: "@involvex/npm-global-updater",
-    version: "0.1.2",
+    version: "0.1.5",
     description: "global npm package updater",
     license: "MIT",
     author: "involvex",
@@ -1910,7 +1910,7 @@ var init_about = __esm(() => {
 // src/index.ts
 init_packageManager();
 
-// src/utils/npm-global-updater-release.ts
+// src/utils/self-updater.ts
 init_package();
 import { exec } from "child_process";
 var npmpackage = "https://registry.npmjs.org/@involvex/npm-global-updater/latest";
@@ -1959,11 +1959,11 @@ async function notifyupdate() {
     return false;
   }
 }
-var npm_global_updater_release_default = notifyupdate;
+var self_updater_default = notifyupdate;
 
 // src/index.ts
 async function run() {
-  npm_global_updater_release_default();
+  self_updater_default();
   const args = process.argv.slice(2);
   let packageManager;
   let commandIndex = 0;
