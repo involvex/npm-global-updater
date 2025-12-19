@@ -1,0 +1,26 @@
+name: Release Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release (e.g., 1.0.0)"
+        required: true
+        type: string
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun i
+      - run: bun run build
+      - run: bun run changelog
+      - run: git tag v$(jq -r .version package.json)
+      - run: bun run build
+      - run: git add .
+      - run: git commit -F Changelog.md
+      - run: git push origin v$(jq -r .version package.json)
