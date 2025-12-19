@@ -33,13 +33,6 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 # Finder (MacOS) folder config
 .DS_Store
 
-bin
-bin/*/**
-bin/**
-bin/npm-updater.js
-bin\npm-updater.js
-firebase-debug.log
-bin/npm-updater.js
 
 EXAMPLES.md
 RELEASE_MANAGER.md
