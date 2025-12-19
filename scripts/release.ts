@@ -170,75 +170,36 @@ class ReleaseManager {
   private async analyzeCommits(): Promise<void> {
     console.log("🔍 Analyzing commit history...");
 
-    // Get commits since last tag
-    const { stdout: logOutput } = await this.executeCommand(
-      "git log --oneline --no-merges --date=iso --pretty=format:%H|%an|%ad|%s",
-      "Getting commit history",
+    // Use simple git log format for maximum compatibility
+    const { stdout: simpleLogOutput } = await this.executeCommand(
+      "git log --oneline --no-merges",
+      "Getting commit history (simple format)",
       { silent: true },
     );
 
-    // Get file changes for each commit
-    const { stdout: filesOutput } = await this.executeCommand(
-      "git log --name-only --no-merges --date=iso --pretty=format:",
-      "Getting file changes",
-      { silent: true },
-    );
+    // Parse simple format: "hash message"
+    this.commits = simpleLogOutput
+      .split("\n")
+      .filter(line => line.trim())
+      .map(line => {
+        const parts = line.split(" ", 2);
+        const hash = parts[0] || "";
+        const message = parts.slice(1).join(" ") || "";
+        return {
+          hash,
+          message,
+          author: "Unknown",
+          date: new Date().toISOString(),
+          files: [],
+          linesAdded: 0,
+          linesRemoved: 0,
+        };
+      });
 
-    // Parse commit data
-    const commitLines = logOutput.split("\n").filter(line => line.trim());
-    const fileLines = filesOutput.split("\n").filter(line => line.trim());
-
-    this.commits = commitLines.map(line => {
-      const parts = line.split("|");
-      const hash = parts[0]?.trim() || "";
-      const author = parts[1]?.trim() || "";
-      const date = parts[2]?.trim() || "";
-      const message = parts.slice(3).join("|").trim();
-
-      return {
-        hash,
-        message,
-        author,
-        date,
-        files: [],
-        linesAdded: 0,
-        linesRemoved: 0,
-      };
-    });
-
-    // Parse file changes
-    let currentCommit = "";
-    let currentFiles: string[] = [];
-
-    for (const line of fileLines) {
-      if (line.match(/^[0-9a-f]{40}$/)) {
-        // This is a commit hash
-        if (currentCommit && currentFiles.length > 0) {
-          const commit = this.commits.find(c => c.hash === currentCommit);
-          if (commit) {
-            commit.files = [...currentFiles];
-          }
-        }
-        currentCommit = line;
-        currentFiles = [];
-      } else if (line.trim() && !line.startsWith("commit ")) {
-        // This is a file
-        currentFiles.push(line.trim());
-      }
-    }
-
-    // Process last commit
-    if (currentCommit && currentFiles.length > 0) {
-      const commit = this.commits.find(c => c.hash === currentCommit);
-      if (commit) {
-        commit.files = [...currentFiles];
-      }
-    }
+    console.log(`📊 Found ${this.commits.length} commits since last release`);
 
     // Parse conventional commits
     this.parseConventionalCommits();
-
-    console.log(`📊 Found ${this.commits.length} commits since last release`);
     console.log(
       `🏷️  Found ${this.conventionalCommits.length} conventional commits`,
     );
@@ -467,33 +428,19 @@ class ReleaseManager {
    * Detect files affected by the new version
    */
   private getVersionAffectedFiles(): string[] {
-    const affectedPatterns = [
-      "package.json",
-      "package-lock.json",
-      "bun.lock",
-      "CHANGELOG.md",
-      "README.md",
-      "src/**",
-      "bin/**",
-      "docs/**",
-      "scripts/**",
-    ];
-
     const allChangedFiles = new Set<string>();
 
-    // Collect all files that have changed
-    for (const commit of this.commits) {
-      for (const file of commit.files) {
-        // Skip deleted files
-        if (!existsSync(file)) continue;
+    // For now, return common version-affected files
+    // In a full implementation, we would analyze actual file changes
+    const commonFiles = [
+      "package.json",
+      "CHANGELOG.md",
+      "README.md"
+    ];
 
-        // Check if file matches affected patterns
-        for (const pattern of affectedPatterns) {
-          if (this.matchesPattern(file, pattern)) {
-            allChangedFiles.add(file);
-            break;
-          }
-        }
+    for (const file of commonFiles) {
+      if (existsSync(file)) {
+        allChangedFiles.add(file);
       }
     }
 
