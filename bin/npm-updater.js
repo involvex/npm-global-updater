@@ -302,7 +302,7 @@ var package_default;
 var init_package = __esm(() => {
   package_default = {
     name: "@involvex/npm-global-updater",
-    version: "0.0.3",
+    version: "0.0.4",
     description: "global npm package updater",
     license: "MIT",
     author: "involvex",
@@ -322,10 +322,10 @@ var init_package = __esm(() => {
       "format:check": "prettier --check .",
       dev: "bun run src/index.ts",
       start: "bun bin/npm-updater.js",
-      build: "bun build src/index.ts --target node --outfile bin/npm-updater.js",
+      build: "bun build src/index.ts --target node --outfile bin/npm-updater.js && echo '#!/usr/bin/env node' | cat bin/npm-updater.js > temp && mv temp bin/npm-updater.js",
       prebuild: "bun run format && bun run lint:fix && bun run typecheck",
       typecheck: "tsc --noEmit",
-      "build:porteable": "bun build --compile src/index.ts --outfile bin/npm-updater.exe"
+      "build:portable": "bun build --compile src/index.ts --outfile bin/npm-updater.exe"
     },
     devDependencies: {
       "@eslint/js": "^9.39.2",
