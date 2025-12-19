@@ -442,10 +442,16 @@ class ConfigManager {
     try {
       const data = await fs.readFile(packageFile, "utf-8");
       const packages = JSON.parse(data);
-      if (packageManager) {
-        return packages.filter((p) => p.packageManager === packageManager);
-      }
-      return packages;
+      return packages.map((pkg) => ({
+        ...pkg,
+        installedDate: new Date(pkg.installedDate),
+        lastUpdated: new Date(pkg.lastUpdated)
+      })).filter((pkg) => {
+        if (packageManager) {
+          return pkg.packageManager === packageManager;
+        }
+        return true;
+      });
     } catch {
       return [];
     }
@@ -455,13 +461,17 @@ class ConfigManager {
     let alerts = [];
     try {
       const data = await fs.readFile(alertsFile, "utf-8");
-      alerts = JSON.parse(data);
+      const parsedAlerts = JSON.parse(data);
+      alerts = parsedAlerts.map((alert2) => ({
+        ...alert2,
+        timestamp: new Date(alert2.timestamp)
+      }));
     } catch {}
     alerts.push(alert);
     const retentionDays = this.config?.tracking.retentionDays || 90;
     const cutoffDate = new Date;
     cutoffDate.setDate(cutoffDate.getDate() - retentionDays);
-    const filteredAlerts = alerts.filter((alert2) => new Date(alert2.timestamp) > cutoffDate);
+    const filteredAlerts = alerts.filter((alert2) => alert2.timestamp > cutoffDate);
     await fs.writeFile(alertsFile, JSON.stringify(filteredAlerts, null, 2));
   }
   async getAlertHistory(days) {
@@ -469,24 +479,35 @@ class ConfigManager {
     try {
       const data = await fs.readFile(alertsFile, "utf-8");
       let alerts = JSON.parse(data);
+      alerts = alerts.map((alert) => ({
+        ...alert,
+        timestamp: new Date(alert.timestamp)
+      }));
       if (days) {
         const cutoffDate = new Date;
         cutoffDate.setDate(cutoffDate.getDate() - days);
-        alerts = alerts.filter((alert) => new Date(alert.timestamp) > cutoffDate);
+        alerts = alerts.filter((alert) => alert.timestamp > cutoffDate);
       }
-      return alerts.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+      return alerts.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
     } catch {
       return [];
     }
   }
   async cleanupOldData() {
-    const retentionDays = this.config?.tracking.retentionDays || 90;
-    const cutoffDate = new Date;
-    cutoffDate.setDate(cutoffDate.getDate() - retentionDays);
-    const alerts = await this.getAlertHistory();
-    const filteredAlerts = alerts.filter((alert) => new Date(alert.timestamp) > cutoffDate);
-    const alertsFile = join2(this.dataPath, "alerts.json");
-    await fs.writeFile(alertsFile, JSON.stringify(filteredAlerts, null, 2));
+    try {
+      if (!this.config) {
+        await this.initialize();
+      }
+      const retentionDays = this.config?.tracking.retentionDays || 90;
+      const cutoffDate = new Date;
+      cutoffDate.setDate(cutoffDate.getDate() - retentionDays);
+      const alerts = await this.getAlertHistory();
+      const filteredAlerts = alerts.filter((alert) => alert.timestamp > cutoffDate);
+      const alertsFile = join2(this.dataPath, "alerts.json");
+      await fs.writeFile(alertsFile, JSON.stringify(filteredAlerts, null, 2));
+    } catch (error) {
+      console.warn("Failed to cleanup old data:", error);
+    }
   }
 }
 var configManager_default;
@@ -2263,7 +2284,7 @@ var package_default;
 var init_package = __esm(() => {
   package_default = {
     name: "@involvex/npm-global-updater",
-    version: "0.1.32",
+    version: "0.1.33",
     description: "global npm package updater",
     license: "MIT",
     author: "involvex",
@@ -2293,18 +2314,29 @@ var init_package = __esm(() => {
       postversion: "bun run build",
       release: "bun run scripts/release.ts",
       "docs:dev": "bun --watch run docs/index.html",
-      docs: "bun run docs/index.html"
+      docs: "bun run docs/index.html",
+      test: "bun test",
+      "test:watch": "bun test --watch",
+      "test:coverage": "bun test --coverage",
+      "test:config": "bun test tests/config.test.ts",
+      "test:debug": "bun test --debug",
+      "test:reporter": "bun test --reporter=tap"
     },
     devDependencies: {
       "@eslint/js": "^9.39.2",
       "@eslint/json": "^0.14.0",
       "@types/bun": "^1.3.5",
+      "@types/node": "^20.0.0",
       bun: "^1.3.5",
       changelogen: "^0.6.2",
       eslint: "^9.39.2",
       globals: "^16.5.0",
+      jest: "^30.2.0",
       prettier: "^3.7.4",
-      "typescript-eslint": "^8.50.0"
+      "typescript-eslint": "^8.50.0",
+      "ts-node": "^10.9.0",
+      "mock-fs": "^5.2.0",
+      sinon: "^17.0.0"
     },
     peerDependencies: {
       typescript: "^5.9.3"

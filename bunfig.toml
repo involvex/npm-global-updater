@@ -15,15 +15,34 @@
 # cache = ".bun-cache"
 
 [test]
-# Test runner configuration
-# Coverage reporting
-# coverage = true
+# Test runner configuration optimized for comprehensive testing
+# Coverage reporting with detailed output
+coverage = true
+coverageReporter = ["text", "lcov"]
+coverageDir = "./.coverage"
+preload = ["tests/global-mocks.ts", "tests/test-utils.ts"]
+timeout = 30000
+smol = true
+invalidOption = true
 
-# Run tests in parallel
-# parallel = true
+[test.reporter]
+junit = ".coverage/reports/junit.xml"
 
-# Watch mode
-# watch = true
+# Run tests in parallel for faster execution
+parallel = true
+
+# Watch mode for continuous testing during development
+watch = false
+
+# Test environment setup
+env = {
+  NODE_ENV = "test",
+  BUN_ENV = "test",
+  NPM_UPDATER_TEST_MODE = "true"
+}
+
+# File watching exclusions for test files
+# exclude = ["node_modules", "dist", "coverage"]
 
 [dev]
 # Development server configuration
@@ -67,10 +86,19 @@
 #   ".txt" = "text"
 # }
 
-# Environment variables
- env = {
-   NODE_ENV = "production"
- }
+# Environment variables for different environments
+[env.test]
+  NODE_ENV = "test"
+  BUN_ENV = "test"
+  NPM_UPDATER_TEST_MODE = "true"
+
+[env.production]
+  NODE_ENV = "production"
+  BUN_ENV = "production"
+
+[env.development]
+  NODE_ENV ="development"
+  BUN_ENV = "development"  
 
 #[install.security]                                                          
 #  scanner = "tsc"
