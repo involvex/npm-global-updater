@@ -4,14 +4,14 @@
   "description": "global npm package updater",
   "license": "MIT",
   "author": "involvex",
-  "main": "bin/npm-global-updater.js",
+  "main": "bin/npm-updater.js",
   "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/involvex/npm-global-updater"
   },
   "bin": {
-    "npm-updater": "bin/npm-global-updater.js"
+    "npm-updater": "bin/npm-updater.js"
   },
   "scripts": {
     "lint": "eslint src ",
@@ -19,9 +19,9 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "dev": "bun run src/index.ts",
-    "dev:watch": "bun build src/index.ts --target node --outfile bin/npm-global-updater.js --watch",
-    "start": "bun bin/npm-global-updater.js",
-    "build": "bun build src/index.ts  --target node --outfile bin/npm-global-updater.js",
+    "dev:watch": "bun build src/index.ts --target node --outfile bin/npm-updater.js --watch",
+    "start": "bun bin/npm-updater.js",
+    "build": "bun build src/index.ts  --target node --outfile bin/npm-updater.js",
     "prebuild": "bun run format && bun run lint:fix && bun run typecheck",
     "typecheck": "tsc --noEmit",
     "build:portable": "bun build --compile src/index.ts --outfile bin/npm-updater.exe --compile-autoload-package-json --compile-autoload-tsconfig",
@@ -83,7 +83,7 @@
   },
   "dist": {
     "bin": [
-      "bin/npm-global-updater.js",
+      "bin/npm-updater.js",
       "bin/npm-updater.exe"
     ]
   },
