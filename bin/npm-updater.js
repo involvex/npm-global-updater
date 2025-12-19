@@ -318,7 +318,7 @@ var package_default;
 var init_package = __esm(() => {
   package_default = {
     name: "@involvex/npm-global-updater",
-    version: "0.0.13",
+    version: "0.0.14",
     description: "global npm package updater",
     license: "MIT",
     author: "involvex",
@@ -329,7 +329,7 @@ var init_package = __esm(() => {
       url: "https://github.com/involvex/npm-global-updater"
     },
     bin: {
-      "npm-updater": "bin/npm-updater.jsu"
+      "npm-updater": "bin/npm-updater.js"
     },
     scripts: {
       lint: "eslint src ",
