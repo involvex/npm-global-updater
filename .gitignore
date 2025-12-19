@@ -36,5 +36,7 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 bin
 bin/*/**
 bin/**
-
+bin/npm-updater.js
+bin\npm-updater.js
 firebase-debug.log
+bin/npm-updater.js
