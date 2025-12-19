@@ -1,5 +1,7 @@
 name: Release Package
-
+permissions:
+  contents: write
+  discussions: write
 on:
   workflow_dispatch:
     inputs:
