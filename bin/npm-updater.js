@@ -235,17 +235,32 @@ __export(exports_update, {
   default: () => update_default
 });
 import { exec as exec3 } from "child_process";
-async function runupdate(packageName, packageManager) {
-  const name = packageName || process.argv[3];
+async function runupdate(inputPackageName, packageManager) {
+  const name = inputPackageName || process.argv[3];
   if (!name) {
     console.log("Error: Please provide a package name.");
-    console.log("Usage: npm-updater [--pm <package-manager>] update <package-name>");
+    console.log("Usage: npm-updater [--pm <package-manager>] update <package-name>[@version]");
+    console.log("Examples:");
+    console.log("  npm-updater update react");
+    console.log("  npm-updater update @google/gemini-cli@nightly");
+    console.log("  npm-updater update typescript@5.0.0");
     return;
+  }
+  const versionMatch = name.match(/^(.+?)(@.+)$/);
+  let packageName;
+  let version;
+  if (versionMatch && versionMatch[1] && versionMatch[2]) {
+    packageName = versionMatch[1];
+    version = versionMatch[2].substring(1);
+    console.log(`Package: ${packageName}, Version: ${version}`);
+  } else {
+    packageName = name;
   }
   const pm = getPackageManager(packageManager);
   const config = getPackageManagerConfig(pm);
-  console.log(`Updating ${name} using ${config.displayName}...`);
-  const installCommand = config.installCommand(name);
+  const versionInfo = version ? ` to version ${version}` : " to latest version";
+  console.log(`Updating ${packageName}${versionInfo} using ${config.displayName}...`);
+  const installCommand = config.installCommand(packageName, version);
   exec3(installCommand, (error, stdout, stderr) => {
     if (error) {
       console.log(`error: ${error.message}`);
@@ -256,7 +271,7 @@ async function runupdate(packageName, packageManager) {
       return;
     }
     console.log(stdout);
-    console.log(`${name} has been updated successfully using ${config.displayName}!`);
+    console.log(`${packageName} has been updated successfully using ${config.displayName}!`);
   });
 }
 var update_default;
@@ -303,7 +318,7 @@ var package_default;
 var init_package = __esm(() => {
   package_default = {
     name: "@involvex/npm-global-updater",
-    version: "0.0.10",
+    version: "0.0.11",
     description: "global npm package updater",
     license: "MIT",
     author: "involvex",
@@ -314,7 +329,7 @@ var init_package = __esm(() => {
       url: "https://github.com/involvex/npm-global-updater"
     },
     bin: {
-      "npm-updater": "bin/npm-updater.js"
+      "npm-updater": "bin/npm-updater.jsu"
     },
     scripts: {
       lint: "eslint src ",
@@ -327,12 +342,15 @@ var init_package = __esm(() => {
       prebuild: "bun run format && bun run lint:fix && bun run typecheck",
       typecheck: "tsc --noEmit",
       "build:portable": "bun build --compile src/index.ts --outfile bin/npm-updater.exe --compile-autoload-package-json --compile-autoload-tsconfig",
-      prepublish: "bun run build"
+      prepublish: "bun run build",
+      changelog: "changelogen --output CHANGELOG.md ",
+      release: "bun run scripts/release.ts"
     },
     devDependencies: {
       "@eslint/js": "^9.39.2",
       "@eslint/json": "^0.14.0",
       "@types/bun": "^1.3.5",
+      changelogen: "^0.6.2",
       eslint: "^9.39.2",
       globals: "^16.5.0",
       prettier: "^3.7.4",
