@@ -19,6 +19,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "dev": "bun run src/index.ts",
+    "dev:watch": "bun build src/index.ts --target node --outfile bin/npm-updater.js --watch",
     "start": "bun bin/npm-updater.js",
     "build": "bun build src/index.ts  --target node --outfile bin/npm-updater.js",
     "prebuild": "bun run format && bun run lint:fix && bun run typecheck",
@@ -27,7 +28,9 @@
     "prepublish": "bun run build",
     "changelog": "changelogen --output CHANGELOG.md ",
     "postversion": "bun run build",
-    "release": "bun run scripts/release.ts"
+    "release": "bun run scripts/release.ts",
+    "docs:dev": "bun --watch run docs/index.html",
+    "docs": "bun run docs/index.html"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",

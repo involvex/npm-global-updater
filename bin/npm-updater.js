@@ -1774,7 +1774,9 @@ var init_latestversion = __esm(() => {
 // src/commands/version.ts
 var exports_version = {};
 __export(exports_version, {
-  showversion: () => showversion
+  showversion: () => showversion,
+  returnversion: () => returnversion,
+  default: () => version_default
 });
 import { join as join5 } from "path";
 import { readFileSync as readFileSync2 } from "node:fs";
@@ -1784,7 +1786,10 @@ import { dirname as dirname3 } from "path";
 function showversion() {
   console.log(`Version: ` + packageJson.version);
 }
-var packageJson;
+function returnversion() {
+  return packageJson.version;
+}
+var packageJson, version_default;
 var init_version = __esm(() => {
   try {
     const globalpath = execSync3('cmd /c "where npm-updater.cmd"').toString().trim();
@@ -1798,6 +1803,7 @@ var init_version = __esm(() => {
     const packageJsonContent = readFileSync2(packageJsonPath);
     packageJson = JSON.parse(packageJsonContent.toString());
   }
+  version_default = showversion;
 });
 
 // package.json
@@ -1824,6 +1830,7 @@ var init_package = __esm(() => {
       format: "prettier --write .",
       "format:check": "prettier --check .",
       dev: "bun run src/index.ts",
+      "dev:watch": "bun build src/index.ts --target node --outfile bin/npm-updater.js --watch",
       start: "bun bin/npm-updater.js",
       build: "bun build src/index.ts  --target node --outfile bin/npm-updater.js",
       prebuild: "bun run format && bun run lint:fix && bun run typecheck",
@@ -1832,7 +1839,9 @@ var init_package = __esm(() => {
       prepublish: "bun run build",
       changelog: "changelogen --output CHANGELOG.md ",
       postversion: "bun run build",
-      release: "bun run scripts/release.ts"
+      release: "bun run scripts/release.ts",
+      "docs:dev": "bun --watch run docs/index.html",
+      docs: "bun run docs/index.html"
     },
     devDependencies: {
       "@eslint/js": "^9.39.2",
@@ -1916,13 +1925,14 @@ async function showabout() {
   console.log("=".repeat(60));
   console.log("Description: " + package_default.description);
   console.log("=".repeat(60));
-  console.log("Version: " + package_default.version);
+  console.log("Version: " + returnversion());
   console.log("=".repeat(60));
   console.log("Author: " + package_default.author);
   console.log("=".repeat(60));
 }
 var init_about = __esm(() => {
   init_package();
+  init_version();
 });
 
 // src/index.ts

@@ -1,5 +1,6 @@
 import packageinfo from "../../package.json";
 import { showlogo } from "src/utils/logo";
+import { returnversion } from "./version";
 
 export async function showabout() {
   showlogo();
@@ -10,7 +11,7 @@ export async function showabout() {
   console.log("=".repeat(60));
   console.log("Description: " + packageinfo.description);
   console.log("=".repeat(60));
-  console.log("Version: " + packageinfo.version);
+  console.log("Version: " + returnversion());
   console.log("=".repeat(60));
   console.log("Author: " + packageinfo.author);
   console.log("=".repeat(60));

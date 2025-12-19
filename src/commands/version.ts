@@ -29,3 +29,9 @@ try {
 export function showversion() {
   console.log(`Version: ` + packageJson.version);
 }
+
+export function returnversion() {
+  return packageJson.version;
+}
+
+export default showversion;
