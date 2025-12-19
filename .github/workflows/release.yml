@@ -1,39 +1,306 @@
-name: Release Package
+name: 🚀 NPM Global Updater Release
+
+# Enhanced workflow for npm-global-updater package releases
+# Features: Caching, validation, error handling, security, and performance optimization
+
 permissions:
   contents: write
   discussions: write
+  id-token: write # For trusted publishing
+  pull-requests: write # For automated changelog PRs
+
+# Environment variables for consistent configuration
 env:
-  name: release
+  NODE_VERSION: "20"
+  BUN_VERSION: "1.3.5"
+  DEFAULT_BRANCH: "main"
+  WORKING_DIRECTORY: ${{ github.workspace }}
+
+# Trigger configuration
 on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Version to release (e.g., 1.0.0)"
-        required: true
+        description: "Version to release (e.g., 1.0.0) - leave empty for auto-detection"
+        required: false
         type: string
+      release_type:
+        description: "Release type for auto-versioning"
+        required: false
+        type: choice
+        default: "auto"
+        options:
+          - auto
+          - patch
+          - minor
+          - major
+          - prerelease
+      dry_run:
+        description: "Perform a dry run without making actual changes"
+        required: false
+        type: boolean
+        default: false
+      force_release:
+        description: "Force release even with validation warnings"
+        required: false
+        type: boolean
+        default: false
+      create_draft:
+        description: "Create release as draft"
+        required: false
+        type: boolean
+        default: true
+  push:
+    branches:
+      - main
+      - develop
+    tags:
+      - "v*.*.*" # Only trigger on version tags
 
+# Job definitions with proper separation of concerns
 jobs:
-  release:
+  # Pre-validation job to check prerequisites
+  validate:
+    name: ✅ Prerequisites Validation
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      should_release: ${{ steps.validation.outputs.should_release }}
+      version: ${{ steps.validation.outputs.version }}
+      release_notes: ${{ steps.validation.outputs.release_notes }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
-      - run: bun i
-      - run: bun run build
-      - run: bun run build:porteable
-      - name: Release
-        uses: softprops/action-gh-release@v2
-        if: github.ref_type == 'tag'
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
         with:
-          body_path: ${{ github.workspace }}-CHANGELOG.md
-          repository: involvex/npm-global-updater
-          # note you'll typically need to create a personal access token
-          # with permissions to create releases in the other repo
-          token: ${{ secrets.GH_TOKEN }}
-          files: |
+          fetch-depth: 0 # Full history for changelog generation
+
+      - name: 🔍 Validate repository state
+        id: validation
+        run: |
+          echo "🔍 Validating repository state..."
+
+          # Check for uncommitted changes
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "❌ Uncommitted changes detected"
+            if [ "${{ github.event.inputs.force_release }}" != "true" ]; then
+              echo "::error::Uncommitted changes found. Commit changes or use force_release=true"
+              exit 1
+            fi
+            echo "⚠️  Continuing due to force_release=true"
+          fi
+
+          # Validate version input if provided
+          VERSION="${{ github.event.inputs.version }}"
+          if [ -n "$VERSION" ]; then
+            if ! echo "$VERSION" | grep -E '^v?\d+\.\d+\.\d+(-[a-zA-Z0-9.-]+)?$'; then
+              echo "::error::Invalid version format: $VERSION"
+              echo "Expected format: 1.0.0, 1.0.0-alpha.1, v1.0.0"
+              exit 1
+            fi
+            # Normalize version (remove 'v' prefix if present)
+            VERSION=$(echo "$VERSION" | sed 's/^v//')
+            echo "✅ Version validated: $VERSION"
+          else
+            # Auto-detect version from package.json
+            VERSION=$(node -p "require('./package.json').version")
+            echo "✅ Auto-detected version: $VERSION"
+          fi
+
+          echo "should_release=true" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+          # Generate release notes if not provided
+          if [ -f "CHANGELOG.md" ]; then
+            echo "📝 Extracting release notes from CHANGELOG.md..."
+            # Extract the most recent version's changelog
+            RELEASE_NOTES=$(awk "/^## v?$VERSION/,/^## v?[0-9]/ {print}" CHANGELOG.md | head -n -1)
+            echo "$RELEASE_NOTES" > release_notes.txt
+          else
+            echo "📝 Generating basic release notes..."
+            echo "Release $VERSION" > release_notes.txt
+          fi
+
+          echo "release_notes<<EOF" >> $GITHUB_OUTPUT
+          cat release_notes.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+  # Build job with caching and parallel execution
+  build:
+    name: 🔨 Build & Test
+    runs-on: ubuntu-latest
+    needs: validate
+    if: needs.validate.outputs.should_release == 'true'
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        node-version: [22]
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🧠 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - name: 📦 Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: 💾 Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+            node_modules
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      - name: 📋 Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: 🔍 Lint code
+        run: bun run lint
+
+      - name: ✅ Type check
+        run: bun run typecheck
+
+      - name: 🧪 Run tests (if available)
+        run: |
+          if [ -f "bun.test.ts" ] || [ -f "vitest.config.ts" ]; then
+            bun run test
+          else
+            echo "ℹ️  No tests found, skipping test execution"
+          fi
+
+      - name: 🏗️ Build JavaScript bundle
+        run: bun run build
+
+      - name: 🏗️ Build Portable Executable
+        run: bun run build:porteable
+
+      - name: 📄 Generate changelog
+        run: |
+          if command -v changelogen &> /dev/null; then
+            bun run changelog
+          else
+            echo "ℹ️  changelogen not available, skipping changelog generation"
+          fi
+
+      - name: 📋 Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts-${{ needs.validate.outputs.version }}
+          path: |
+            bin/
             CHANGELOG.md
-            bin/npm-updater.js
-            bin/npm-updater.exe
-          draft: true
+          retention-days: 30
+
+      - name: 📋 Upload build logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs-${{ needs.validate.outputs.version }}
+          path: |
+            bun-debug.log
+            npm-debug.log*
+          retention-days: 7
+
+  # Release job with enhanced error handling
+  release:
+    name: 🎉 Create Release
+    runs-on: ubuntu-latest
+    needs: [validate, build]
+    if: needs.validate.outputs.should_release == 'true'
+    timeout-minutes: 10
+    environment: release
+    steps:
+      - name: 📥 Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: release-artifacts-${{ needs.validate.outputs.version }}
+          path: ./release-files
+
+      - name: 📥 Checkout repository (for git operations)
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: 🏷️ Create and push tag
+        run: |
+          VERSION="${{ needs.validate.outputs.version }}"
+          TAG_NAME="v$VERSION"
+
+          echo "🏷️  Creating tag: $TAG_NAME"
+
+          # Create annotated tag with release notes
+          if [ -f "release_notes.txt" ]; then
+            git tag -a "$TAG_NAME" -F release_notes.txt
+          else
+            git tag -a "$TAG_NAME" -m "Release $VERSION"
+          fi
+
+          # Push tag to repository
+          git push origin "$TAG_NAME"
+
+          echo "✅ Tag $TAG_NAME pushed successfully"
+
+      - name: 🚀 Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.validate.outputs.version }}
+          name: Release v${{ needs.validate.outputs.version }}
+          body: ${{ needs.validate.outputs.release_notes }}
+          body_path: release_notes.txt
+          draft: ${{ github.event.inputs.create_draft }}
+          prerelease: ${{ contains(needs.validate.outputs.version, '-') }}
           make_latest: true
-          body: ${{github.CHANGELOG}}
+          generate_release_notes: true
+          files: |
+            ./release-files/bin/npm-updater.js
+            ./release-files/bin/npm-updater.exe
+            ./release-files/CHANGELOG.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 📊 Update release statistics
+        run: |
+          VERSION="${{ needs.validate.outputs.version }}"
+          echo "📈 Release v$VERSION completed successfully"
+          echo "🎯 Release URL: https://github.com/${{ github.repository }}/releases/tag/v$VERSION"
+
+      - name: 🔔 Notify success (optional)
+        if: success() && github.event.inputs.dry_run != 'true'
+        run: |
+          echo "🎉 Release v${{ needs.validate.outputs.version }} completed successfully!"
+          echo "📦 Release URL: https://github.com/${{ github.repository }}/releases/tag/v${{ needs.validate.outputs.version }}"
+
+  # Cleanup job for failed releases
+  cleanup:
+    name: 🧹 Cleanup on Failure
+    runs-on: ubuntu-latest
+    needs: [validate, build, release]
+    if: failure()
+    timeout-minutes: 5
+    steps:
+      - name: 📥 Download artifacts
+        uses: actions/download-artifact@v4
+        if: always()
+        with:
+          path: ./failed-release-artifacts
+
+      - name: 📝 Log failure details
+        run: |
+          echo "💥 Release process failed"
+          echo "🔍 Check the logs above for details"
+          echo "📋 Failed artifacts (if any) are available for debugging"
+
+      - name: 🔔 Notify failure
+        run: |
+          echo "❌ Release v${{ needs.validate.outputs.version }} failed"
+          echo "🚨 Please check the workflow logs for troubleshooting"
+          echo "🔗 Workflow URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"

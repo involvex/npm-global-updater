@@ -9,7 +9,7 @@
 # registry = "https://registry.npmjs.org/"
 
 # Set node_modules folder
-# node_modules = "node_modules"
+ node_modules = "node_modules"
 
 # Cache directory
 # cache = ".bun-cache"
@@ -38,7 +38,7 @@
 
 [build]
 # Build output directory
-# outdir = "dist"
+ outdir = "bin"
 
 # Minification
 # minify = true
@@ -47,7 +47,7 @@
 # sourcemap = true
 
 # Target environment
-# target = "node"
+ target = "node"
 
 [package]
 # Package.json field order
@@ -55,7 +55,7 @@
 
 [run]
 # Node.js compatibility mode
-# compat = "node"
+ compat = "node"
 
 # Loader configuration for file types
 # loader = {
@@ -68,6 +68,9 @@
 # }
 
 # Environment variables
-# env = {
-#   NODE_ENV = "production"
-# }
+ env = {
+   NODE_ENV = "production"
+ }
+
+#[install.security]                                                          
+#  scanner = "tsc"
