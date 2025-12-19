@@ -4,6 +4,8 @@ import {
   formatPackageManagerList,
 } from "./utils/packageManager";
 
+import { showlogo } from "./utils/logo";
+
 export async function run() {
   const args = process.argv.slice(2);
 
@@ -202,6 +204,8 @@ export async function run() {
   }
 
   function showHelp() {
+    showlogo();
+    console.log("=".repeat(50));
     console.log(`
 Usage: npm-updater [--pm <package-manager>] <command>
 

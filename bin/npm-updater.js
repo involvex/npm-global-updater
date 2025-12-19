@@ -71,6 +71,14 @@ var init_packageManager = __esm(() => {
   ];
 });
 
+// src/utils/logo.ts
+function showlogo() {
+  console.log(`
+        ░▀█▀░█▀█░█░█░█▀█░█░░░█░█░█▀▀░█░█
+        ░░█░░█░█░▀▄▀░█░█░█░░░▀▄▀░█▀▀░▄▀▄
+        ░▀▀▀░▀░▀░░▀░░▀▀▀░▀▀▀░░▀░░▀▀▀░▀░▀`);
+}
+
 // src/commands/ls.ts
 var exports_ls = {};
 __export(exports_ls, {
@@ -1768,7 +1776,7 @@ var package_default;
 var init_package = __esm(() => {
   package_default = {
     name: "@involvex/npm-global-updater",
-    version: "0.0.15",
+    version: "0.1.0",
     description: "global npm package updater",
     license: "MIT",
     author: "involvex",
@@ -1814,10 +1822,53 @@ var init_package = __esm(() => {
     },
     files: [
       "src/**",
+      "bin/**",
       "./",
       ".",
       "package.json"
-    ]
+    ],
+    packageManager: "bun@1.3.5",
+    readme: "README.md",
+    homepage: "https://github.com/involvex/npm-global-updater#readme",
+    bugs: "https://github.com/involvex/npm-global-updater/issues",
+    keywords: [
+      "npm",
+      "global",
+      "updater",
+      "bun",
+      "npm-updater",
+      "npm-global-updater",
+      "updater",
+      "update"
+    ],
+    categories: [
+      "Other"
+    ],
+    sponsor: {
+      url: "https://github.com/sponsors/involvex"
+    },
+    funding: {
+      type: "github",
+      url: "https://github.com/sponsors/involvex"
+    },
+    dist: {
+      bin: [
+        "bin/npm-updater.js",
+        "bin/npm-updater.exe"
+      ]
+    },
+    directories: {
+      bin: "bin",
+      docs: "docs",
+      src: "src",
+      scripts: "scripts"
+    },
+    galleryBanner: {
+      color: "#000000",
+      theme: "dark"
+    },
+    icon: "assets/logo.png",
+    banner: "assets/banner.png"
   };
 });
 
@@ -1839,7 +1890,7 @@ __export(exports_about, {
   showabout: () => showabout
 });
 async function showabout() {
-  console.log("==================================================");
+  showlogo();
   console.log("=== About this app ===");
   console.log("Name: " + package_default.name);
   console.log("==================================================");
@@ -2011,6 +2062,8 @@ async function run() {
     }
   }
   function showHelp() {
+    showlogo();
+    console.log("=".repeat(50));
     console.log(`
 Usage: npm-updater [--pm <package-manager>] <command>
 

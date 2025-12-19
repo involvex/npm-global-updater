@@ -46,8 +46,51 @@
   },
   "files": [
     "src/**",
+    "bin/**",
     "./",
     ".",
     "package.json"
-  ]
+  ],
+  "packageManager": "bun@1.3.5",
+  "readme": "README.md",
+  "homepage": "https://github.com/involvex/npm-global-updater#readme",
+  "bugs": "https://github.com/involvex/npm-global-updater/issues",
+  "keywords": [
+    "npm",
+    "global",
+    "updater",
+    "bun",
+    "npm-updater",
+    "npm-global-updater",
+    "updater",
+    "update"
+  ],
+  "categories": [
+    "Other"
+  ],
+  "sponsor": {
+    "url": "https://github.com/sponsors/involvex"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/involvex"
+  },
+  "dist": {
+    "bin": [
+      "bin/npm-updater.js",
+      "bin/npm-updater.exe"
+    ]
+  },
+  "directories": {
+    "bin": "bin",
+    "docs": "docs",
+    "src": "src",
+    "scripts": "scripts"
+  },
+  "galleryBanner": {
+    "color": "#000000",
+    "theme": "dark"
+  },
+  "icon": "assets/logo.png",
+  "banner": "assets/banner.png"
 }

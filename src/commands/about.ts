@@ -1,6 +1,8 @@
 import packageinfo from "../../package.json";
+import { showlogo } from "src/utils/logo";
+
 export async function showabout() {
-  console.log("==================================================");
+  showlogo();
   console.log("=== About this app ===");
   console.log("Name: " + packageinfo.name);
   console.log("==================================================");
