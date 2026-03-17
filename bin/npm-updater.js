@@ -2320,7 +2320,7 @@ var init_package = __esm(() => {
     bugs: "https://github.com/involvex/npm-global-updater/issues",
     repository: {
       type: "git",
-      url: "https://github.com/involvex/npm-global-updater"
+      url: "git+https://github.com/involvex/npm-global-updater.git"
     },
     funding: {
       type: "github",
