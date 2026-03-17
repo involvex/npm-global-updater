@@ -2507,7 +2507,7 @@ var package_default;
 var init_package = __esm(() => {
   package_default = {
     name: "@involvex/npm-global-updater",
-    version: "0.1.42",
+    version: "0.1.44",
     description: "global npm package updater",
     categories: [
       "Other"
