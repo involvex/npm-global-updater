@@ -4,12 +4,12 @@ on:
   push:
     branches: [main, master]
     paths:
-      - "docs/**"
-      - ".github/workflows/deploy-docs.yml"
+      - 'docs/**'
+      - '.github/workflows/deploy-docs.yml'
   pull_request:
     branches: [main, master]
     paths:
-      - "docs/**"
+      - 'docs/**'
 
   # Allow manual triggering
   workflow_dispatch:
@@ -20,7 +20,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: false
 
 jobs:
@@ -36,8 +36,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "18"
-          cache: "npm"
+          node-version: '18'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm install
@@ -75,14 +75,14 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "./"
+          path: './'
 
       - name: Upload PR preview
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
         with:
           name: github-pages
-          path: "./"
+          path: './'
           retention-days: 1
 
   deploy:
@@ -108,15 +108,15 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          scan-type: "fs"
-          scan-ref: "."
-          format: "sarif"
-          output: "trivy-results.sarif"
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
 
       - name: Upload Trivy scan results
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: "trivy-results.sarif"
+          sarif_file: 'trivy-results.sarif'
 
   # Performance check
   performance:
@@ -129,7 +129,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: '18'
 
       - name: Install Lighthouse CI
         run: npm install -g @lhci/cli@0.12.x
@@ -192,7 +192,7 @@ jobs:
       - name: Commit timestamp update
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "docs: update last modified timestamp"
+          commit_message: 'docs: update last modified timestamp'
           file_pattern: docs/.last-updated
-          commit_user_name: "GitHub Actions"
-          commit_user_email: "actions@github.com"
+          commit_user_name: 'GitHub Actions'
+          commit_user_email: 'actions@github.com'

@@ -4,25 +4,43 @@ var __getProtoOf = Object.getPrototypeOf;
 var __defProp = Object.defineProperty;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
+function __accessProp(key) {
+  return this[key];
+}
+var __toESMCache_node;
+var __toESMCache_esm;
 var __toESM = (mod, isNodeMode, target) => {
+  var canCache = mod != null && typeof mod === "object";
+  if (canCache) {
+    var cache = isNodeMode ? __toESMCache_node ??= new WeakMap : __toESMCache_esm ??= new WeakMap;
+    var cached = cache.get(mod);
+    if (cached)
+      return cached;
+  }
   target = mod != null ? __create(__getProtoOf(mod)) : {};
   const to = isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target;
   for (let key of __getOwnPropNames(mod))
     if (!__hasOwnProp.call(to, key))
       __defProp(to, key, {
-        get: () => mod[key],
+        get: __accessProp.bind(mod, key),
         enumerable: true
       });
+  if (canCache)
+    cache.set(mod, to);
   return to;
 };
 var __commonJS = (cb, mod) => () => (mod || cb((mod = { exports: {} }).exports, mod), mod.exports);
+var __returnValue = (v) => v;
+function __exportSetter(name, newValue) {
+  this[name] = __returnValue.bind(null, newValue);
+}
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, {
       get: all[name],
       enumerable: true,
       configurable: true,
-      set: (newValue) => all[name] = () => newValue
+      set: __exportSetter.bind(all, name)
     });
 };
 var __esm = (fn, res) => () => (fn && (res = fn(fn = 0)), res);
@@ -87,6 +105,13 @@ var init_packageManager = __esm(() => {
   ];
 });
 
+// node_modules/console-clear/index.js
+var require_console_clear = __commonJS((exports, module) => {
+  module.exports = function(isSoft) {
+    process.stdout.write(isSoft ? "\x1B[H\x1B[2J" : "\x1B[2J\x1B[3J\x1B[H\x1Bc");
+  };
+});
+
 // src/utils/logo.ts
 function showlogo() {
   console.log(`
@@ -94,13 +119,6 @@ function showlogo() {
         ░░█░░█░█░▀▄▀░█░█░█░░░▀▄▀░█▀▀░▄▀▄
         ░▀▀▀░▀░▀░░▀░░▀▀▀░▀▀▀░░▀░░▀▀▀░▀░▀`);
 }
-
-// node_modules/console-clear/index.js
-var require_console_clear = __commonJS((exports, module) => {
-  module.exports = function(isSoft) {
-    process.stdout.write(isSoft ? "\x1B[H\x1B[2J" : "\x1B[2J\x1B[3J\x1B[H\x1Bc");
-  };
-});
 
 // src/commands/ls.ts
 var exports_ls = {};
@@ -312,8 +330,8 @@ var init_update = __esm(() => {
 });
 
 // src/config/configManager.ts
-import { promises as fs } from "fs";
 import { join as join2, dirname as dirname2 } from "path";
+import { promises as fs } from "fs";
 import { homedir } from "os";
 
 class ConfigManager {
@@ -980,8 +998,8 @@ End of Export Report
   }
 }
 var init_exportManager = __esm(() => {
-  init_configManager();
   init_packageTracker();
+  init_configManager();
 });
 
 // src/commands/export.ts
@@ -1045,10 +1063,10 @@ var init_export = __esm(() => {
 });
 
 // src/notifications/notificationManager.ts
-import { promises as fs3 } from "fs";
-import { join as join4 } from "path";
-import { homedir as homedir2 } from "os";
 import { execSync as execSync2 } from "child_process";
+import { promises as fs3 } from "fs";
+import { homedir as homedir2 } from "os";
+import { join as join4 } from "path";
 
 class NotificationManager {
   configManager;
@@ -1608,8 +1626,8 @@ class AlertSystem {
   }
 }
 var init_alertSystem = __esm(() => {
-  init_configManager();
   init_packageTracker();
+  init_configManager();
   init_notificationManager();
 });
 
@@ -2245,11 +2263,11 @@ __export(exports_version, {
   returnversion: () => returnversion,
   default: () => version_default
 });
-import { join as join5 } from "path";
-import { readFileSync as readFileSync2 } from "node:fs";
 import { execSync as execSync3 } from "child_process";
+import { readFileSync as readFileSync2 } from "node:fs";
 import { fileURLToPath as fileURLToPath2 } from "url";
 import { dirname as dirname3 } from "path";
+import { join as join5 } from "path";
 function showversion() {
   import_console_clear2.default();
   showlogo();
@@ -2284,67 +2302,42 @@ var package_default;
 var init_package = __esm(() => {
   package_default = {
     name: "@involvex/npm-global-updater",
-    version: "0.1.40",
+    version: "0.1.41",
     description: "global npm package updater",
-    license: "MIT",
-    author: "involvex",
-    main: "bin/npm-updater.js",
-    type: "module",
+    categories: [
+      "Other"
+    ],
+    keywords: [
+      "npm",
+      "global",
+      "updater",
+      "bun",
+      "npm-updater",
+      "npm-global-updater",
+      "update"
+    ],
+    homepage: "https://github.com/involvex/npm-global-updater#readme",
+    bugs: "https://github.com/involvex/npm-global-updater/issues",
     repository: {
       type: "git",
       url: "https://github.com/involvex/npm-global-updater"
     },
+    funding: {
+      type: "github",
+      url: "https://github.com/sponsors/involvex"
+    },
+    license: "MIT",
+    author: "involvex",
+    type: "module",
+    main: "bin/npm-updater.js",
     bin: {
       "npm-updater": "bin/npm-updater.js"
     },
-    scripts: {
-      lint: "eslint src ",
-      "lint:fix": "eslint src --fix",
-      format: "prettier --write .",
-      "format:check": "prettier --check .",
-      dev: "bun run src/index.ts",
-      "dev:watch": "bun build src/index.ts --target node --outfile bin/npm-updater.js --watch",
-      "dev:debug": "bun run --inspect-brk src/index.ts",
-      start: "bun bin/npm-updater.js",
-      build: "bun build src/index.ts  --target node --outfile bin/npm-updater.js",
-      prebuild: "bun run format && bun run lint:fix && bun run typecheck",
-      typecheck: "tsc --noEmit",
-      "build:porteable": "bun build --compile src/index.ts --outfile bin/npm-updater.exe --compile-autoload-package-json --compile-autoload-tsconfig",
-      prepublish: "bun run build",
-      changelog: "changelogen --output CHANGELOG.md ",
-      release: "bun run scripts/release.ts",
-      "docs:dev": "bun --watch run docs/index.html",
-      docs: "bun run docs/index.html",
-      test: "bun test",
-      "test:watch": "bun test --watch",
-      "test:coverage": "bun test --coverage",
-      "test:config": "bun test tests/config.test.ts",
-      "test:debug": "bun test --debug",
-      "test:reporter": "bun test --reporter=tap"
-    },
-    devDependencies: {
-      "@eslint/js": "^9.39.2",
-      "@eslint/json": "^0.14.0",
-      "@types/bun": "^1.3.5",
-      "@types/node": "^25.0.3",
-      bun: "^1.3.5",
-      changelogen: "^0.6.2",
-      eslint: "^9.39.2",
-      globals: "^16.5.0",
-      jest: "^30.2.0",
-      "mock-fs": "^5.5.0",
-      prettier: "^3.7.4",
-      sinon: "^21.0.1",
-      "ts-node": "^10.9.2",
-      "typescript-eslint": "^8.50.0"
-    },
-    peerDependencies: {
-      typescript: "^5.9.3"
-    },
-    dependencies: {
-      "@types/console-clear": "^1.1.4",
-      "console-clear": "^1.1.1",
-      jiti: "^2.6.1"
+    directories: {
+      bin: "bin",
+      docs: "docs",
+      scripts: "scripts",
+      src: "src"
     },
     files: [
       "src/**",
@@ -2353,48 +2346,74 @@ var init_package = __esm(() => {
       ".",
       "package.json"
     ],
+    scripts: {
+      prebuild: "bun run format && bun run lint:fix && bun run typecheck",
+      build: "bun build src/index.ts  --target node --outfile bin/npm-updater.js",
+      "build:porteable": "bun build --compile src/index.ts --outfile bin/npm-updater.exe --compile-autoload-package-json --compile-autoload-tsconfig",
+      changelog: "changelogen --output CHANGELOG.md ",
+      dev: "bun run src/index.ts",
+      "dev:debug": "bun run --inspect-brk src/index.ts",
+      "dev:watch": "bun build src/index.ts --target node --outfile bin/npm-updater.js --watch",
+      docs: "bun run docs/index.html",
+      "docs:dev": "bun --watch run docs/index.html",
+      format: "prettier --write .",
+      "format:check": "prettier --check .",
+      lint: "eslint src ",
+      "lint:fix": "eslint src --fix",
+      prepublish: "bun run build",
+      release: "bun run scripts/release.ts",
+      start: "bun bin/npm-updater.js",
+      test: "bun test",
+      "test:config": "bun test tests/config.test.ts",
+      "test:coverage": "bun test --coverage",
+      "test:debug": "bun test --debug",
+      "test:reporter": "bun test --reporter=tap",
+      "test:watch": "bun test --watch",
+      typecheck: "tsc --noEmit"
+    },
+    prettier: "@involvex/prettier-config",
+    dependencies: {
+      "@types/console-clear": "^1.1.4",
+      "console-clear": "^1.1.1",
+      jiti: "^2.6.1"
+    },
+    devDependencies: {
+      "@eslint/js": "^9.39.2",
+      "@eslint/json": "^0.14.0",
+      "@involvex/prettier-config": "^0.0.4",
+      "@types/bun": "^1.3.10",
+      "@types/node": "^25.0.3",
+      bun: "^1.3.10",
+      changelogen: "^0.6.2",
+      eslint: "^9.39.2",
+      globals: "^16.5.0",
+      jest: "^30.2.0",
+      "mock-fs": "^5.5.0",
+      prettier: "^3.8.1",
+      sinon: "^21.0.1",
+      "ts-node": "^10.9.2",
+      "typescript-eslint": "^8.57.1"
+    },
+    peerDependencies: {
+      typescript: "^5.9.3"
+    },
     packageManager: "bun@1.3.5",
-    readme: "README.md",
-    homepage: "https://github.com/involvex/npm-global-updater#readme",
-    bugs: "https://github.com/involvex/npm-global-updater/issues",
-    keywords: [
-      "npm",
-      "global",
-      "updater",
-      "bun",
-      "npm-updater",
-      "npm-global-updater",
-      "updater",
-      "update"
-    ],
-    categories: [
-      "Other"
-    ],
-    sponsor: {
-      url: "https://github.com/sponsors/involvex"
+    icon: "assets/logo.png",
+    galleryBanner: {
+      color: "#000000",
+      theme: "dark"
     },
-    funding: {
-      type: "github",
-      url: "https://github.com/sponsors/involvex"
-    },
+    banner: "assets/banner.png",
     dist: {
       bin: [
         "bin/npm-updater.js",
         "bin/npm-updater.exe"
       ]
     },
-    directories: {
-      bin: "bin",
-      docs: "docs",
-      src: "src",
-      scripts: "scripts"
-    },
-    galleryBanner: {
-      color: "#000000",
-      theme: "dark"
-    },
-    icon: "assets/logo.png",
-    banner: "assets/banner.png"
+    readme: "README.md",
+    sponsor: {
+      url: "https://github.com/sponsors/involvex"
+    }
   };
 });
 
@@ -2432,9 +2451,9 @@ init_packageManager();
 
 // src/utils/self-updater.ts
 import { exec, execSync } from "child_process";
-import { readFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
+import { readFileSync } from "fs";
 var packagejson;
 try {
   const globalpath = execSync('cmd /c "where npm-updater.cmd"').toString().trim();
