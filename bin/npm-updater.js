@@ -146,189 +146,6 @@ var init_ls = __esm(() => {
   init_packageManager();
 });
 
-// src/commands/updateall.ts
-var exports_updateall = {};
-__export(exports_updateall, {
-  runupdateall: () => runupdateall,
-  default: () => updateall_default
-});
-import { exec as exec3 } from "child_process";
-async function runupdateall(packageManager) {
-  const pm = getPackageManager(packageManager);
-  const config = getPackageManagerConfig(pm);
-  console.log(`Checking for globally installed packages using ${config.displayName}...`);
-  console.log(`This may take a moment...
-`);
-  exec3(config.listJsonCommand, (error, stdout) => {
-    if (error) {
-      console.log(`Error getting package list: ${error.message}`);
-      return;
-    }
-    try {
-      const data = JSON.parse(stdout);
-      const packages = [];
-      if (data.dependencies) {
-        for (const [name, info] of Object.entries(data.dependencies)) {
-          if (typeof info === "object" && info !== null && "version" in info && typeof info.version === "string") {
-            packages.push({
-              name,
-              version: info.version
-            });
-          }
-        }
-      }
-      console.log(`Found ${packages.length} globally installed packages`);
-      console.log(`Checking for available updates...
-`);
-      if (packages.length === 0) {
-        console.log("No global packages found.");
-        return;
-      }
-      let checkCount = 0;
-      const packagesToUpdate = [];
-      packages.forEach((pkg) => {
-        const command = config.viewCommand(pkg.name);
-        exec3(command, (viewError, viewStdout) => {
-          checkCount++;
-          if (viewError) {
-            console.log(`Could not check ${pkg.name}: ${viewError.message}`);
-          } else {
-            try {
-              const versionData = JSON.parse(viewStdout);
-              const latestVersion = versionData.version || versionData.latest;
-              if (latestVersion && latestVersion !== pkg.version) {
-                console.log(`${pkg.name}: ${pkg.version} -> ${latestVersion}`);
-                packagesToUpdate.push({
-                  name: pkg.name,
-                  latest: latestVersion
-                });
-              } else {
-                const specialVersions = ["nightly", "dev", "preview"];
-                specialVersions.forEach((specType) => {
-                  const specCommand = config.viewCommand(pkg.name, specType);
-                  exec3(specCommand, (specError, specStdout) => {
-                    if (!specError && specStdout.trim()) {
-                      try {
-                        const specData = JSON.parse(specStdout);
-                        const specVersion = specData.version || specData.latest;
-                        if (specVersion && specVersion !== pkg.version) {
-                          console.log(`${pkg.name}: ${pkg.version} -> ${specVersion} (${specType})`);
-                          packagesToUpdate.push({
-                            name: pkg.name,
-                            latest: specVersion
-                          });
-                        }
-                      } catch {}
-                    }
-                  });
-                });
-              }
-            } catch {
-              console.log(`Could not parse version info for ${pkg.name}`);
-            }
-          }
-          if (checkCount === packages.length) {
-            let updateNext = function() {
-              if (updateIndex >= packagesToUpdate.length) {
-                console.log(`
-\uD83C\uDF89 All updates completed!`);
-                return;
-              }
-              const pkgToUpdate = packagesToUpdate[updateIndex];
-              if (pkgToUpdate) {
-                console.log(`Updating ${pkgToUpdate.name} to ${pkgToUpdate.latest} using ${config.displayName}...`);
-                const updateCommand = config.installCommand(pkgToUpdate.name, pkgToUpdate.latest);
-                exec3(updateCommand, (updateError) => {
-                  if (updateError) {
-                    console.log(`❌ Failed to update ${pkgToUpdate.name}: ${updateError.message}`);
-                  } else {
-                    console.log(`✅ ${pkgToUpdate.name} updated successfully using ${config.displayName}!`);
-                  }
-                  updateIndex++;
-                  updateNext();
-                });
-              } else {
-                updateIndex++;
-                updateNext();
-              }
-            };
-            if (packagesToUpdate.length === 0) {
-              console.log(`
-All packages are already up to date! ✅`);
-              return;
-            }
-            console.log(`
-Found ${packagesToUpdate.length} packages with updates available.`);
-            console.log(`Starting updates...
-`);
-            let updateIndex = 0;
-            updateNext();
-          }
-        });
-      });
-    } catch (parseError) {
-      console.log(`Error parsing ${config.displayName} output: ${parseError}`);
-    }
-  });
-}
-var updateall_default;
-var init_updateall = __esm(() => {
-  init_packageManager();
-  updateall_default = runupdateall;
-});
-
-// src/commands/update.ts
-var exports_update = {};
-__export(exports_update, {
-  runupdate: () => runupdate,
-  default: () => update_default
-});
-import { exec as exec4 } from "child_process";
-async function runupdate(inputPackageName, packageManager) {
-  const name = inputPackageName || process.argv[3];
-  if (!name) {
-    console.log("Error: Please provide a package name.");
-    console.log("Usage: npm-updater [--pm <package-manager>] update <package-name>[@version]");
-    console.log("Examples:");
-    console.log("  npm-updater update react");
-    console.log("  npm-updater update @google/gemini-cli@nightly");
-    console.log("  npm-updater update typescript@5.0.0");
-    return;
-  }
-  const versionMatch = name.match(/^(.+?)(@.+)$/);
-  let packageName;
-  let version;
-  if (versionMatch && versionMatch[1] && versionMatch[2]) {
-    packageName = versionMatch[1];
-    version = versionMatch[2].substring(1);
-    console.log(`Package: ${packageName}, Version: ${version}`);
-  } else {
-    packageName = name;
-  }
-  const pm = getPackageManager(packageManager);
-  const config = getPackageManagerConfig(pm);
-  const versionInfo = version ? ` to version ${version}` : " to latest version";
-  console.log(`Updating ${packageName}${versionInfo} using ${config.displayName}...`);
-  const installCommand = config.installCommand(packageName, version);
-  exec4(installCommand, (error, stdout, stderr) => {
-    if (error) {
-      console.log(`error: ${error.message}`);
-      return;
-    }
-    if (stderr) {
-      console.log(`stderr: ${stderr}`);
-      return;
-    }
-    console.log(stdout);
-    console.log(`${packageName} has been updated successfully using ${config.displayName}!`);
-  });
-}
-var update_default;
-var init_update = __esm(() => {
-  init_packageManager();
-  update_default = runupdate;
-});
-
 // src/config/configManager.ts
 import { join as join2, dirname as dirname2 } from "path";
 import { promises as fs } from "fs";
@@ -534,7 +351,7 @@ var init_configManager = __esm(() => {
 });
 
 // src/database/packageTracker.ts
-import { exec as exec5 } from "child_process";
+import { exec as exec3 } from "child_process";
 
 class PackageTracker {
   configManager;
@@ -565,7 +382,7 @@ class PackageTracker {
     const config = getPackageManagerConfig(packageManager);
     const packages = [];
     return new Promise((resolve, reject) => {
-      exec5(config.listJsonCommand, async (error, stdout) => {
+      exec3(config.listJsonCommand, async (error, stdout) => {
         if (error) {
           reject(error);
           return;
@@ -609,7 +426,7 @@ class PackageTracker {
     const config = getPackageManagerConfig(packageManager);
     return new Promise((resolve, reject) => {
       const command = config.viewCommand(name);
-      exec5(command, (error, stdout) => {
+      exec3(command, (error, stdout) => {
         if (error) {
           reject(error);
           return;
@@ -697,7 +514,7 @@ class PackageTracker {
     try {
       return new Promise((resolve) => {
         const command = `npm view ${packageName} changelog --json`;
-        exec5(command, (error, stdout) => {
+        exec3(command, (error, stdout) => {
           if (error) {
             resolve(undefined);
             return;
@@ -739,6 +556,240 @@ class PackageTracker {
 var init_packageTracker = __esm(() => {
   init_configManager();
   init_packageManager();
+});
+
+// src/commands/check.ts
+var exports_check = {};
+__export(exports_check, {
+  runcheck: () => runcheck,
+  default: () => check_default
+});
+async function runcheck(packageManager) {
+  const configManager = ConfigManager.getInstance();
+  await configManager.initialize();
+  const tracker = new PackageTracker;
+  await tracker.initialize();
+  const pms = packageManager ? [packageManager] : configManager.getConfig().packageManagers.enabled;
+  console.log(`\uD83D\uDD0D Checking global packages for updates (${pms.join(", ")})...`);
+  console.log("=".repeat(80));
+  try {
+    const trackedPackages = await tracker.scanAllPackages(pms);
+    if (trackedPackages.length === 0) {
+      console.log("No global packages found.");
+      return;
+    }
+    const outdated = trackedPackages.filter((pkg) => pkg.isOutdated);
+    if (outdated.length === 0) {
+      console.log("✅ All global packages are up to date!");
+      return;
+    }
+    console.log(`Found ${outdated.length} packages with updates available:
+`);
+    const nameWidth = 30;
+    const managerWidth = 10;
+    const currentWidth = 15;
+    const latestWidth = 15;
+    console.log("Package".padEnd(nameWidth) + "Manager".padEnd(managerWidth) + "Current".padEnd(currentWidth) + "Latest".padEnd(latestWidth));
+    console.log("-".repeat(80));
+    for (const pkg of outdated) {
+      console.log(pkg.name.padEnd(nameWidth) + pkg.packageManager.padEnd(managerWidth) + pkg.currentVersion.padEnd(currentWidth) + (pkg.latestVersion || "N/A").padEnd(latestWidth));
+    }
+    console.log(`
+` + "=".repeat(80));
+    console.log(`Summary: ${outdated.length}/${trackedPackages.length} packages can be updated.`);
+    console.log("Run `npm-updater updateall` or `npm-updater update <package>` to update.");
+  } catch (error) {
+    console.error("❌ Error checking for updates:", error instanceof Error ? error.message : "Unknown error");
+  }
+}
+var check_default;
+var init_check = __esm(() => {
+  init_packageTracker();
+  init_configManager();
+  check_default = runcheck;
+});
+
+// src/commands/updateall.ts
+var exports_updateall = {};
+__export(exports_updateall, {
+  runupdateall: () => runupdateall,
+  default: () => updateall_default
+});
+import { exec as exec4 } from "child_process";
+async function runupdateall(packageManager) {
+  const pm = getPackageManager(packageManager);
+  const config = getPackageManagerConfig(pm);
+  console.log(`Checking for globally installed packages using ${config.displayName}...`);
+  console.log(`This may take a moment...
+`);
+  exec4(config.listJsonCommand, (error, stdout) => {
+    if (error) {
+      console.log(`Error getting package list: ${error.message}`);
+      return;
+    }
+    try {
+      const data = JSON.parse(stdout);
+      const packages = [];
+      if (data.dependencies) {
+        for (const [name, info] of Object.entries(data.dependencies)) {
+          if (typeof info === "object" && info !== null && "version" in info && typeof info.version === "string") {
+            packages.push({
+              name,
+              version: info.version
+            });
+          }
+        }
+      }
+      console.log(`Found ${packages.length} globally installed packages`);
+      console.log(`Checking for available updates...
+`);
+      if (packages.length === 0) {
+        console.log("No global packages found.");
+        return;
+      }
+      let checkCount = 0;
+      const packagesToUpdate = [];
+      packages.forEach((pkg) => {
+        const command = config.viewCommand(pkg.name);
+        exec4(command, (viewError, viewStdout) => {
+          checkCount++;
+          if (viewError) {
+            console.log(`Could not check ${pkg.name}: ${viewError.message}`);
+          } else {
+            try {
+              const versionData = JSON.parse(viewStdout);
+              const latestVersion = versionData.version || versionData.latest;
+              if (latestVersion && latestVersion !== pkg.version) {
+                console.log(`${pkg.name}: ${pkg.version} -> ${latestVersion}`);
+                packagesToUpdate.push({
+                  name: pkg.name,
+                  latest: latestVersion
+                });
+              } else {
+                const specialVersions = ["nightly", "dev", "preview"];
+                specialVersions.forEach((specType) => {
+                  const specCommand = config.viewCommand(pkg.name, specType);
+                  exec4(specCommand, (specError, specStdout) => {
+                    if (!specError && specStdout.trim()) {
+                      try {
+                        const specData = JSON.parse(specStdout);
+                        const specVersion = specData.version || specData.latest;
+                        if (specVersion && specVersion !== pkg.version) {
+                          console.log(`${pkg.name}: ${pkg.version} -> ${specVersion} (${specType})`);
+                          packagesToUpdate.push({
+                            name: pkg.name,
+                            latest: specVersion
+                          });
+                        }
+                      } catch {}
+                    }
+                  });
+                });
+              }
+            } catch {
+              console.log(`Could not parse version info for ${pkg.name}`);
+            }
+          }
+          if (checkCount === packages.length) {
+            let updateNext = function() {
+              if (updateIndex >= packagesToUpdate.length) {
+                console.log(`
+\uD83C\uDF89 All updates completed!`);
+                return;
+              }
+              const pkgToUpdate = packagesToUpdate[updateIndex];
+              if (pkgToUpdate) {
+                console.log(`Updating ${pkgToUpdate.name} to ${pkgToUpdate.latest} using ${config.displayName}...`);
+                const updateCommand = config.installCommand(pkgToUpdate.name, pkgToUpdate.latest);
+                exec4(updateCommand, (updateError) => {
+                  if (updateError) {
+                    console.log(`❌ Failed to update ${pkgToUpdate.name}: ${updateError.message}`);
+                  } else {
+                    console.log(`✅ ${pkgToUpdate.name} updated successfully using ${config.displayName}!`);
+                  }
+                  updateIndex++;
+                  updateNext();
+                });
+              } else {
+                updateIndex++;
+                updateNext();
+              }
+            };
+            if (packagesToUpdate.length === 0) {
+              console.log(`
+All packages are already up to date! ✅`);
+              return;
+            }
+            console.log(`
+Found ${packagesToUpdate.length} packages with updates available.`);
+            console.log(`Starting updates...
+`);
+            let updateIndex = 0;
+            updateNext();
+          }
+        });
+      });
+    } catch (parseError) {
+      console.log(`Error parsing ${config.displayName} output: ${parseError}`);
+    }
+  });
+}
+var updateall_default;
+var init_updateall = __esm(() => {
+  init_packageManager();
+  updateall_default = runupdateall;
+});
+
+// src/commands/update.ts
+var exports_update = {};
+__export(exports_update, {
+  runupdate: () => runupdate,
+  default: () => update_default
+});
+import { exec as exec5 } from "child_process";
+async function runupdate(inputPackageName, packageManager) {
+  const name = inputPackageName || process.argv[3];
+  if (!name) {
+    console.log("Error: Please provide a package name.");
+    console.log("Usage: npm-updater [--pm <package-manager>] update <package-name>[@version]");
+    console.log("Examples:");
+    console.log("  npm-updater update react");
+    console.log("  npm-updater update @google/gemini-cli@nightly");
+    console.log("  npm-updater update typescript@5.0.0");
+    return;
+  }
+  const versionMatch = name.match(/^(.+?)(@.+)$/);
+  let packageName;
+  let version;
+  if (versionMatch && versionMatch[1] && versionMatch[2]) {
+    packageName = versionMatch[1];
+    version = versionMatch[2].substring(1);
+    console.log(`Package: ${packageName}, Version: ${version}`);
+  } else {
+    packageName = name;
+  }
+  const pm = getPackageManager(packageManager);
+  const config = getPackageManagerConfig(pm);
+  const versionInfo = version ? ` to version ${version}` : " to latest version";
+  console.log(`Updating ${packageName}${versionInfo} using ${config.displayName}...`);
+  const installCommand = config.installCommand(packageName, version);
+  exec5(installCommand, (error, stdout, stderr) => {
+    if (error) {
+      console.log(`error: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      console.log(`stderr: ${stderr}`);
+      return;
+    }
+    console.log(stdout);
+    console.log(`${packageName} has been updated successfully using ${config.displayName}!`);
+  });
+}
+var update_default;
+var init_update = __esm(() => {
+  init_packageManager();
+  update_default = runupdate;
 });
 
 // src/export/exportManager.ts
@@ -822,6 +873,10 @@ class ExportManager {
       let content;
       if (options.format === "json") {
         content = this.generateJsonExport(packages);
+      } else if (options.format === "csv") {
+        content = this.generateCsvExport(packages);
+      } else if (options.format === "list") {
+        content = this.generateListExport(packages);
       } else {
         content = this.generateTxtExport(packages);
       }
@@ -831,6 +886,37 @@ class ExportManager {
       console.error("Failed to write export file:", error);
       return false;
     }
+  }
+  generateCsvExport(packages) {
+    const headers = [
+      "Name",
+      "Version",
+      "Latest",
+      "Manager",
+      "Manager Type",
+      "Status",
+      "Registry",
+      "Description"
+    ];
+    const rows = packages.map((pkg) => [
+      pkg.name,
+      pkg.currentVersion,
+      pkg.latestVersion || "",
+      pkg.packageManager,
+      pkg.packageManager,
+      pkg.isOutdated ? "OUTDATED" : "UP-TO-DATE",
+      pkg.metadata.sourceRegistry,
+      (pkg.metadata.description || "").replace(/"/g, '""')
+    ]);
+    return [
+      headers.join(","),
+      ...rows.map((row) => row.map((cell) => `"${cell}"`).join(","))
+    ].join(`
+`);
+  }
+  generateListExport(packages) {
+    return packages.map((pkg) => `${pkg.name}@${pkg.currentVersion}`).join(`
+`);
   }
   generateJsonExport(packages) {
     const exportData = {
@@ -966,8 +1052,8 @@ End of Export Report
   }
   validateExportOptions(options) {
     const errors = [];
-    if (options.format && !["txt", "json"].includes(options.format)) {
-      errors.push('Format must be either "txt" or "json"');
+    if (options.format && !["txt", "json", "csv", "list"].includes(options.format)) {
+      errors.push('Format must be one of: "txt", "json", "csv", "list"');
     }
     if (options.output) {
       try {
@@ -1062,9 +1148,128 @@ var init_export = __esm(() => {
   export_default = runExport;
 });
 
+// src/import/importManager.ts
+import { exec as exec6 } from "child_process";
+import { promises as fs3 } from "fs";
+import { promisify } from "util";
+
+class ImportManager {
+  async importPackages(filePath) {
+    const result = {
+      success: true,
+      installedCount: 0,
+      failedCount: 0,
+      errors: []
+    };
+    try {
+      const content = await fs3.readFile(filePath, "utf-8");
+      let packagesToImport = [];
+      if (filePath.endsWith(".json")) {
+        const data = JSON.parse(content);
+        if (data.packages && Array.isArray(data.packages)) {
+          packagesToImport = data.packages.map((pkg) => ({
+            name: pkg.name,
+            version: pkg.version,
+            packageManager: pkg.packageManager
+          }));
+        } else {
+          throw new Error('Invalid JSON format: missing "packages" array.');
+        }
+      } else if (filePath.endsWith(".txt") || filePath.endsWith(".list")) {
+        const lines = content.split(`
+`).filter((line) => line.trim());
+        packagesToImport = lines.map((line) => {
+          const parts = line.trim().split(":");
+          let manager = "npm";
+          let fullPkg = line.trim();
+          if (parts.length > 1 && ["npm", "pnpm", "yarn", "bun"].includes(parts[0])) {
+            manager = parts[0];
+            fullPkg = parts.slice(1).join(":");
+          }
+          const [name, version] = fullPkg.split("@");
+          return {
+            name: name || "",
+            version: version || "latest",
+            packageManager: manager
+          };
+        }).filter((pkg) => pkg.name);
+      } else {
+        throw new Error("Unsupported file extension. Use .json, .txt, or .list");
+      }
+      console.log(`\uD83D\uDCE6 Found ${packagesToImport.length} packages to import...`);
+      for (const pkg of packagesToImport) {
+        try {
+          console.log(`\uD83D\uDE80 Installing ${pkg.name}@${pkg.version} using ${pkg.packageManager}...`);
+          const config = getPackageManagerConfig(pkg.packageManager);
+          const command = config.installCommand(pkg.name, pkg.version);
+          await execAsync(command);
+          result.installedCount++;
+        } catch (err) {
+          const errorMsg = `Failed to install ${pkg.name}: ${err instanceof Error ? err.message : "Unknown error"}`;
+          console.error(`❌ ${errorMsg}`);
+          result.failedCount++;
+          result.errors.push(errorMsg);
+        }
+      }
+      result.success = result.failedCount === 0;
+    } catch (error) {
+      result.success = false;
+      result.errors.push(error instanceof Error ? error.message : "Unknown import error");
+    }
+    return result;
+  }
+}
+var execAsync;
+var init_importManager = __esm(() => {
+  init_packageManager();
+  execAsync = promisify(exec6);
+});
+
+// src/commands/import.ts
+var exports_import = {};
+__export(exports_import, {
+  runImport: () => runImport,
+  default: () => import_default
+});
+async function runImport(filePath) {
+  if (!filePath) {
+    console.error("❌ Error: Please provide a file path to import.");
+    console.log("Usage: npm-updater import <file.json>");
+    return;
+  }
+  const importManager = new ImportManager;
+  console.log(`\uD83D\uDCE5 Starting import from: ${filePath}`);
+  console.log("=".repeat(60));
+  try {
+    const result = await importManager.importPackages(filePath);
+    console.log(`
+` + "=".repeat(60));
+    if (result.success) {
+      console.log(`✅ Import completed successfully!`);
+      console.log(`\uD83D\uDCE6 Total packages installed: ${result.installedCount}`);
+    } else {
+      console.log(`⚠️ Import finished with some issues.`);
+      console.log(`\uD83D\uDCE6 Successfully installed: ${result.installedCount}`);
+      console.log(`❌ Failed: ${result.failedCount}`);
+      if (result.errors.length > 0) {
+        console.log(`
+Errors encountered:`);
+        result.errors.forEach((err) => console.log(`  - ${err}`));
+      }
+    }
+  } catch (error) {
+    console.error("❌ Fatal import error:", error instanceof Error ? error.message : "Unknown error");
+  }
+}
+var import_default;
+var init_import = __esm(() => {
+  init_importManager();
+  import_default = runImport;
+});
+
 // src/notifications/notificationManager.ts
 import { execSync as execSync2 } from "child_process";
-import { promises as fs3 } from "fs";
+import { promises as fs4 } from "fs";
 import { homedir as homedir2 } from "os";
 import { join as join4 } from "path";
 
@@ -1077,7 +1282,7 @@ class NotificationManager {
   }
   async initialize() {
     await this.configManager.initialize();
-    await fs3.mkdir(this.configManager.getDataPath(), { recursive: true });
+    await fs4.mkdir(this.configManager.getDataPath(), { recursive: true });
   }
   async sendNotifications(alerts, methods) {
     const results = [];
@@ -1178,7 +1383,7 @@ class NotificationManager {
   async sendLogNotification(alerts) {
     try {
       const logEntry = this.generateLogEntry(alerts);
-      await fs3.appendFile(this.logPath, logEntry + `
+      await fs4.appendFile(this.logPath, logEntry + `
 `, "utf-8");
       return {
         success: true,
@@ -1285,7 +1490,7 @@ This is an automated message from NPM Package Monitor.`;
   }
   async getNotificationHistory() {
     try {
-      const content = await fs3.readFile(this.logPath, "utf-8");
+      const content = await fs4.readFile(this.logPath, "utf-8");
       return content.split(`
 `).filter((line) => line.trim().length > 0);
     } catch {
@@ -1294,7 +1499,7 @@ This is an automated message from NPM Package Monitor.`;
   }
   async clearNotificationLog() {
     try {
-      await fs3.writeFile(this.logPath, "", "utf-8");
+      await fs4.writeFile(this.logPath, "", "utf-8");
       return true;
     } catch {
       return false;
@@ -1303,7 +1508,7 @@ This is an automated message from NPM Package Monitor.`;
   async getNotificationStats() {
     try {
       const history = await this.getNotificationHistory();
-      const stats = await fs3.stat(this.logPath);
+      const stats = await fs4.stat(this.logPath);
       return {
         totalLogged: history.length,
         lastNotification: history.length > 0 ? history[history.length - 1] : undefined,
@@ -1322,7 +1527,7 @@ var init_notificationManager = __esm(() => {
 });
 
 // src/monitoring/alertSystem.ts
-import { exec as exec6 } from "child_process";
+import { exec as exec7 } from "child_process";
 
 class AlertSystem {
   configManager;
@@ -1452,7 +1657,7 @@ class AlertSystem {
           resolve({ vulnerabilities: [], needsUpdate: false });
           return;
       }
-      exec6(command, (error, stdout) => {
+      exec7(command, (error, stdout) => {
         if (error) {
           resolve({ vulnerabilities: [], needsUpdate: false });
           return;
@@ -1814,7 +2019,7 @@ var exports_latestversion = {};
 __export(exports_latestversion, {
   showlatestversion: () => showlatestversion
 });
-import { exec as exec7 } from "child_process";
+import { exec as exec8 } from "child_process";
 async function showlatestversion(packageName, packageManager) {
   const name = packageName || process.argv[3];
   if (!name) {
@@ -1826,7 +2031,7 @@ async function showlatestversion(packageName, packageManager) {
   const config = getPackageManagerConfig(pm);
   console.log(`Fetching latest version of ${name} using ${config.displayName}...`);
   const viewCommand = config.viewCommand(name);
-  exec7(viewCommand, (error, stdout, stderr) => {
+  exec8(viewCommand, (error, stdout, stderr) => {
     if (error) {
       console.log(`error: ${error.message}`);
       return;
@@ -1857,7 +2062,7 @@ __export(exports_config, {
   showbackupconfig: () => showbackupconfig,
   showalertconfig: () => showalertconfig
 });
-import { exec as exec8 } from "child_process";
+import { exec as exec9 } from "child_process";
 async function showconfiguration() {
   import_console_clear.default();
   console.log("Showing configuration...");
@@ -2189,7 +2394,7 @@ async function updatebackupconfig() {
         });
         break;
       default:
-        exec8("clear");
+        exec9("clear");
         showhelp();
         break;
     }
@@ -2610,6 +2815,12 @@ async function run() {
         await runls2(packageManager);
       }
       break;
+    case "check":
+      {
+        const { runcheck: runcheck2 } = await Promise.resolve().then(() => (init_check(), exports_check));
+        await runcheck2(packageManager);
+      }
+      break;
     case "updateall":
       {
         const { runupdateall: runupdateall2 } = await Promise.resolve().then(() => (init_updateall(), exports_updateall));
@@ -2641,6 +2852,13 @@ async function run() {
       {
         const { showExportTemplates: showExportTemplates2 } = await Promise.resolve().then(() => (init_export(), exports_export));
         await showExportTemplates2();
+      }
+      break;
+    case "import":
+      {
+        const { runImport: runImport2 } = await Promise.resolve().then(() => (init_import(), exports_import));
+        const filePath = args[commandIndex + 1];
+        await runImport2(filePath);
       }
       break;
     case "start-package-alerts":
@@ -2758,18 +2976,19 @@ Package Managers:
 Core Commands:
   version(-v, --version)        Show npm-updater version
   ls                            List all global packages
+  check                         Check for updates to global packages
   updateall                     Update all global packages
-  update                        Update single global package
+  update <package>              Update single global package
+  latestversion <package>       Show latest version of an npm package
   help                          Show this help message
-  latestversion                 Show latest version of a npm package
   about                         Show information about npm-updater
   self-update                   Self-update npm-updater
   config                        Show configuration menu
 
-
-Export Commands:
-  export-packages               Export packages to file
+Import / Export Commands:
+  export-packages [format]      Export global packages to file (txt|json|csv|list)
   export-templates              Show export format templates
+  import <file>                 Install packages from an exported file (.json/.txt/.list)
 
 Alert Commands:
   start-package-alerts          Start monitoring and alerts
@@ -2777,15 +2996,14 @@ Alert Commands:
   alerts-stop                   Stop monitoring
   alerts-summary                Get alert summary
   alerts-history                View recent alerts
-  alerts-acknowledge            Acknowledge an alert
+  alerts-acknowledge <id>       Acknowledge an alert
   alerts-config                 Show alert configuration
 
 Options:
   --help, -h                    Show this help message
   --pm <package-manager>        Specify package manager (npm, pnpm, yarn, bun)
-  --update, -u                  Update a package
   --version, -v                 Show npm-updater version
-  --format [txt|json]           Export format
+  --format [txt|json|csv|list]  Export format
   --output <filename>           Output file path
   --timestamp, -t               Include timestamps in export
   --interval <value> <unit>     Alert check interval (minutes|hours|days)
@@ -2795,17 +3013,20 @@ Options:
   --limit <number>              Number of alerts to show
 
 Examples:
-  # Core usage
-  npm-updater ls                    # List packages using npm
-  npm-updater --pm pnpm ls          # List packages using pnpm
-  npm-updater --pm yarn updateall   # Update all packages using Yarn
-  npm-updater update prettier       # Update prettier using npm (default)
+  # Listing & updating
+  npm-updater ls                              # List all global packages
+  npm-updater check                           # Check which packages have updates
+  npm-updater --pm pnpm check                 # Check using pnpm
+  npm-updater updateall                       # Update all global packages
+  npm-updater update prettier                 # Update prettier
 
-  # Export functionality
-  npm-updater export-packages --format txt --output packages.txt
-  npm-updater export-packages --format json --timestamp
-  npm-updater export-packages --pm npm --timestamp
-  npm-updater export-templates      # Show format templates
+  # Export & Import
+  npm-updater export-packages json            # Export as JSON
+  npm-updater export-packages csv             # Export as CSV
+  npm-updater export-packages list            # Export as simple name@version list
+  npm-updater export-packages txt --timestamp # Export .txt report with timestamp
+  npm-updater import packages.json            # Install packages from JSON export
+  npm-updater import packages.list            # Install packages from list file
 
   # Alert system
   npm-updater start-package-alerts --interval 24 hours --method desktop

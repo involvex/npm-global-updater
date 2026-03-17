@@ -64,6 +64,12 @@ export async function run() {
 				await runls(packageManager)
 			}
 			break
+		case 'check':
+			{
+				const {runcheck} = await import('./commands/check')
+				await runcheck(packageManager)
+			}
+			break
 		case 'updateall':
 			{
 				const {runupdateall} = await import('./commands/updateall')
@@ -84,7 +90,13 @@ export async function run() {
 		case 'export':
 			{
 				const {runExport} = await import('./commands/export')
-				const format = args[commandIndex + 1] as 'txt' | 'json' | undefined
+				const format = args[commandIndex + 1] as
+					| 'txt'
+					| 'json'
+					| 'csv'
+					| 'list'
+					| undefined
+
 				const output = args[commandIndex + 2]
 				const includeTimestamps =
 					args.includes('--timestamp') || args.includes('-t')
@@ -105,6 +117,13 @@ export async function run() {
 			{
 				const {showExportTemplates} = await import('./commands/export')
 				await showExportTemplates()
+			}
+			break
+		case 'import':
+			{
+				const {runImport} = await import('./commands/import')
+				const filePath = args[commandIndex + 1]
+				await runImport(filePath!)
 			}
 			break
 		case 'start-package-alerts':
@@ -242,18 +261,19 @@ Package Managers:
 Core Commands:
   version(-v, --version)        Show npm-updater version
   ls                            List all global packages
+  check                         Check for updates to global packages
   updateall                     Update all global packages
-  update                        Update single global package
+  update <package>              Update single global package
+  latestversion <package>       Show latest version of an npm package
   help                          Show this help message
-  latestversion                 Show latest version of a npm package
   about                         Show information about npm-updater
   self-update                   Self-update npm-updater
   config                        Show configuration menu
 
-
-Export Commands:
-  export-packages               Export packages to file
+Import / Export Commands:
+  export-packages [format]      Export global packages to file (txt|json|csv|list)
   export-templates              Show export format templates
+  import <file>                 Install packages from an exported file (.json/.txt/.list)
 
 Alert Commands:
   start-package-alerts          Start monitoring and alerts
@@ -261,15 +281,14 @@ Alert Commands:
   alerts-stop                   Stop monitoring
   alerts-summary                Get alert summary
   alerts-history                View recent alerts
-  alerts-acknowledge            Acknowledge an alert
+  alerts-acknowledge <id>       Acknowledge an alert
   alerts-config                 Show alert configuration
 
 Options:
   --help, -h                    Show this help message
   --pm <package-manager>        Specify package manager (npm, pnpm, yarn, bun)
-  --update, -u                  Update a package
   --version, -v                 Show npm-updater version
-  --format [txt|json]           Export format
+  --format [txt|json|csv|list]  Export format
   --output <filename>           Output file path
   --timestamp, -t               Include timestamps in export
   --interval <value> <unit>     Alert check interval (minutes|hours|days)
@@ -279,17 +298,20 @@ Options:
   --limit <number>              Number of alerts to show
 
 Examples:
-  # Core usage
-  npm-updater ls                    # List packages using npm
-  npm-updater --pm pnpm ls          # List packages using pnpm
-  npm-updater --pm yarn updateall   # Update all packages using Yarn
-  npm-updater update prettier       # Update prettier using npm (default)
+  # Listing & updating
+  npm-updater ls                              # List all global packages
+  npm-updater check                           # Check which packages have updates
+  npm-updater --pm pnpm check                 # Check using pnpm
+  npm-updater updateall                       # Update all global packages
+  npm-updater update prettier                 # Update prettier
 
-  # Export functionality
-  npm-updater export-packages --format txt --output packages.txt
-  npm-updater export-packages --format json --timestamp
-  npm-updater export-packages --pm npm --timestamp
-  npm-updater export-templates      # Show format templates
+  # Export & Import
+  npm-updater export-packages json            # Export as JSON
+  npm-updater export-packages csv             # Export as CSV
+  npm-updater export-packages list            # Export as simple name@version list
+  npm-updater export-packages txt --timestamp # Export .txt report with timestamp
+  npm-updater import packages.json            # Install packages from JSON export
+  npm-updater import packages.list            # Install packages from list file
 
   # Alert system
   npm-updater start-package-alerts --interval 24 hours --method desktop

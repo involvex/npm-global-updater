@@ -4,7 +4,8 @@ import {promises as fs} from 'fs'
 import {join} from 'path'
 
 export interface ExportOptions {
-	format: 'txt' | 'json'
+	format: 'txt' | 'json' | 'csv' | 'list'
+
 	output?: string
 	includeTimestamps: boolean
 	filterByPackageManager?: string
@@ -164,6 +165,10 @@ export class ExportManager {
 
 			if (options.format === 'json') {
 				content = this.generateJsonExport(packages)
+			} else if (options.format === 'csv') {
+				content = this.generateCsvExport(packages)
+			} else if (options.format === 'list') {
+				content = this.generateListExport(packages)
 			} else {
 				content = this.generateTxtExport(packages)
 			}
@@ -174,6 +179,44 @@ export class ExportManager {
 			console.error('Failed to write export file:', error)
 			return false
 		}
+	}
+
+	/**
+	 * Generate CSV export content
+	 */
+	private generateCsvExport(packages: TrackedPackage[]): string {
+		const headers = [
+			'Name',
+			'Version',
+			'Latest',
+			'Manager',
+			'Manager Type',
+			'Status',
+			'Registry',
+			'Description',
+		]
+		const rows = packages.map(pkg => [
+			pkg.name,
+			pkg.currentVersion,
+			pkg.latestVersion || '',
+			pkg.packageManager,
+			pkg.packageManager,
+			pkg.isOutdated ? 'OUTDATED' : 'UP-TO-DATE',
+			pkg.metadata.sourceRegistry,
+			(pkg.metadata.description || '').replace(/"/g, '""'),
+		])
+
+		return [
+			headers.join(','),
+			...rows.map(row => row.map(cell => `"${cell}"`).join(',')),
+		].join('\n')
+	}
+
+	/**
+	 * Generate List export content (just package names and versions)
+	 */
+	private generateListExport(packages: TrackedPackage[]): string {
+		return packages.map(pkg => `${pkg.name}@${pkg.currentVersion}`).join('\n')
 	}
 
 	/**
@@ -364,8 +407,11 @@ End of Export Report
 		const errors: string[] = []
 
 		// Validate format
-		if (options.format && !['txt', 'json'].includes(options.format)) {
-			errors.push('Format must be either "txt" or "json"')
+		if (
+			options.format &&
+			!['txt', 'json', 'csv', 'list'].includes(options.format)
+		) {
+			errors.push('Format must be one of: "txt", "json", "csv", "list"')
 		}
 
 		// Validate output path

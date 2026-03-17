@@ -9,9 +9,12 @@ A powerful command-line tool for managing and updating globally installed npm pa
 ## ✨ Features
 
 - **📦 List Global Packages**: View all globally installed packages from any package manager
+- **🔎 Update Check**: Scan all global packages and show what has updates available (`check`)
 - **🔄 Update Individual Packages**: Update specific packages to their latest versions
 - **🚀 Bulk Update All**: Update all global packages at once
 - **🔍 Check Latest Version**: View the latest version of any package
+- **📤 Export Packages**: Export your global package list to `txt`, `json`, `csv`, or `list` formats
+- **📥 Import Packages**: Restore a package list from an exported file and install everything globally
 - **🌙 Special Version Support**: Automatically detects and updates nightly, dev, and preview versions
 - **📊 Version Comparison**: Compares current versions with latest available versions
 - **⚡ Multi-Package Manager Support**: Works with npm, pnpm, Yarn, and Bun
@@ -57,17 +60,20 @@ bun link
 # List all global packages
 bun run dev ls
 
+# Check which packages have updates available
+bun run dev check
+
 # Update a specific package
 bun run dev update prettier
-
-# Check latest version of a package
-bun run dev latestversion prettier
 
 # Update all global packages
 bun run dev updateall
 
-# Show version
-bun run dev version
+# Export your global packages
+bun run dev export-packages json
+
+# Restore packages from an export
+bun run dev import packages.json
 
 # Show help
 bun run dev help
@@ -78,9 +84,11 @@ bun run dev help
 ```bash
 # After building
 npm-updater ls
+npm-updater check
 npm-updater update prettier
-npm-updater latestversion prettier
 npm-updater updateall
+npm-updater export-packages json
+npm-updater import packages.json
 npm-updater version
 npm-updater help
 ```
@@ -120,152 +128,139 @@ npx @involvex/npm-global-updater@latest --pm yarn updateall
 
 ## 📖 Command Reference
 
-### `npm-updater [--pm <package-manager>] ls` - List Global Packages
+### `npm-updater ls` — List Global Packages
 
-Lists all globally installed packages with their current versions using the specified package manager.
-
-```bash
-npm-updater ls                    # Use npm (default)
-npm-updater --pm pnpm ls          # Use pnpm
-npm-updater --pm yarn ls          # Use Yarn
-npm-updater --pm bun ls           # Use Bun
-# or
-npm-updater list                  # Use npm (default)
-```
-
-**Output:**
-
-```
-/usr/local/lib/node_modules
-├── prettier@3.1.0
-├── typescript@5.3.2
-├── eslint@8.55.0
-└── ...
-```
-
-### `npm-updater [--pm <package-manager>] update <package-name>` - Update Individual Package
-
-Updates a specific package to its latest version using the specified package manager.
+Lists all globally installed packages with their current versions.
 
 ```bash
-npm-updater update prettier                    # Use npm (default)
-npm-updater --pm pnpm update prettier          # Use pnpm
-npm-updater --pm yarn update prettier          # Use Yarn
-npm-updater --pm bun update prettier           # Use Bun
+npm-updater ls                    # npm (default)
+npm-updater --pm pnpm ls          # pnpm
+npm-updater list                  # alias
 ```
 
-**Features:**
+---
 
-- Updates to the latest stable version by default
-- Provides clear success/error feedback
-- Shows the update progress
+### `npm-updater check` — Check for Updates ⭐ New
+
+Scans all globally installed packages and shows which ones have updates available in a columnar table.
+
+```bash
+npm-updater check
+npm-updater --pm pnpm check
+```
 
 **Example Output:**
 
 ```
-Updating prettier...
-changed 1 package in 1s
-prettier has been updated successfully!
+🔍 Checking global packages for updates (npm)...
+================================================================================
+Found 3 packages with updates available:
+
+Package                       Manager   Current        Latest
+--------------------------------------------------------------------------------
+prettier                      npm       3.1.0          3.4.2
+typescript                    npm       5.3.2          5.8.2
+eslint                        npm       8.55.0         9.22.0
+
+================================================================================
+Summary: 3/50 packages can be updated.
 ```
 
-### `npm-updater [--pm <package-manager>] latestversion <package-name>` - Check Latest Version
+---
 
-Displays the latest available version of any package using the specified package manager.
+### `npm-updater update <package>` — Update Individual Package
+
+Updates a specific package to its latest version.
 
 ```bash
-npm-updater latestversion prettier                 # Use npm (default)
-npm-updater --pm pnpm latestversion prettier       # Use pnpm
-npm-updater --pm yarn latestversion prettier       # Use Yarn
-npm-updater --pm bun latestversion prettier        # Use Bun
+npm-updater update prettier
+npm-updater --pm pnpm update prettier
 ```
 
-**Features:**
+---
 
-- Queries the npm registry for the latest version
-- Works for any npm package
-- Quick version checking without installation
+### `npm-updater updateall` — Update All Packages
+
+Scans and updates all global packages. Supports special versions (nightly, dev, preview).
+
+```bash
+npm-updater updateall
+npm-updater --pm pnpm updateall
+```
+
+---
+
+### `npm-updater export-packages [format]` — Export Packages ⭐ Improved
+
+Exports your global package list to a file. Supports four formats:
+
+| Format | Description                                   |
+| ------ | --------------------------------------------- |
+| `txt`  | Detailed human-readable report (default)      |
+| `json` | Full metadata, importable by `import` command |
+| `csv`  | Spreadsheet-friendly CSV                      |
+| `list` | Simple `name@version` per line                |
+
+```bash
+npm-updater export-packages json
+npm-updater export-packages csv --output my-packages.csv
+npm-updater export-packages txt --timestamp
+npm-updater export-packages list --output restore.list
+```
+
+---
+
+### `npm-updater import <file>` — Import & Install Packages ⭐ New
+
+Reads an exported package list and installs all packages globally. Great for restoring a dev environment or migrating to a new machine.
+
+Supported file types:
+
+- **`.json`** — from `export-packages json`
+- **`.txt` / `.list`** — `name@version` plain text format
+
+```bash
+npm-updater import packages.json
+npm-updater import packages.list
+```
 
 **Example Output:**
 
 ```
-Fetching latest version of prettier...
-Latest version of prettier: 3.1.1
+📥 Starting import from: packages.json
+============================================================
+📦 Found 3 packages to import...
+🚀 Installing prettier@3.4.2 using npm...
+🚀 Installing typescript@5.8.2 using npm...
+🚀 Installing eslint@9.22.0 using npm...
+
+============================================================
+✅ Import completed successfully!
+📦 Total packages installed: 3
 ```
 
-### `npm-updater [--pm <package-manager>] updateall` - Update All Packages
+---
 
-Scans all global packages and updates them to their latest versions using the specified package manager.
+### `npm-updater latestversion <package>` — Check Latest Version
+
+Displays the latest available version of any package.
 
 ```bash
-npm-updater updateall                          # Use npm (default)
-npm-updater --pm pnpm updateall                # Use pnpm
-npm-updater --pm yarn updateall                # Use Yarn
-npm-updater --pm bun updateall                 # Use Bun
+npm-updater latestversion prettier
 ```
 
-**Features:**
+---
 
-- Automatically detects all global packages
-- Compares versions with npm registry
-- Updates packages sequentially to avoid conflicts
-- Supports special versions (nightly, dev, preview)
-- Provides detailed progress feedback
-
-**Example Output:**
-
-```
-Checking for globally installed npm packages...
-Found 50 globally installed packages
-Checking for available updates...
-
-prettier: 3.1.0 -> 3.1.1
-typescript: 5.3.2 -> 5.3.3
-eslint: 8.55.0 -> 8.56.0
-
-Starting updates for 3 packages...
-Updating prettier to 3.1.1...
-✅ prettier updated successfully!
-Updating typescript to 5.3.3...
-✅ typescript updated successfully!
-🎉 All updates completed!
-```
-
-### Special Version Support
-
-The `updateall` command automatically detects and can update to special versions:
-
-- **Nightly builds**: `@nightly` tag versions
-- **Development builds**: `@dev` tag versions
-- **Preview builds**: `@preview` tag versions
+### `npm-updater version` — Show Version
 
 ```bash
-# Example output showing special versions
-special-package: 2.0.0 -> 2.1.0-nightly
-experimental-tool: 1.5.0 -> 1.6.0-dev
+npm-updater version   # or -v / --version
 ```
 
-### `npm-updater version` - Show Version
-
-Displays the current version of npm-global-updater.
+### `npm-updater help` — Show Help
 
 ```bash
-npm-updater version
-# or
-npm-updater --version
-# or
-npm-updater -v
-```
-
-### `npm-updater help` - Show Help
-
-Displays usage information and available commands.
-
-```bash
-npm-updater help
-# or
-npm-updater --help
-# or
-npm-updater -h
+npm-updater help   # or -h / --help
 ```
 
 ## 🛠️ Development
@@ -275,19 +270,37 @@ npm-updater -h
 ```
 npm-global-updater/
 ├── src/
-│   ├── index.ts              # Main entry point
-│   └── commands/
-│       ├── ls.ts            # List packages command
-│       ├── update.ts        # Update individual package
-│       ├── updateall.ts     # Update all packages
-│       ├── latestversion.ts # Check latest version command
-│       ├── version.ts       # Version command
-│       └── help.ts          # Help command
+│   ├── index.ts              # Main entry point & CLI router
+│   ├── commands/
+│   │   ├── ls.ts             # List packages
+│   │   ├── check.ts          # Check for updates (NEW)
+│   │   ├── update.ts         # Update individual package
+│   │   ├── updateall.ts      # Update all packages
+│   │   ├── export.ts         # Export command handler
+│   │   ├── import.ts         # Import command handler (NEW)
+│   │   ├── latestversion.ts  # Check latest version
+│   │   ├── alerts.ts         # Alert system commands
+│   │   ├── config.ts         # Configuration menu
+│   │   ├── version.ts        # Version command
+│   │   └── about.ts          # About command
+│   ├── export/
+│   │   └── exportManager.ts  # Export logic (txt/json/csv/list)
+│   ├── import/
+│   │   └── importManager.ts  # Import & install logic (NEW)
+│   ├── database/
+│   │   └── packageTracker.ts # Package tracking
+│   ├── config/
+│   │   └── configManager.ts  # Configuration management
+│   ├── monitoring/           # Monitoring & alert system
+│   ├── notifications/        # Notification delivery
+│   └── utils/
+│       ├── packageManager.ts # PM abstraction layer
+│       └── logo.ts           # ASCII logo
 ├── bin/
-│   └── npm-updater.js       # Built binary
+│   └── npm-updater.js        # Built binary
+├── tests/                    # Test suite
 ├── package.json
 ├── tsconfig.json
-├── bunfig.toml
 └── README.md
 ```
 

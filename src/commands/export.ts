@@ -1,7 +1,8 @@
 import {ExportManager, type ExportResult} from '../export/exportManager'
 
 export async function runExport(
-	format?: 'txt' | 'json',
+	format?: 'txt' | 'json' | 'csv' | 'list',
+
 	output?: string,
 	packageManagers?: string[],
 	filterByPackageManager?: string,
