@@ -92,14 +92,22 @@ export class PackageTracker {
 		const packages: TrackedPackage[] = []
 
 		return new Promise((resolve, reject) => {
-			exec(config.listJsonCommand, async (error, stdout) => {
-				if (error) {
-					reject(error)
+			exec(config.listJsonCommand, async (error, stdout, stderr) => {
+				// npm exits with code 1 for unmet peer deps but still outputs valid JSON.
+				// Only hard-reject if there's literally no output.
+				if (error && !stdout.trim()) {
+					reject(new Error(stderr || error.message))
 					return
 				}
 
 				try {
-					const data = JSON.parse(stdout)
+					// Strip any lines before the first '{' (e.g. npm warnings on stdout)
+					const jsonStart = stdout.indexOf('{')
+					if (jsonStart === -1) {
+						resolve([])
+						return
+					}
+					const data = JSON.parse(stdout.slice(jsonStart))
 					const dependencies = data.dependencies || {}
 
 					for (const [packageName, packageInfo] of Object.entries(
@@ -110,9 +118,19 @@ export class PackageTracker {
 							packageInfo !== null &&
 							'version' in packageInfo
 						) {
+							const info = packageInfo as Record<string, unknown>
+
+							// Skip linked (npm link) and workspace packages — they
+							// don't exist on the registry, so we can't check versions.
+							const isLinked =
+								info['link'] === true ||
+								(typeof info['resolved'] === 'string' &&
+									(info['resolved'] as string).startsWith('file:'))
+							if (isLinked) continue
+
 							const trackedPackage = await this.trackPackage(
 								packageName,
-								packageInfo.version as string,
+								info['version'] as string,
 								packageManager,
 							)
 							packages.push(trackedPackage)
@@ -177,24 +195,56 @@ export class PackageTracker {
 		return new Promise((resolve, reject) => {
 			const command = config.viewCommand(name)
 
-			exec(command, (error, stdout) => {
-				if (error) {
+			exec(command, (error, stdout, stderr) => {
+				if (error && !stdout.trim()) {
+					// Package not found on registry (E404) or network error.
+					// Resolve with unknown so the scan continues for other packages.
+					const isNotFound =
+						stderr.includes('E404') ||
+						(error.message?.includes('E404') ?? false)
+					if (isNotFound) {
+						resolve({latestVersion: 'unknown (private/local)'})
+						return
+					}
 					reject(error)
 					return
 				}
 
 				try {
-					const data = JSON.parse(stdout)
-					resolve({
-						latestVersion: data.version || data.latest || 'unknown',
-						description: data.description,
-						homepage: data.homepage || data.repository?.url,
-						license: data.license,
-						deprecated: data.deprecated,
-						dependencies: data.dependencies,
-						devDependencies: data.devDependencies,
-						securityAdvisories: data.securityAdvisories || [],
-					})
+					const raw = stdout.trim()
+
+					// npm view <pkg> version returns plain semver string (e.g. "3.4.2")
+					// npm view <pkg> --json returns a JSON object
+					if (raw.startsWith('{') || raw.startsWith('[')) {
+						const data = JSON.parse(raw) as Record<string, unknown>
+						resolve({
+							latestVersion:
+								(data['version'] as string) ||
+								(data['latest'] as string) ||
+								'unknown',
+							description: data['description'] as string | undefined,
+							homepage:
+								(data['homepage'] as string) ||
+								(data['repository'] as {url?: string} | undefined)?.url,
+							license: data['license'] as string | undefined,
+							deprecated: data['deprecated'] as boolean | undefined,
+							dependencies: data['dependencies'] as
+								| Record<string, string>
+								| undefined,
+							devDependencies: data['devDependencies'] as
+								| Record<string, string>
+								| undefined,
+							securityAdvisories:
+								(data['securityAdvisories'] as unknown[]) || [],
+						})
+					} else {
+						// Plain version string — extract just the version number
+						// e.g. "3.4.2" or "prettier@3.4.2 '3.4.2'"
+						const versionMatch = raw.match(/[\d]+\.[\d]+\.[\d]+[^\s]*/)
+						resolve({
+							latestVersion: versionMatch ? versionMatch[0] : raw,
+						})
+					}
 				} catch (parseError) {
 					reject(parseError)
 				}

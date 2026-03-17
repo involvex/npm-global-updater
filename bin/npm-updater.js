@@ -382,17 +382,26 @@ class PackageTracker {
     const config = getPackageManagerConfig(packageManager);
     const packages = [];
     return new Promise((resolve, reject) => {
-      exec3(config.listJsonCommand, async (error, stdout) => {
-        if (error) {
-          reject(error);
+      exec3(config.listJsonCommand, async (error, stdout, stderr) => {
+        if (error && !stdout.trim()) {
+          reject(new Error(stderr || error.message));
           return;
         }
         try {
-          const data = JSON.parse(stdout);
+          const jsonStart = stdout.indexOf("{");
+          if (jsonStart === -1) {
+            resolve([]);
+            return;
+          }
+          const data = JSON.parse(stdout.slice(jsonStart));
           const dependencies = data.dependencies || {};
           for (const [packageName, packageInfo] of Object.entries(dependencies)) {
             if (typeof packageInfo === "object" && packageInfo !== null && "version" in packageInfo) {
-              const trackedPackage = await this.trackPackage(packageName, packageInfo.version, packageManager);
+              const info = packageInfo;
+              const isLinked = info["link"] === true || typeof info["resolved"] === "string" && info["resolved"].startsWith("file:");
+              if (isLinked)
+                continue;
+              const trackedPackage = await this.trackPackage(packageName, info["version"], packageManager);
               packages.push(trackedPackage);
             }
           }
@@ -426,23 +435,36 @@ class PackageTracker {
     const config = getPackageManagerConfig(packageManager);
     return new Promise((resolve, reject) => {
       const command = config.viewCommand(name);
-      exec3(command, (error, stdout) => {
-        if (error) {
+      exec3(command, (error, stdout, stderr) => {
+        if (error && !stdout.trim()) {
+          const isNotFound = stderr.includes("E404") || (error.message?.includes("E404") ?? false);
+          if (isNotFound) {
+            resolve({ latestVersion: "unknown (private/local)" });
+            return;
+          }
           reject(error);
           return;
         }
         try {
-          const data = JSON.parse(stdout);
-          resolve({
-            latestVersion: data.version || data.latest || "unknown",
-            description: data.description,
-            homepage: data.homepage || data.repository?.url,
-            license: data.license,
-            deprecated: data.deprecated,
-            dependencies: data.dependencies,
-            devDependencies: data.devDependencies,
-            securityAdvisories: data.securityAdvisories || []
-          });
+          const raw = stdout.trim();
+          if (raw.startsWith("{") || raw.startsWith("[")) {
+            const data = JSON.parse(raw);
+            resolve({
+              latestVersion: data["version"] || data["latest"] || "unknown",
+              description: data["description"],
+              homepage: data["homepage"] || data["repository"]?.url,
+              license: data["license"],
+              deprecated: data["deprecated"],
+              dependencies: data["dependencies"],
+              devDependencies: data["devDependencies"],
+              securityAdvisories: data["securityAdvisories"] || []
+            });
+          } else {
+            const versionMatch = raw.match(/[\d]+\.[\d]+\.[\d]+[^\s]*/);
+            resolve({
+              latestVersion: versionMatch ? versionMatch[0] : raw
+            });
+          }
         } catch (parseError) {
           reject(parseError);
         }
