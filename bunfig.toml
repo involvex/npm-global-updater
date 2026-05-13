@@ -37,10 +37,11 @@ watch = false
 env = {
   NODE_ENV = "test",
 BUN_ENV = "test",
-# Test environment setup
+
 
 }
 
+# Test environment setup
 NPM_UPDATER_TEST_MODE = "true"
 # File watching exclusions for test files
 # exclude = ["node_modules", "dist", "coverage"]

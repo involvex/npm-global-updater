@@ -1667,7 +1667,7 @@ class AlertSystem {
   }
   async runSecurityAudit(packageName, packageManager) {
     return new Promise((resolve) => {
-      let command = "";
+      let command = "bun";
       switch (packageManager) {
         case "npm":
         case "pnpm":
@@ -2605,19 +2605,19 @@ var init_package = __esm(() => {
       jiti: "^2.7.0"
     },
     devDependencies: {
-      "@eslint/js": "^9.39.2",
-      "@eslint/json": "^0.14.0",
+      "@eslint/js": "^10.0.1",
+      "@eslint/json": "^1.2.0",
       "@involvex/prettier-config": "^0.0.5",
       "@types/bun": "^1.3.14",
       "@types/node": "^25.7.0",
       bun: "^1.3.14",
       changelogen: "^0.6.2",
-      eslint: "^9.39.2",
-      globals: "^16.5.0",
+      eslint: "^10.3.0",
+      globals: "^17.6.0",
       jest: "^30.4.2",
       "mock-fs": "^5.5.0",
       prettier: "^3.8.3",
-      sinon: "^21.1.2",
+      sinon: "^22.0.0",
       "ts-node": "^10.9.2",
       "typescript-eslint": "^8.59.3"
     },

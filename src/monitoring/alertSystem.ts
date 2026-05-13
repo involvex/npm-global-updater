@@ -253,7 +253,8 @@ export class AlertSystem {
 		// For now, we'll simulate the response
 
 		return new Promise(resolve => {
-			let command = ''
+			/* eslint-disable */
+			let command = 'bun'
 			switch (packageManager) {
 				case 'npm':
 				case 'pnpm':
