@@ -2,7 +2,10 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
 		<meta
 			name="description"
 			content="Usage guide for npm-updater - Complete command reference with examples for managing global npm packages across different package managers."
@@ -14,12 +17,26 @@
 
 		<title>Usage Guide - npm-updater</title>
 
-		<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
-		<link rel="alternate icon" href="../assets/favicon.ico" />
+		<link
+			rel="icon"
+			type="image/svg+xml"
+			href="../assets/favicon.svg"
+		/>
+		<link
+			rel="alternate icon"
+			href="../assets/favicon.ico"
+		/>
 
 		<!-- Fonts -->
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="preconnect"
+			href="https://fonts.googleapis.com"
+		/>
+		<link
+			rel="preconnect"
+			href="https://fonts.gstatic.com"
+			crossorigin
+		/>
 		<link
 			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
 			rel="stylesheet"
@@ -31,16 +48,30 @@
 			rel="stylesheet"
 		/>
 
-		<link rel="stylesheet" href="../assets/main.css" />
+		<link
+			rel="stylesheet"
+			href="../assets/main.css"
+		/>
 	</head>
 	<body>
 		<!-- Skip to content link for accessibility -->
-		<a href="#main-content" class="skip-link">Skip to main content</a>
+		<a
+			href="#main-content"
+			class="skip-link"
+			>Skip to main content</a
+		>
 
 		<!-- Header -->
-		<header class="header" role="banner">
+		<header
+			class="header"
+			role="banner"
+		>
 			<div class="container">
-				<nav class="nav" role="navigation" aria-label="Main navigation">
+				<nav
+					class="nav"
+					role="navigation"
+					aria-label="Main navigation"
+				>
 					<div class="nav-brand">
 						<a
 							href="../index.html"
@@ -61,7 +92,12 @@
 									d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
 								></path>
 								<polyline points="3.27,6.96 12,12.01 20.73,6.96"></polyline>
-								<line x1="12" y1="22.08" x2="12" y2="12"></line>
+								<line
+									x1="12"
+									y1="22.08"
+									x2="12"
+									y2="12"
+								></line>
 							</svg>
 							<span class="brand-text">npm-updater</span>
 						</a>
@@ -79,14 +115,36 @@
 							<span class="nav-toggle-bar"></span>
 						</button>
 
-						<div class="nav-links" id="nav-menu">
-							<a href="../index.html" class="nav-link">Home</a>
-							<a href="installation.html" class="nav-link">Installation</a>
-							<a href="usage.html" class="nav-link active" aria-current="page"
+						<div
+							class="nav-links"
+							id="nav-menu"
+						>
+							<a
+								href="../index.html"
+								class="nav-link"
+								>Home</a
+							>
+							<a
+								href="installation.html"
+								class="nav-link"
+								>Installation</a
+							>
+							<a
+								href="usage.html"
+								class="nav-link active"
+								aria-current="page"
 								>Usage</a
 							>
-							<a href="../api/index.html" class="nav-link">API</a>
-							<a href="../changelog.html" class="nav-link">Changelog</a>
+							<a
+								href="../api/index.html"
+								class="nav-link"
+								>API</a
+							>
+							<a
+								href="../changelog.html"
+								class="nav-link"
+								>Changelog</a
+							>
 							<a
 								href="https://github.com/involvex/npm-global-updater"
 								class="nav-link"
@@ -112,7 +170,11 @@
 							stroke-width="2"
 							aria-hidden="true"
 						>
-							<circle cx="12" cy="12" r="5"></circle>
+							<circle
+								cx="12"
+								cy="12"
+								r="5"
+							></circle>
 							<path
 								d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
 							></path>
@@ -135,58 +197,100 @@
 		</header>
 
 		<!-- Main content -->
-		<main id="main-content" class="main" role="main">
+		<main
+			id="main-content"
+			class="main"
+			role="main"
+		>
 			<div class="container">
 				<div class="content-layout">
 					<!-- Sidebar navigation -->
-					<aside class="sidebar" role="complementary">
-						<nav class="sidebar-nav" aria-label="Usage guide navigation">
+					<aside
+						class="sidebar"
+						role="complementary"
+					>
+						<nav
+							class="sidebar-nav"
+							aria-label="Usage guide navigation"
+						>
 							<h3 class="sidebar-title">Usage</h3>
 							<ul class="sidebar-links">
 								<li>
-									<a href="#quick-start" class="sidebar-link">Quick Start</a>
+									<a
+										href="#quick-start"
+										class="sidebar-link"
+										>Quick Start</a
+									>
 								</li>
 								<li>
-									<a href="#package-managers" class="sidebar-link"
+									<a
+										href="#package-managers"
+										class="sidebar-link"
 										>Package Managers</a
 									>
 								</li>
 								<li>
-									<a href="#ls-command" class="sidebar-link">ls Command</a>
+									<a
+										href="#ls-command"
+										class="sidebar-link"
+										>ls Command</a
+									>
 								</li>
 								<li>
-									<a href="#update-command" class="sidebar-link"
+									<a
+										href="#update-command"
+										class="sidebar-link"
 										>update Command</a
 									>
 								</li>
 								<li>
-									<a href="#updateall-command" class="sidebar-link"
+									<a
+										href="#updateall-command"
+										class="sidebar-link"
 										>updateall Command</a
 									>
 								</li>
 								<li>
-									<a href="#latestversion-command" class="sidebar-link"
+									<a
+										href="#latestversion-command"
+										class="sidebar-link"
 										>latestversion Command</a
 									>
 								</li>
 								<li>
-									<a href="#version-command" class="sidebar-link"
+									<a
+										href="#version-command"
+										class="sidebar-link"
 										>version Command</a
 									>
 								</li>
 								<li>
-									<a href="#help-command" class="sidebar-link">help Command</a>
+									<a
+										href="#help-command"
+										class="sidebar-link"
+										>help Command</a
+									>
 								</li>
 								<li>
-									<a href="#advanced-usage" class="sidebar-link"
+									<a
+										href="#advanced-usage"
+										class="sidebar-link"
 										>Advanced Usage</a
 									>
 								</li>
-								<li><a href="#examples" class="sidebar-link">Examples</a></li>
+								<li>
+									<a
+										href="#examples"
+										class="sidebar-link"
+										>Examples</a
+									>
+								</li>
 							</ul>
 
 							<div class="sidebar-cta">
-								<a href="installation.html" class="btn btn-primary"
+								<a
+									href="installation.html"
+									class="btn btn-primary"
 									>Install npm-updater</a
 								>
 							</div>
@@ -205,7 +309,10 @@
 							</header>
 
 							<!-- Quick Start -->
-							<section id="quick-start" class="section">
+							<section
+								id="quick-start"
+								class="section"
+							>
 								<h2 class="section-title">⚡ Quick Start</h2>
 
 								<p class="section-description">
@@ -271,7 +378,10 @@
 							</section>
 
 							<!-- Package Managers -->
-							<section id="package-managers" class="section">
+							<section
+								id="package-managers"
+								class="section"
+							>
 								<h2 class="section-title">📦 Package Manager Support</h2>
 
 								<p class="section-description">
@@ -281,7 +391,10 @@
 								</p>
 
 								<div class="package-managers-grid">
-									<div class="package-manager-card" id="npm">
+									<div
+										class="package-manager-card"
+										id="npm"
+									>
 										<div class="package-manager-header">
 											<h3 class="package-manager-title">npm</h3>
 											<span class="package-manager-default">Default</span>
@@ -303,7 +416,10 @@ npm-updater update prettier</code></pre>
 										</div>
 									</div>
 
-									<div class="package-manager-card" id="pnpm">
+									<div
+										class="package-manager-card"
+										id="pnpm"
+									>
 										<div class="package-manager-header">
 											<h3 class="package-manager-title">pnpm</h3>
 											<span class="package-manager-badge">Fast</span>
@@ -325,7 +441,10 @@ npm-updater --pm pnpm update prettier</code></pre>
 										</div>
 									</div>
 
-									<div class="package-manager-card" id="yarn">
+									<div
+										class="package-manager-card"
+										id="yarn"
+									>
 										<div class="package-manager-header">
 											<h3 class="package-manager-title">Yarn</h3>
 											<span class="package-manager-badge">Classic</span>
@@ -347,7 +466,10 @@ npm-updater --pm yarn update prettier</code></pre>
 										</div>
 									</div>
 
-									<div class="package-manager-card" id="bun">
+									<div
+										class="package-manager-card"
+										id="bun"
+									>
 										<div class="package-manager-header">
 											<h3 class="package-manager-title">Bun</h3>
 											<span class="package-manager-badge">Ultra Fast</span>
@@ -372,7 +494,10 @@ npm-updater --pm bun update prettier</code></pre>
 							</section>
 
 							<!-- ls Command -->
-							<section id="ls-command" class="section">
+							<section
+								id="ls-command"
+								class="section"
+							>
 								<h2 class="section-title">📋 ls Command</h2>
 
 								<div class="command-section">
@@ -400,15 +525,36 @@ npm-updater --pm bun update prettier</code></pre>
 									<h3 class="subsection-title">Examples</h3>
 									<div class="tabbed-content">
 										<div class="tab-buttons">
-											<button class="tab-btn active" data-tab="ls-npm">
+											<button
+												class="tab-btn active"
+												data-tab="ls-npm"
+											>
 												npm
 											</button>
-											<button class="tab-btn" data-tab="ls-pnpm">pnpm</button>
-											<button class="tab-btn" data-tab="ls-yarn">Yarn</button>
-											<button class="tab-btn" data-tab="ls-bun">Bun</button>
+											<button
+												class="tab-btn"
+												data-tab="ls-pnpm"
+											>
+												pnpm
+											</button>
+											<button
+												class="tab-btn"
+												data-tab="ls-yarn"
+											>
+												Yarn
+											</button>
+											<button
+												class="tab-btn"
+												data-tab="ls-bun"
+											>
+												Bun
+											</button>
 										</div>
 
-										<div class="tab-content active" data-tab="ls-npm">
+										<div
+											class="tab-content active"
+											data-tab="ls-npm"
+										>
 											<div class="code-block">
 												<button
 													class="code-copy-btn"
@@ -429,7 +575,10 @@ npm-updater list
 											</div>
 										</div>
 
-										<div class="tab-content" data-tab="ls-pnpm">
+										<div
+											class="tab-content"
+											data-tab="ls-pnpm"
+										>
 											<div class="code-block">
 												<button
 													class="code-copy-btn"
@@ -452,7 +601,10 @@ npm-updater --pm pnpm list
 											</div>
 										</div>
 
-										<div class="tab-content" data-tab="ls-yarn">
+										<div
+											class="tab-content"
+											data-tab="ls-yarn"
+										>
 											<div class="code-block">
 												<button
 													class="code-copy-btn"
@@ -476,7 +628,10 @@ yarn global v1.22.19
 											</div>
 										</div>
 
-										<div class="tab-content" data-tab="ls-bun">
+										<div
+											class="tab-content"
+											data-tab="ls-bun"
+										>
 											<div class="code-block">
 												<button
 													class="code-copy-btn"
@@ -504,7 +659,10 @@ npm-updater --pm bun list
 							</section>
 
 							<!-- update Command -->
-							<section id="update-command" class="section">
+							<section
+								id="update-command"
+								class="section"
+							>
 								<h2 class="section-title">🔄 update Command</h2>
 
 								<div class="command-section">
@@ -534,18 +692,30 @@ npm-updater --pm bun list
 									<h3 class="subsection-title">Examples</h3>
 									<div class="tabbed-content">
 										<div class="tab-buttons">
-											<button class="tab-btn active" data-tab="update-basic">
+											<button
+												class="tab-btn active"
+												data-tab="update-basic"
+											>
 												Basic Update
 											</button>
-											<button class="tab-btn" data-tab="update-version">
+											<button
+												class="tab-btn"
+												data-tab="update-version"
+											>
 												Specific Version
 											</button>
-											<button class="tab-btn" data-tab="update-special">
+											<button
+												class="tab-btn"
+												data-tab="update-special"
+											>
 												Special Versions
 											</button>
 										</div>
 
-										<div class="tab-content active" data-tab="update-basic">
+										<div
+											class="tab-content active"
+											data-tab="update-basic"
+										>
 											<div class="code-block">
 												<button
 													class="code-copy-btn"
@@ -564,7 +734,10 @@ Updating prettier to 3.1.1 using npm...
 											</div>
 										</div>
 
-										<div class="tab-content" data-tab="update-version">
+										<div
+											class="tab-content"
+											data-tab="update-version"
+										>
 											<div class="code-block">
 												<button
 													class="code-copy-btn"
@@ -589,7 +762,10 @@ npm-updater update "typescript@~5.0.0"</code></pre>
 											</div>
 										</div>
 
-										<div class="tab-content" data-tab="update-special">
+										<div
+											class="tab-content"
+											data-tab="update-special"
+										>
 											<div class="code-block">
 												<button
 													class="code-copy-btn"
@@ -636,9 +812,23 @@ npm-updater update webpack@alpha</code></pre>
 												stroke-width="2"
 												aria-hidden="true"
 											>
-												<circle cx="12" cy="12" r="10"></circle>
-												<line x1="12" y1="16" x2="12" y2="12"></line>
-												<line x1="12" y1="8" x2="12.01" y2="8"></line>
+												<circle
+													cx="12"
+													cy="12"
+													r="10"
+												></circle>
+												<line
+													x1="12"
+													y1="16"
+													x2="12"
+													y2="12"
+												></line>
+												<line
+													x1="12"
+													y1="8"
+													x2="12.01"
+													y2="8"
+												></line>
 											</svg>
 										</div>
 										<div class="alert-content">
@@ -653,7 +843,10 @@ npm-updater update webpack@alpha</code></pre>
 							</section>
 
 							<!-- updateall Command -->
-							<section id="updateall-command" class="section">
+							<section
+								id="updateall-command"
+								class="section"
+							>
 								<h2 class="section-title">🚀 updateall Command</h2>
 
 								<div class="command-section">
@@ -737,8 +930,18 @@ Updating eslint to 8.56.0 using npm...
 												<path
 													d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
 												></path>
-												<line x1="12" y1="9" x2="12" y2="13"></line>
-												<line x1="12" y1="17" x2="12.01" y2="17"></line>
+												<line
+													x1="12"
+													y1="9"
+													x2="12"
+													y2="13"
+												></line>
+												<line
+													x1="12"
+													y1="17"
+													x2="12.01"
+													y2="17"
+												></line>
 											</svg>
 										</div>
 										<div class="alert-content">
@@ -752,7 +955,10 @@ Updating eslint to 8.56.0 using npm...
 							</section>
 
 							<!-- latestversion Command -->
-							<section id="latestversion-command" class="section">
+							<section
+								id="latestversion-command"
+								class="section"
+							>
 								<h2 class="section-title">🔍 latestversion Command</h2>
 
 								<div class="command-section">
@@ -783,18 +989,30 @@ Updating eslint to 8.56.0 using npm...
 									<h3 class="subsection-title">Examples</h3>
 									<div class="tabbed-content">
 										<div class="tab-buttons">
-											<button class="tab-btn active" data-tab="lv-basic">
+											<button
+												class="tab-btn active"
+												data-tab="lv-basic"
+											>
 												Basic Usage
 											</button>
-											<button class="tab-btn" data-tab="lv-scoped">
+											<button
+												class="tab-btn"
+												data-tab="lv-scoped"
+											>
 												Scoped Packages
 											</button>
-											<button class="tab-btn" data-tab="lv-special">
+											<button
+												class="tab-btn"
+												data-tab="lv-special"
+											>
 												Special Versions
 											</button>
 										</div>
 
-										<div class="tab-content active" data-tab="lv-basic">
+										<div
+											class="tab-content active"
+											data-tab="lv-basic"
+										>
 											<div class="code-block">
 												<button
 													class="code-copy-btn"
@@ -813,7 +1031,10 @@ Latest version of prettier: 3.1.1</code></pre>
 											</div>
 										</div>
 
-										<div class="tab-content" data-tab="lv-scoped">
+										<div
+											class="tab-content"
+											data-tab="lv-scoped"
+										>
 											<div class="code-block">
 												<button
 													class="code-copy-btn"
@@ -841,7 +1062,10 @@ Latest version of @vue/cli: 5.0.8</code></pre>
 											</div>
 										</div>
 
-										<div class="tab-content" data-tab="lv-special">
+										<div
+											class="tab-content"
+											data-tab="lv-special"
+										>
 											<div class="code-block">
 												<button
 													class="code-copy-btn"
@@ -877,7 +1101,10 @@ Latest version of typescript@beta: 5.4.0-beta</code></pre>
 							</section>
 
 							<!-- version Command -->
-							<section id="version-command" class="section">
+							<section
+								id="version-command"
+								class="section"
+							>
 								<h2 class="section-title">📦 version Command</h2>
 
 								<div class="command-section">
@@ -922,7 +1149,10 @@ Version: 0.0.12</code></pre>
 							</section>
 
 							<!-- help Command -->
-							<section id="help-command" class="section">
+							<section
+								id="help-command"
+								class="section"
+							>
 								<h2 class="section-title">❓ help Command</h2>
 
 								<div class="command-section">
@@ -995,7 +1225,10 @@ Examples:
 							</section>
 
 							<!-- Advanced Usage -->
-							<section id="advanced-usage" class="section">
+							<section
+								id="advanced-usage"
+								class="section"
+							>
 								<h2 class="section-title">⚙️ Advanced Usage</h2>
 
 								<div class="advanced-sections">
@@ -1102,7 +1335,10 @@ done</code></pre>
 							</section>
 
 							<!-- Examples -->
-							<section id="examples" class="section">
+							<section
+								id="examples"
+								class="section"
+							>
 								<h2 class="section-title">💡 Real-world Examples</h2>
 
 								<div class="examples-grid">
@@ -1203,7 +1439,9 @@ npm-updater latestversion jest</code></pre>
 											Explore the TypeScript API and programmatic usage of
 											npm-updater.
 										</p>
-										<a href="../api/index.html" class="btn btn-primary"
+										<a
+											href="../api/index.html"
+											class="btn btn-primary"
 											>View API Docs</a
 										>
 									</div>
@@ -1214,7 +1452,9 @@ npm-updater latestversion jest</code></pre>
 											Haven't installed npm-updater yet? Follow our step-by-step
 											installation guide.
 										</p>
-										<a href="installation.html" class="btn btn-secondary"
+										<a
+											href="installation.html"
+											class="btn btn-secondary"
 											>View Installation Guide</a
 										>
 									</div>
@@ -1242,7 +1482,10 @@ npm-updater latestversion jest</code></pre>
 		</main>
 
 		<!-- Footer -->
-		<footer class="footer" role="contentinfo">
+		<footer
+			class="footer"
+			role="contentinfo"
+		>
 			<div class="container">
 				<div class="footer-content">
 					<div class="footer-section">
@@ -1288,9 +1531,18 @@ npm-updater latestversion jest</code></pre>
 									stroke-width="2"
 									aria-hidden="true"
 								>
-									<circle cx="12" cy="12" r="10"></circle>
+									<circle
+										cx="12"
+										cy="12"
+										r="10"
+									></circle>
 									<path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-									<line x1="12" y1="17" x2="12.01" y2="17"></line>
+									<line
+										x1="12"
+										y1="17"
+										x2="12.01"
+										y2="17"
+									></line>
 								</svg>
 								Issues
 							</a>
@@ -1322,16 +1574,32 @@ npm-updater latestversion jest</code></pre>
 						<h3 class="footer-title">Documentation</h3>
 						<ul class="footer-links">
 							<li>
-								<a href="installation.html" class="footer-link">Installation</a>
+								<a
+									href="installation.html"
+									class="footer-link"
+									>Installation</a
+								>
 							</li>
-							<li><a href="usage.html" class="footer-link">Usage</a></li>
 							<li>
-								<a href="../api/index.html" class="footer-link"
+								<a
+									href="usage.html"
+									class="footer-link"
+									>Usage</a
+								>
+							</li>
+							<li>
+								<a
+									href="../api/index.html"
+									class="footer-link"
 									>API Reference</a
 								>
 							</li>
 							<li>
-								<a href="../changelog.html" class="footer-link">Changelog</a>
+								<a
+									href="../changelog.html"
+									class="footer-link"
+									>Changelog</a
+								>
 							</li>
 						</ul>
 					</div>
@@ -1339,10 +1607,34 @@ npm-updater latestversion jest</code></pre>
 					<div class="footer-section">
 						<h3 class="footer-title">Package Managers</h3>
 						<ul class="footer-links">
-							<li><a href="usage.html#npm" class="footer-link">npm</a></li>
-							<li><a href="usage.html#pnpm" class="footer-link">pnpm</a></li>
-							<li><a href="usage.html#yarn" class="footer-link">Yarn</a></li>
-							<li><a href="usage.html#bun" class="footer-link">Bun</a></li>
+							<li>
+								<a
+									href="usage.html#npm"
+									class="footer-link"
+									>npm</a
+								>
+							</li>
+							<li>
+								<a
+									href="usage.html#pnpm"
+									class="footer-link"
+									>pnpm</a
+								>
+							</li>
+							<li>
+								<a
+									href="usage.html#yarn"
+									class="footer-link"
+									>Yarn</a
+								>
+							</li>
+							<li>
+								<a
+									href="usage.html#bun"
+									class="footer-link"
+									>Bun</a
+								>
+							</li>
 						</ul>
 					</div>
 

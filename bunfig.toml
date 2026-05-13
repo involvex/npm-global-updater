@@ -9,7 +9,7 @@
 # registry = "https://registry.npmjs.org/"
 
 # Set node_modules folder
- node_modules = "node_modules"
+node_modules = "node_modules"
 
 # Cache directory
 # cache = ".bun-cache"
@@ -34,13 +34,14 @@ parallel = true
 # Watch mode for continuous testing during development
 watch = false
 
-# Test environment setup
 env = {
   NODE_ENV = "test",
-  BUN_ENV = "test",
-  NPM_UPDATER_TEST_MODE = "true"
+BUN_ENV = "test",
+# Test environment setup
+
 }
 
+NPM_UPDATER_TEST_MODE = "true"
 # File watching exclusions for test files
 # exclude = ["node_modules", "dist", "coverage"]
 
@@ -57,7 +58,7 @@ env = {
 
 [build]
 # Build output directory
- outdir = "bin"
+outdir = "bin"
 
 # Minification
 # minify = true
@@ -66,7 +67,7 @@ env = {
 # sourcemap = true
 
 # Target environment
- target = "node"
+target = "node"
 
 [package]
 # Package.json field order
@@ -74,7 +75,7 @@ env = {
 
 [run]
 # Node.js compatibility mode
- compat = "node"
+compat = "node"
 
 # Loader configuration for file types
 # loader = {
@@ -88,17 +89,17 @@ env = {
 
 # Environment variables for different environments
 [env.test]
-  NODE_ENV = "test"
-  BUN_ENV = "test"
-  NPM_UPDATER_TEST_MODE = "true"
+NODE_ENV = "test"
+BUN_ENV = "test"
+NPM_UPDATER_TEST_MODE = "true"
 
 [env.production]
-  NODE_ENV = "production"
-  BUN_ENV = "production"
+NODE_ENV = "production"
+BUN_ENV = "production"
 
 [env.development]
-  NODE_ENV ="development"
-  BUN_ENV = "development"  
+NODE_ENV = "development"
+BUN_ENV = "development"
 
 #[install.security]                                                          
 #  scanner = "tsc"

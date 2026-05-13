@@ -12,8 +12,8 @@ permissions:
 # Environment variables for consistent configuration
 env:
   NODE_VERSION: '20'
-  BUN_VERSION: '1.3.5'
-  DEFAULT_BRANCH: 'main'
+  BUN_VERSION: 1.3.5
+  DEFAULT_BRANCH: main
   WORKING_DIRECTORY: ${{ github.workspace }}
 
 # Trigger configuration
@@ -21,14 +21,14 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to release (e.g., 1.0.0) - leave empty for auto-detection'
+        description: Version to release (e.g., 1.0.0) - leave empty for auto-detection
         required: false
         type: string
       release_type:
-        description: 'Release type for auto-versioning'
+        description: Release type for auto-versioning
         required: false
         type: choice
-        default: 'auto'
+        default: auto
         options:
           - auto
           - patch
@@ -36,17 +36,17 @@ on:
           - major
           - prerelease
       dry_run:
-        description: 'Perform a dry run without making actual changes'
+        description: Perform a dry run without making actual changes
         required: false
         type: boolean
         default: false
       force_release:
-        description: 'Force release even with validation warnings'
+        description: Force release even with validation warnings
         required: false
         type: boolean
         default: false
       create_draft:
-        description: 'Create release as draft'
+        description: Create release as draft
         required: false
         type: boolean
         default: true
@@ -55,7 +55,7 @@ on:
       - main
       - develop
     tags:
-      - 'v*.*.*' # Only trigger on version tags
+      - v*.*.* # Only trigger on version tags
 
 # Job definitions with proper separation of concerns
 jobs:
@@ -142,7 +142,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          cache: npm
 
       - name: 📦 Setup Bun
         uses: oven-sh/setup-bun@v2

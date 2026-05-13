@@ -73,27 +73,27 @@
 	"dependencies": {
 		"@types/console-clear": "^1.1.4",
 		"console-clear": "^1.1.1",
-		"jiti": "^2.6.1"
+		"jiti": "^2.7.0"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.39.2",
 		"@eslint/json": "^0.14.0",
-		"@involvex/prettier-config": "^0.0.4",
-		"@types/bun": "^1.3.10",
-		"@types/node": "^25.0.3",
-		"bun": "^1.3.10",
+		"@involvex/prettier-config": "^0.0.5",
+		"@types/bun": "^1.3.14",
+		"@types/node": "^25.7.0",
+		"bun": "^1.3.14",
 		"changelogen": "^0.6.2",
 		"eslint": "^9.39.2",
 		"globals": "^16.5.0",
-		"jest": "^30.2.0",
+		"jest": "^30.4.2",
 		"mock-fs": "^5.5.0",
-		"prettier": "^3.8.1",
-		"sinon": "^21.0.1",
+		"prettier": "^3.8.3",
+		"sinon": "^21.1.2",
 		"ts-node": "^10.9.2",
-		"typescript-eslint": "^8.57.1"
+		"typescript-eslint": "^8.59.3"
 	},
 	"peerDependencies": {
-		"typescript": "^5.9.3"
+		"typescript": "^6.0.3"
 	},
 	"packageManager": "bun@1.3.5",
 	"icon": "assets/logo.png",

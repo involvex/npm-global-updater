@@ -2,7 +2,10 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
 		<meta
 			name="description"
 			content="API Reference for npm-updater - TypeScript definitions, interfaces, and programmatic usage examples for the global package manager."
@@ -14,12 +17,26 @@
 
 		<title>API Reference - npm-updater</title>
 
-		<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
-		<link rel="alternate icon" href="../assets/favicon.ico" />
+		<link
+			rel="icon"
+			type="image/svg+xml"
+			href="../assets/favicon.svg"
+		/>
+		<link
+			rel="alternate icon"
+			href="../assets/favicon.ico"
+		/>
 
 		<!-- Fonts -->
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="preconnect"
+			href="https://fonts.googleapis.com"
+		/>
+		<link
+			rel="preconnect"
+			href="https://fonts.gstatic.com"
+			crossorigin
+		/>
 		<link
 			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
 			rel="stylesheet"
@@ -31,16 +48,30 @@
 			rel="stylesheet"
 		/>
 
-		<link rel="stylesheet" href="../assets/main.css" />
+		<link
+			rel="stylesheet"
+			href="../assets/main.css"
+		/>
 	</head>
 	<body>
 		<!-- Skip to content link for accessibility -->
-		<a href="#main-content" class="skip-link">Skip to main content</a>
+		<a
+			href="#main-content"
+			class="skip-link"
+			>Skip to main content</a
+		>
 
 		<!-- Header -->
-		<header class="header" role="banner">
+		<header
+			class="header"
+			role="banner"
+		>
 			<div class="container">
-				<nav class="nav" role="navigation" aria-label="Main navigation">
+				<nav
+					class="nav"
+					role="navigation"
+					aria-label="Main navigation"
+				>
 					<div class="nav-brand">
 						<a
 							href="../index.html"
@@ -61,7 +92,12 @@
 									d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
 								></path>
 								<polyline points="3.27,6.96 12,12.01 20.73,6.96"></polyline>
-								<line x1="12" y1="22.08" x2="12" y2="12"></line>
+								<line
+									x1="12"
+									y1="22.08"
+									x2="12"
+									y2="12"
+								></line>
 							</svg>
 							<span class="brand-text">npm-updater</span>
 						</a>
@@ -79,16 +115,36 @@
 							<span class="nav-toggle-bar"></span>
 						</button>
 
-						<div class="nav-links" id="nav-menu">
-							<a href="../index.html" class="nav-link">Home</a>
-							<a href="../guides/installation.html" class="nav-link"
+						<div
+							class="nav-links"
+							id="nav-menu"
+						>
+							<a
+								href="../index.html"
+								class="nav-link"
+								>Home</a
+							>
+							<a
+								href="../guides/installation.html"
+								class="nav-link"
 								>Installation</a
 							>
-							<a href="../guides/usage.html" class="nav-link">Usage</a>
-							<a href="index.html" class="nav-link active" aria-current="page"
+							<a
+								href="../guides/usage.html"
+								class="nav-link"
+								>Usage</a
+							>
+							<a
+								href="index.html"
+								class="nav-link active"
+								aria-current="page"
 								>API</a
 							>
-							<a href="../changelog.html" class="nav-link">Changelog</a>
+							<a
+								href="../changelog.html"
+								class="nav-link"
+								>Changelog</a
+							>
 							<a
 								href="https://github.com/involvex/npm-global-updater"
 								class="nav-link"
@@ -114,7 +170,11 @@
 							stroke-width="2"
 							aria-hidden="true"
 						>
-							<circle cx="12" cy="12" r="5"></circle>
+							<circle
+								cx="12"
+								cy="12"
+								r="5"
+							></circle>
 							<path
 								d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
 							></path>
@@ -137,43 +197,93 @@
 		</header>
 
 		<!-- Main content -->
-		<main id="main-content" class="main" role="main">
+		<main
+			id="main-content"
+			class="main"
+			role="main"
+		>
 			<div class="container">
 				<div class="content-layout">
 					<!-- Sidebar navigation -->
-					<aside class="sidebar" role="complementary">
-						<nav class="sidebar-nav" aria-label="API navigation">
+					<aside
+						class="sidebar"
+						role="complementary"
+					>
+						<nav
+							class="sidebar-nav"
+							aria-label="API navigation"
+						>
 							<h3 class="sidebar-title">API Reference</h3>
 							<ul class="sidebar-links">
-								<li><a href="#overview" class="sidebar-link">Overview</a></li>
 								<li>
-									<a href="#package-manager" class="sidebar-link"
+									<a
+										href="#overview"
+										class="sidebar-link"
+										>Overview</a
+									>
+								</li>
+								<li>
+									<a
+										href="#package-manager"
+										class="sidebar-link"
 										>PackageManager</a
 									>
 								</li>
 								<li>
-									<a href="#package-manager-config" class="sidebar-link"
+									<a
+										href="#package-manager-config"
+										class="sidebar-link"
 										>PackageManagerConfig</a
 									>
 								</li>
 								<li>
-									<a href="#package-managers" class="sidebar-link"
+									<a
+										href="#package-managers"
+										class="sidebar-link"
 										>PACKAGE_MANAGERS</a
 									>
 								</li>
-								<li><a href="#functions" class="sidebar-link">Functions</a></li>
 								<li>
-									<a href="#run-function" class="sidebar-link">run Function</a>
+									<a
+										href="#functions"
+										class="sidebar-link"
+										>Functions</a
+									>
 								</li>
-								<li><a href="#commands" class="sidebar-link">Commands</a></li>
-								<li><a href="#examples" class="sidebar-link">Examples</a></li>
 								<li>
-									<a href="#types" class="sidebar-link">Type Definitions</a>
+									<a
+										href="#run-function"
+										class="sidebar-link"
+										>run Function</a
+									>
+								</li>
+								<li>
+									<a
+										href="#commands"
+										class="sidebar-link"
+										>Commands</a
+									>
+								</li>
+								<li>
+									<a
+										href="#examples"
+										class="sidebar-link"
+										>Examples</a
+									>
+								</li>
+								<li>
+									<a
+										href="#types"
+										class="sidebar-link"
+										>Type Definitions</a
+									>
 								</li>
 							</ul>
 
 							<div class="sidebar-cta">
-								<a href="../guides/usage.html" class="btn btn-primary"
+								<a
+									href="../guides/usage.html"
+									class="btn btn-primary"
 									>View Usage Guide</a
 								>
 							</div>
@@ -192,7 +302,10 @@
 							</header>
 
 							<!-- Overview -->
-							<section id="overview" class="section">
+							<section
+								id="overview"
+								class="section"
+							>
 								<h2 class="section-title">📋 Overview</h2>
 
 								<p class="section-description">
@@ -257,7 +370,10 @@ import { showabout } from "npm-updater/commands/about";</code></pre>
 							</section>
 
 							<!-- PackageManager Type -->
-							<section id="package-manager" class="section">
+							<section
+								id="package-manager"
+								class="section"
+							>
 								<h2 class="section-title">📦 PackageManager Type</h2>
 
 								<div class="api-section">
@@ -309,7 +425,10 @@ const supportedManagers: PackageManager[] = ["npm", "pnpm", "yarn", "bun"];</cod
 							</section>
 
 							<!-- PackageManagerConfig Interface -->
-							<section id="package-manager-config" class="section">
+							<section
+								id="package-manager-config"
+								class="section"
+							>
 								<h2 class="section-title">⚙️ PackageManagerConfig Interface</h2>
 
 								<div class="api-section">
@@ -415,7 +534,10 @@ console.log(config.viewCommand("react", "18.0.0"));
 							</section>
 
 							<!-- PACKAGE_MANAGERS Constant -->
-							<section id="package-managers" class="section">
+							<section
+								id="package-managers"
+								class="section"
+							>
 								<h2 class="section-title">🗂️ PACKAGE_MANAGERS Constant</h2>
 
 								<div class="api-section">
@@ -551,7 +673,10 @@ const allConfigs = Object.values(PACKAGE_MANAGERS);</code></pre>
 							</section>
 
 							<!-- Functions -->
-							<section id="functions" class="section">
+							<section
+								id="functions"
+								class="section"
+							>
 								<h2 class="section-title">🔧 Utility Functions</h2>
 
 								<div class="api-functions">
@@ -696,7 +821,10 @@ console.log(list); // "npm, pnpm, yarn, bun"</code></pre>
 							</section>
 
 							<!-- run Function -->
-							<section id="run-function" class="section">
+							<section
+								id="run-function"
+								class="section"
+							>
 								<h2 class="section-title">🚀 run Function</h2>
 
 								<div class="api-section">
@@ -783,7 +911,10 @@ await run();</code></pre>
 							</section>
 
 							<!-- Commands -->
-							<section id="commands" class="section">
+							<section
+								id="commands"
+								class="section"
+							>
 								<h2 class="section-title">📝 Command Functions</h2>
 
 								<div class="commands-api">
@@ -1024,7 +1155,10 @@ await showabout();</code></pre>
 							</section>
 
 							<!-- Examples -->
-							<section id="examples" class="section">
+							<section
+								id="examples"
+								class="section"
+							>
 								<h2 class="section-title">💡 Programming Examples</h2>
 
 								<div class="examples-grid">
@@ -1137,7 +1271,10 @@ updateDevDependencies().catch(console.error);</code></pre>
 							</section>
 
 							<!-- Type Definitions -->
-							<section id="types" class="section">
+							<section
+								id="types"
+								class="section"
+							>
 								<h2 class="section-title">📝 Type Definitions</h2>
 
 								<div class="type-definitions">
@@ -1242,7 +1379,9 @@ async function executeCommandSafely(
 											See practical examples of how to use npm-updater in
 											real-world scenarios.
 										</p>
-										<a href="../guides/usage.html" class="btn btn-primary"
+										<a
+											href="../guides/usage.html"
+											class="btn btn-primary"
 											>View Usage Guide</a
 										>
 									</div>
@@ -1283,7 +1422,10 @@ async function executeCommandSafely(
 		</main>
 
 		<!-- Footer -->
-		<footer class="footer" role="contentinfo">
+		<footer
+			class="footer"
+			role="contentinfo"
+		>
 			<div class="container">
 				<div class="footer-content">
 					<div class="footer-section">
@@ -1329,9 +1471,18 @@ async function executeCommandSafely(
 									stroke-width="2"
 									aria-hidden="true"
 								>
-									<circle cx="12" cy="12" r="10"></circle>
+									<circle
+										cx="12"
+										cy="12"
+										r="10"
+									></circle>
 									<path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-									<line x1="12" y1="17" x2="12.01" y2="17"></line>
+									<line
+										x1="12"
+										y1="17"
+										x2="12.01"
+										y2="17"
+									></line>
 								</svg>
 								Issues
 							</a>
@@ -1363,18 +1514,32 @@ async function executeCommandSafely(
 						<h3 class="footer-title">Documentation</h3>
 						<ul class="footer-links">
 							<li>
-								<a href="../guides/installation.html" class="footer-link"
+								<a
+									href="../guides/installation.html"
+									class="footer-link"
 									>Installation</a
 								>
 							</li>
 							<li>
-								<a href="../guides/usage.html" class="footer-link">Usage</a>
+								<a
+									href="../guides/usage.html"
+									class="footer-link"
+									>Usage</a
+								>
 							</li>
 							<li>
-								<a href="index.html" class="footer-link">API Reference</a>
+								<a
+									href="index.html"
+									class="footer-link"
+									>API Reference</a
+								>
 							</li>
 							<li>
-								<a href="../changelog.html" class="footer-link">Changelog</a>
+								<a
+									href="../changelog.html"
+									class="footer-link"
+									>Changelog</a
+								>
 							</li>
 						</ul>
 					</div>
@@ -1383,16 +1548,32 @@ async function executeCommandSafely(
 						<h3 class="footer-title">Package Managers</h3>
 						<ul class="footer-links">
 							<li>
-								<a href="../guides/usage.html#npm" class="footer-link">npm</a>
+								<a
+									href="../guides/usage.html#npm"
+									class="footer-link"
+									>npm</a
+								>
 							</li>
 							<li>
-								<a href="../guides/usage.html#pnpm" class="footer-link">pnpm</a>
+								<a
+									href="../guides/usage.html#pnpm"
+									class="footer-link"
+									>pnpm</a
+								>
 							</li>
 							<li>
-								<a href="../guides/usage.html#yarn" class="footer-link">Yarn</a>
+								<a
+									href="../guides/usage.html#yarn"
+									class="footer-link"
+									>Yarn</a
+								>
 							</li>
 							<li>
-								<a href="../guides/usage.html#bun" class="footer-link">Bun</a>
+								<a
+									href="../guides/usage.html#bun"
+									class="footer-link"
+									>Bun</a
+								>
 							</li>
 						</ul>
 					</div>
